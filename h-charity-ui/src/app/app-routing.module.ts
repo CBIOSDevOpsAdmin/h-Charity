@@ -44,6 +44,13 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                   m => m.PagesModule
                 ),
             },
+            {
+              path: 'himanism',
+              loadChildren: () =>
+                import('./modules/himanism/himanism.module').then(
+                  m => m.HimanismModule
+                ),
+            },
           ],
         },
         {

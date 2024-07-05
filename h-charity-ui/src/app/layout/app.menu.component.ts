@@ -97,6 +97,17 @@ export class AppMenuComponent implements OnInit {
           },
         ],
       },
+      {
+        label: 'HIMANISM',
+        icon: 'pi pi-fw pi-briefcase',
+        items: [
+          {
+            label: 'About Us',
+            icon: 'pi pi-fw pi-pencil',
+            routerLink: ['/himanism/about-us'],
+          },
+        ],
+      },
     ];
   }
 }
