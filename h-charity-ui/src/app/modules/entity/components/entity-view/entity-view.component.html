@@ -1,0 +1,271 @@
+<p-card>
+    <div class="grid">
+        <div class="col-12">
+            <div class="grid">
+                <div class="mosque-details">
+                    <div class="col-12" style="text-align: center;">
+                        <h1 style="font-family: Arial, Helvetica, sans-serif;">MADEENA MASJID</h1>
+                        <h4 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+                            RethiBowli Rd, Dilshad Nagar Colony, Mehdipatnam,<br>
+                            Hyderabad, Telangana 500028, India</h4>
+                    </div>
+                    <div class="date-time">
+                        <p>{{ currentDateAndTime | date: 'medium' }}</p>
+                    </div>
+
+                    <div class="container mt-3">
+                        <p-carousel [value]="images" [numVisible]="1">
+                            <ng-template pTemplate="item" let-image>
+                                <img [src]="image" alt="Madina Masjid"
+                                    style="width: 100%; height: 300px; object-fit: cover;">
+                            </ng-template>
+                        </p-carousel>
+                    </div>
+
+                    <p-card styleClass="ui-card-shadow">
+                        <div class="col-12">
+                            <img src="assets/mosque-details/madina-masjid.png" alt="Madina Masjid">
+                        </div>
+                    </p-card>
+
+                    <br>
+                    <br>
+                    <br>
+
+                    <p-card header="BRIEF HISTORY OF THE EXISTING MASJID" styleClass="ui-card-shadow">
+                        <ng-template pTemplate="content">
+                            <pre style="font-family: 'Times New Roman', Times, serif;">
+The Madeena Masjid Reathibowli, located near pillar no. 52 in Dilshad Nagar Colony, stands 
+as a significant place of worship for the local Muslim community. While the exact date of 
+its construction remains unknown, it has long been a spiritual hub where residents gather 
+to offer their daily prayers. Alhamdulillah, the masjid facilitates the five daily prayers, 
+bringing together the faithful in devotion and community spirit. During the holy month of 
+Ramadan, the masjid holds special Taraweeh prayers, creating an atmosphere of heightened 
+religious observance and unity. The Madeena Masjid continues to play a crucial role in the 
+religious life of Dilshad Nagar Colony, fostering a sense of peace and belonging among its 
+worshippers.
+                            </pre>
+                        </ng-template>
+                    </p-card>
+                    <br><br><br>
+                    <p-card header="FEATURES OF THE MASJID" styleClass="ui-card-shadow">
+                        <ng-template pTemplate="content">
+
+                            <pre style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
+    <b>Address:</b>
+
+        Dilshad Nagar Colony, Rethibowli, Mehdipatnam, Hyderabad, Telangana, India.
+        It is situated in a prominent residential area, making it easily accessible 
+        to the local Muslim community. Architectural 
+                        
+    <b>Style:</b>
+
+        The mosque typically features traditional Islamic architecture, including a 
+        prayer hall, minarets, and a dome. The design is aimed at providing a serene 
+        environment for worshippers.
+
+    <b>Religious Activities:</b>
+
+        Daily prayers (Salah) are held five times a day. Special prayers and sermons 
+        (Khutbah) are conducted on Fridays (Jumu'ah). During the holy month of Ramadan, 
+        Taraweeh prayers and Iftar gatherings are organized.
+
+    <b>Community Services:</b>
+
+        The mosque often engages in community services such as charity drives, distribution
+        of food and essentials to the needy, and educational programs.It may also host 
+        religious classes and Quranic recitations for children and adults.
+
+    <b>Facilities:</b> 
+
+        Ablution (Wudu) facilities are provided for worshippers to perform their pre-prayer
+        cleansing rituals.
+
+    <b>Events:</b>
+
+        The mosque is a hub for Islamic celebrations such as Eid al-Fitr and Eid al-Adha.
+        It serves as a gathering place for community events and religious discussions.
+
+
+                    </pre>
+
+                        </ng-template>
+                    </p-card>
+                    <br><br><br>
+
+                    <div class="grid">
+                        <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
+                            <div class="col-12" style="text-align: center;">
+                                <h2 style="color: blue;">DONATIONS</h2>
+                            </div>
+                            <div class="col-12 md:col-6 lg:col-8">
+
+                                <p-card header="APPEAL FOR DONATIONS /HELP / SERVICES TO BUILD A MASJID"
+                                    styleClass="ui-card-shadow">
+
+                                    <pre
+                                        style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
+              WHO IS INCHARGE OF THE FUNDS?
+
+The Masjid committee that is approved by the T.S. Waqf Board comprises of 
+well qualified and dedicated people working selflessly for the development 
+of the Masjid, having pure intentions for the Masjid. The committee will 
+take care of every rupee collected for the purpose of Masjid construction. 
+All the accounts shall be audited by the Government auditors or private 
+Charted Accountants for responsibility and accountability.
+
+
+               HOW TO MAKE THE PAYMENTS?
+
+You can make payments with different and most convenient way that you may choose viz.
+
+
+1. Direct transfer of funds to the Masjid’s Account by RTGS/NEFT or digital payment
+2. Send cheques/ DD/ Pay order in favor of Madeena Masjid
+3. Google pay/ Phone pay/ Paytm/ Masjid Scanner
+4. Personally handover cash to the Treasurer and obtain receipt.
+ 
+                             Or
+
+Union Bank of India
+Bank name : Union Bank of India
+Name of the branch : Mehdhipathnam Branch, Hyderabad
+Current Account No. : 000000000000000
+IFSC code : xxxxxxxxxxx
+Name of the account holder : MADEENA mASJID                             
+
+
+
+
+                             </pre>
+
+                                </p-card>
+                            </div>
+
+                            <div class="flex-1 w-full lg:w-3 xl:w-4 flex flex-column row-gap-3">
+                                <p-card header="Scan QR Here" styleClass="ui-card-shadow">
+                                    <img src="assets/mosque-details/gpay.png" alt="google pay">
+                                    <img src="assets/mosque-details/bhmi.jpeg" alt="bhmi pay">
+                                    <img src="assets/mosque-details/paytm.jpeg" alt="paytm">
+                                    <img src="assets/mosque-details/phone pay.jpeg" alt="phone pay">
+                                </p-card>
+                            </div>
+                        </div>
+                    </div>
+                    <br><br><br>
+                    <h2>{{appeals}}</h2>
+                    <!-- <p-dataView [value]="appeals" layout="grid" [rows]="2">
+                        <ng-template let-appeal pTemplate="item">
+                            <div class="p-col-12 p-md-6">
+                                <div class="appeal-item">
+                                    <img [src]="appeal.image" alt="{{ appeal.title }}" class="appeal-image" />
+                                    <div class="appeal-details">
+                                        <h2>{{ appeal.title }}</h2>
+                                        <p>{{ appeal.description }}</p>
+                                        <span class="appeal-status">{{ appeal.status }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView> -->
+
+                    <!-- <p-dataView [value]="entities" layout="grid">
+                        <ng-template pTemplate="header">
+                            <div class="p-clearfix" style="line-height:1.87em">Top two Appeals</div>
+                        </ng-template>
+                        <ng-template let-entity pTemplate="gridItem">
+                            <div class="p-col-12 p-md-3">
+                                <div class="product-grid-item card">
+                                    <div class="product-grid-item-top">
+                                        <div>
+                                            <i class="pi pi-tag product-category-icon"></i>
+                                            <span class="product-category">{{entity.title}}</span>
+                                        </div>
+                                        <div>
+                                            <i class="pi pi-tag product-category-icon"></i>
+                                            <span class="product-category">{{entity.status}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-grid-item-content">
+                                        <img src="{{entity.image}}" alt="{{entity.title}}">
+                                        <div class="product-name">{{entity.title}}</div>
+                                        <div class="product-description">{{entity.description}}</div>
+                                        <div class="product-price">{{entity.costInvolve}}</div>
+                                        <div class="product-price">{{entity.accumulatedAmount}}</div>
+                                        <div class="product-price">{{entity.balanceAmount}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView> -->
+
+                    <h5>DataView</h5>
+                    <p-dataView #dv [value]="appeals" [paginator]="true" [rows]="9" filterBy="title" layout="grid">
+                        <ng-template let-entities pTemplate="listItem">
+                            <div class="col-12" *ngFor="let appeal of appeals">
+                                <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
+                                    <img [src]="'assets/mosque-details/' + 'madina-masjid.jpg'" [alt]="appeal"
+                                        class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
+                                    <div class="flex-1 flex flex-column align-items-center text-center md:text-left">
+                                        <div class="font-bold text-2xl">{{ appeal.title }}</div>
+                                        <div class="mb-2">{{ appeal.description | striphtml }}</div>
+                                        <div class="flex align-items-center mt-2">
+                                            <i class="pi pi-warehouse mr-2"></i>
+                                            <span class="font-semibold">{{ appeal.status }}</span>
+                                        </div>
+                                        class="flex flex-row md:flex-column justify-content-between w-full md:w-auto
+                                        align-items-center md:align-items-end mt-5 md:mt-0">
+                                        <p-button icon="pi pi-trash"
+                                            styleClass="mb-2 p-button-sm align-self-center md:align-self-end"
+                                            (click)="goToEntity(entity.id)"></p-button>
+                                        <p-button icon="pi pi-arrow-right" label="Go To Entity"
+                                            styleClass="mb-2 p-button-sm" (click)="goToEntity(entity.id)"></p-button>
+                                        <span [ngClass]="
+                  entity.isVerified
+                    ? 'status-verified status-badge'
+                    : 'status-unverified status-badge'
+                ">{{ entity.isVerified ? 'Verified' : 'Unverified' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
+
+                    <p-tabView>
+                        <p-tabPanel header="About">
+                            <p>
+                                Madina Masjid is a place of worship for Muslims located in [Mehdhipathnam]. We offer
+                                daily
+                                prayers,
+                                educational programs,
+                                and community events. Our mission is to provide a welcoming environment for all
+                                members
+                                of
+                                our
+                                community.
+                            </p>
+                        </p-tabPanel>
+                        <p-tabPanel header="Services">
+                            <ul>
+                                <li>Daily Prayers</li>
+                                <li>Friday Sermons</li>
+                                <li>Quran Classes</li>
+                                <li>Community Events</li>
+                            </ul>
+                        </p-tabPanel>
+                        <p-tabPanel header="Contact">
+                            <p>
+                                <b>Address:</b> [12-2-800/441/6, Rethi Bowli Rd,
+                                Dilshad Nagar Colony, Mehdipatnam, Hyderabad,
+                                Telangana 500028, India]<br>
+                                <b>Phone:</b> [0000000000] <br>
+                                <b>Email:</b> [madeenamasjid&#64;gmail.com]
+                            </p>
+                        </p-tabPanel>
+                    </p-tabView>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</p-card>
