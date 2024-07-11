@@ -51,7 +51,7 @@ export class AddUpdateEntityComponent implements OnInit {
     private fileService: FileService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.initDDFields();
@@ -67,6 +67,7 @@ export class AddUpdateEntityComponent implements OnInit {
   //#region Public Methods
   public saveEntity() {
     let payload = this.generatePayload(this.entityForm.value);
+    // got error in the below line
     if (!this.validateEntityDetails()) {
       this.entityService.saveEntity(payload).subscribe({
         next: response => {
