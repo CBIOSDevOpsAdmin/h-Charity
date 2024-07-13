@@ -4,13 +4,17 @@
             <div class="grid">
                 <div class="mosque-details">
                     <div class="col-12" style="text-align: center;">
-                        <h1 style="font-family: Arial, Helvetica, sans-serif;">MADEENA MASJID</h1>
+                        <h1 style="font-family: Arial, Helvetica, sans-serif;">{{entity && entity.name}}</h1>
                         <h4 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
-                            RethiBowli Rd, Dilshad Nagar Colony, Mehdipatnam,<br>
-                            Hyderabad, Telangana 500028, India</h4>
+                            {{address}}</h4>
                     </div>
-                    <div class="date-time">
+                    <!-- <div class="date-time">
                         <p>{{ currentDateAndTime | date: 'medium' }}</p>
+                    </div> -->
+
+                    <div>
+                        <p class="date">{{ dateString }}</p>
+                        <h1 class="time">{{ currentTime }}</h1>
                     </div>
 
                     <div class="container mt-3">
@@ -22,33 +26,31 @@
                         </p-carousel>
                     </div>
 
-                    <p-card styleClass="ui-card-shadow">
-                        <div class="col-12">
-                            <img src="assets/mosque-details/madina-masjid.png" alt="Madina Masjid">
-                        </div>
-                    </p-card>
+
+                    <div class="card flex justify-content-left">
+                        <pre style="font-family: 'Times New Roman', Times, serif;">
+                            <h1>About {{entity && entity.name}}</h1>
+    The Madeena Masjid Reathibowli, located near pillar no. 52 in Dilshad Nagar Colony, stands 
+    as a significant place of worship for the local Muslim community. While the exact date of 
+    its construction remains unknown, it has long been a spiritual hub where residents gather 
+    to offer their daily prayers. Alhamdulillah, the masjid facilitates the five daily prayers, 
+    bringing together the faithful in devotion and community spirit. During the holy month of 
+    Ramadan, the masjid holds special Taraweeh prayers, creating an atmosphere of heightened 
+    religious observance and unity. The Madeena Masjid continues to play a crucial role in the 
+    religious life of Dilshad Nagar Colony, fostering a sense of peace and belonging among its 
+    worshippers.
+                                </pre>
+
+                    </div>
 
                     <br>
                     <br>
                     <br>
 
-                    <p-card header="BRIEF HISTORY OF THE EXISTING MASJID" styleClass="ui-card-shadow">
-                        <ng-template pTemplate="content">
-                            <pre style="font-family: 'Times New Roman', Times, serif;">
-The Madeena Masjid Reathibowli, located near pillar no. 52 in Dilshad Nagar Colony, stands 
-as a significant place of worship for the local Muslim community. While the exact date of 
-its construction remains unknown, it has long been a spiritual hub where residents gather 
-to offer their daily prayers. Alhamdulillah, the masjid facilitates the five daily prayers, 
-bringing together the faithful in devotion and community spirit. During the holy month of 
-Ramadan, the masjid holds special Taraweeh prayers, creating an atmosphere of heightened 
-religious observance and unity. The Madeena Masjid continues to play a crucial role in the 
-religious life of Dilshad Nagar Colony, fostering a sense of peace and belonging among its 
-worshippers.
-                            </pre>
-                        </ng-template>
-                    </p-card>
-                    <br><br><br>
-                    <p-card header="FEATURES OF THE MASJID" styleClass="ui-card-shadow">
+                    <!-- <p-card header="FEATURES OF THE MASJID">
+                        <p-image src="assets/mosque-details/madina-masjid1.png"
+                            previewImageSrc="https://primefaces.org/cdn/primeng/images/galleria/galleria11.jpg"
+                            alt="Image" width="250" [preview]="true" />
                         <ng-template pTemplate="content">
 
                             <pre style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
@@ -90,8 +92,7 @@ worshippers.
                     </pre>
 
                         </ng-template>
-                    </p-card>
-                    <br><br><br>
+                    </p-card> -->
 
                     <div class="grid">
                         <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
@@ -153,7 +154,7 @@ Name of the account holder : MADEENA mASJID
                         </div>
                     </div>
                     <br><br><br>
-                    <h2>{{appeals}}</h2>
+
                     <!-- <p-dataView [value]="appeals" layout="grid" [rows]="2">
                         <ng-template let-appeal pTemplate="item">
                             <div class="p-col-12 p-md-6">
@@ -199,8 +200,8 @@ Name of the account holder : MADEENA mASJID
                         </ng-template>
                     </p-dataView> -->
 
-                    <h5>DataView</h5>
-                    <p-dataView #dv [value]="appeals" [paginator]="true" [rows]="9" filterBy="title" layout="grid">
+
+                    <!-- <p-dataView #dv [value]="appeals" [paginator]="true" [rows]="9" filterBy="title">
                         <ng-template let-entities pTemplate="listItem">
                             <div class="col-12" *ngFor="let appeal of appeals">
                                 <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
@@ -229,7 +230,62 @@ Name of the account holder : MADEENA mASJID
                                 </div>
                             </div>
                         </ng-template>
-                    </p-dataView>
+                    </p-dataView> -->
+                    <h5>TOP-TWO-APPEALS</h5>
+                    <div class="card">
+                        <p-dataView #dv [value]="appeals">
+                            <ng-template pTemplate="list" let-appeals>
+                                <div class="grid grid-nogutter">
+                                    <div class="col-12" *ngFor="let item of appeals; let first = first" class="col-12">
+                                        <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3"
+                                            [ngClass]="{ 'border-top-1 surface-border': !first }">
+                                            <div class="md:w-10rem relative">
+                                                <img class="block xl:block mx-auto border-round w-full"
+                                                    [src]="item.image" />
+                                            </div>
+                                            <div
+                                                class="flex flex-column md:flex-row justify-content-between md:align-items-center flex-1 gap-4">
+                                                <div
+                                                    class="flex flex-row md:flex-column justify-content-between align-items-start gap-2">
+                                                    <div>
+                                                        <span class="font-medium text-secondary text-sm">{{
+                                                            item.status }}</span>
+                                                        <div class="text-lg font-medium text-900 mt-2">{{ item.title }}
+                                                        </div>
+                                                        <div class="text-lg font-medium text-900 mt-2">
+                                                            {{item.description}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </p-dataView>
+                    </div>
+
+
+                    <div class="card">
+                        <h2 class="text-center">Our “Team”</h2>
+                        <h3 class="text-center">Masjid Committee Members</h3>
+                        <p-table [value]="committeeMembers">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-member>
+                                <tr>
+                                    <td>{{ member.name }}</td>
+                                    <td>{{ member.position }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+
+
 
                     <p-tabView>
                         <p-tabPanel header="About">
