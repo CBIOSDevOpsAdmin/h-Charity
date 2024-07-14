@@ -3,12 +3,10 @@ package com.himanism.hcharityapi.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +47,7 @@ public class FilesController {
     }
   }
 
-  @GetMapping("/files")
+  @GetMapping("/")
   public ResponseEntity<List<FileInfo>> getListFiles() {
     List<FileInfo> fileInfos = storageService.loadAll().map(path -> {
       String filename = path.getFileName().toString();
@@ -62,14 +60,28 @@ public class FilesController {
     return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
   }
 
-  @GetMapping("/files/{filename:.+}")
+  @GetMapping("/{filename:.+}")
   public ResponseEntity<Resource> getFile(@PathVariable String filename) {
     Resource file = storageService.load(filename);
     return ResponseEntity.ok()
         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
   }
 
-  @DeleteMapping("/files/{filename:.+}")
+  @GetMapping("uploads/cover/{entityId}/{filename:.+}")
+  public ResponseEntity<Resource> coverPhoto(@PathVariable String filename, @PathVariable Long entityId) {
+    Resource file = storageService.loadCoverPhoto(filename, entityId);
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+  }
+
+  @GetMapping("uploads/qrcodes/{entityId}/{filename:.+}")
+  public ResponseEntity<Resource> qrCodePhoto(@PathVariable String filename, @PathVariable Long entityId) {
+    Resource file = storageService.loadQrCodePhoto(filename, entityId);
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+  }
+
+  @DeleteMapping("/{filename:.+}")
   public ResponseEntity<MessageResponseDto> deleteFile(@PathVariable String filename) {
     String message = "";
     
@@ -115,6 +127,4 @@ public class FilesController {
       return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new MessageResponseDto(message));
     }
   }
-
-
 }

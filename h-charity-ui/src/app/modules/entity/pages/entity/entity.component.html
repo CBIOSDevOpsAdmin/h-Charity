@@ -40,7 +40,7 @@
               class="flex flex-column md:flex-row align-items-center p-3 w-full"
             >
               <img
-                [src]="'assets/demo/images/product/' + 'bamboo-watch.jpg'"
+                [src]="entity.entityPhotos.coverPhoto"
                 [alt]="entity.name"
                 class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5"
               />
@@ -105,7 +105,7 @@
                   class="flex flex-column align-items-center text-center mb-3"
                 >
                   <img
-                    [src]="'assets/demo/images/product/' + 'bamboo-watch.jpg'"
+                    [src]="entity.entityPhotos.coverPhoto"
                     [alt]="entity.name"
                     class="w-9 shadow-2 my-3 mx-0"
                   />

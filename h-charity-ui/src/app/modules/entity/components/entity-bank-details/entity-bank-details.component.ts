@@ -27,14 +27,14 @@ export class EntityBankDetailsComponent implements OnInit {
 
   private initEditForm(entityBankDetails: any) {
     this.entityBankDetailsForm.patchValue({
-      id: [entityBankDetails.id],
-      bankName: [entityBankDetails.bankName],
-      accountHolderName: [entityBankDetails.accountHolderName],
-      branchName: [entityBankDetails.branchName],
-      accountNo: [entityBankDetails.accountNo],
-      ifscCode: [entityBankDetails.ifscCode],
-      upiId: [entityBankDetails.upiId],
-      upiNumber: [entityBankDetails.upiNumber],
+      id: entityBankDetails.id,
+      bankName: entityBankDetails.bankName,
+      accountHolderName: entityBankDetails.accountHolderName,
+      branchName: entityBankDetails.branchName,
+      accountNo: entityBankDetails.accountNo,
+      ifscCode: entityBankDetails.ifscCode,
+      upiId: entityBankDetails.upiId,
+      upiNumber: entityBankDetails.upiNumber,
     });
   }
 
@@ -65,5 +65,9 @@ export class EntityBankDetailsComponent implements OnInit {
       upiId: [''],
       upiNumber: [''],
     });
+  }
+
+  onReset() {
+    this.entityBankDetailsForm.reset();
   }
 }

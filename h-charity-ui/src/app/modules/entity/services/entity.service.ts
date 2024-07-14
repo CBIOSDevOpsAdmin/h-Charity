@@ -39,14 +39,6 @@ export class EntityService {
     return this.http.get(`${this.rootURL}/bankDetails/${entityId}`);
   }
 
-  // addParty(party: Party): Observable<Party> {
-  //   return this.http.post(`${this.baseUrl}`, party);
-  // }
-
-  // updateParty(party: Party): Observable<Party> {
-  //   return this.http.put(`${this.baseUrl}`, party);
-  // }
-
   // deleteParty(partyId: number): Observable<any> {
   //   return this.http.delete(`${this.baseUrl}/${partyId}`);
   // }

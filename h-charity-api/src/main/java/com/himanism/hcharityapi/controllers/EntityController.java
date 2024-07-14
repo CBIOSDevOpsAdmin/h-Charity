@@ -1,8 +1,10 @@
 package com.himanism.hcharityapi.controllers;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.himanism.hcharityapi.dto.request.EntityBankDetailsReqDto;
 import com.himanism.hcharityapi.dto.request.EntityRequestDto;
+import com.himanism.hcharityapi.dto.response.EntityBankDetailsResDto;
+import com.himanism.hcharityapi.dto.response.EntityResponseDto;
 import com.himanism.hcharityapi.entities.Entities;
 import com.himanism.hcharityapi.entities.EntityBankDetails;
 import com.himanism.hcharityapi.entities.EntityPhotos;
@@ -37,19 +42,20 @@ public class EntityController {
     private final EntityService entityService;
 
     @GetMapping("")
-    public List<Entities> getEntities(Authentication authentication) {
+    public ResponseEntity<?> getEntities(Authentication authentication) {
             // log.info("UsersController: List users");
-            List<Entities> entities = entityService.getEntities(authentication);
-        return entities;
+            List<EntityResponseDto> entities = entityService.getEntities(authentication);
+        return ResponseEntity.ok().body(entities);
     }
 
     @GetMapping("/{entityId}")
-    public Optional<Entities> getEntityById(@PathVariable Long entityId) {
+    public EntityResponseDto getEntityById(@PathVariable Long entityId) {
         // if (user.getEmail() == null || user.getEmail().isEmpty() ||
         // user.getPassword() == null || user.getPassword().isEmpty()) {
         // throw new AppException("All fields are required.", HttpStatus.BAD_REQUEST);
         // }
-        return entityService.getEntityById(entityId);
+        EntityResponseDto entityResponseDto = entityService.getEntityById(entityId);
+        return entityResponseDto;
     }
 
     @PostMapping("")
@@ -70,11 +76,12 @@ public class EntityController {
     }
 
     @PutMapping("")
-    public Entities updateEntity(@Valid @RequestBody EntityRequestDto entityDto) {
-        // if (user.getEmail() == null || user.getEmail().isEmpty() ||
-        // user.getPassword() == null || user.getPassword().isEmpty()) {
-        // throw new AppException("All fields are required.", HttpStatus.BAD_REQUEST);
-        // }
+    public Entities updateEntity(Authentication authentication, @Valid @RequestBody EntityRequestDto entityDto) {
+        Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String username = ((UserDetailsImpl) principle).getUsername();
+        entityDto.setUpdatedBy(username);
+        entityDto.setUpdatedDate(new Date());
 
         return entityService.updateEntity(entityDto);
     }
@@ -87,6 +94,24 @@ public class EntityController {
         // }
 
         entityService.deleteEntity(entityId);
+    }
+
+    @PostMapping("/bankDetails")
+    public EntityBankDetailsResDto addEntityBankDetails(Authentication authentication, @Valid @RequestBody EntityBankDetailsReqDto bankDetailsReqDto) {
+        Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+   
+        String username = ((UserDetailsImpl) principle).getUsername();
+
+        return entityService.addEntityBankDetails(bankDetailsReqDto, username);
+    }
+
+    @PutMapping("/bankDetails")
+    public EntityBankDetailsResDto updateEntityBankDetails(Authentication authentication, @Valid @RequestBody EntityBankDetailsReqDto bankDetailsReqDto) {
+        Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+   
+        String username = ((UserDetailsImpl) principle).getUsername();
+
+        return entityService.updateEntityBankDetails(bankDetailsReqDto, username);
     }
 
     @GetMapping("/bankDetails/{entityId}")
@@ -102,8 +127,8 @@ public class EntityController {
     }
 
     @GetMapping("/photos/{entityId}")
-    public Optional<EntityPhotos> getPhotosByEntityId(@PathVariable Long entityId) {
-        Optional<EntityPhotos> obj = entityService.getPhotosByEntityId(entityId);
+    public Optional<List<EntityPhotos>> getPhotosByEntityId(@PathVariable Long entityId) {
+        Optional<List<EntityPhotos>> obj = entityService.getPhotosByEntityId(entityId);
         return obj;
     }
 

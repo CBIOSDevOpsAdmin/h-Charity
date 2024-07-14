@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: cbios-api
+    name: h-charity-api
   datasource:
     url: jdbc:mariadb://localhost:3306/hcharity
     username: root

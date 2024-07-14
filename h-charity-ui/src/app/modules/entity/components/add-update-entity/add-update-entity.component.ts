@@ -114,7 +114,7 @@ export class AddUpdateEntityComponent implements OnInit {
             this.messageService.add({
               severity: 'success',
               summary: 'Save',
-              detail: 'QR code updated successfully',
+              detail: 'Cover photo updated successfully',
             });
           }
         },
@@ -232,24 +232,21 @@ export class AddUpdateEntityComponent implements OnInit {
         this.entity = entity;
 
         this.entityForm.patchValue({
-          id: [entity.id],
-          name: [entity.name],
+          id: entity.id,
+          name: entity.name,
           type: { ...convertStringToDDObject(entity.type) },
-          president: [entity.president],
-          poc: [entity.poc],
+          president: entity.president,
+          poc: entity.poc,
           description: entity.description,
           isVerified: entity.isVerified,
           hasInternet: entity.hasInternet,
-          mobile: [entity.mobile],
-          office: [entity.office],
+          mobile: entity.mobile,
+          office: entity.office,
           address: {
-            address1: [entity.address.address1],
-            address2: [entity.address.address2],
-            landmark: [entity.address.landmark],
-            pincode: [entity.address.pincode],
-            // city: { ...convertStringToDDObject(entity.address.city) },
-            // state: { ...convertStringToDDObject(entity.address.state) },
-            // country: { ...convertStringToDDObject(entity.address.country) },
+            address1: entity.address.address1,
+            address2: entity.address.address2,
+            landmark: entity.address.landmark,
+            pincode: entity.address.pincode,
           },
         });
         this.updateLocationFields();
