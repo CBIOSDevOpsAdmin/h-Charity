@@ -63,6 +63,12 @@
                   (click)="goToEntity(entity.id)"
                 ></p-button>
                 <p-button
+                  icon="pi pi-eye"
+                  label="Go To Entity"
+                  styleClass="mb-2 p-button-sm"
+                  (click)="goToEntity(entity.id)"
+                ></p-button>
+                <p-button
                   icon="pi pi-arrow-right"
                   label="Go To Entity"
                   styleClass="mb-2 p-button-sm"
@@ -105,6 +111,8 @@
                   class="flex flex-column align-items-center text-center mb-3"
                 >
                   <img
+                    width="300"
+                    height="200"
                     [src]="entity.entityPhotos.coverPhoto"
                     [alt]="entity.name"
                     class="w-9 shadow-2 my-3 mx-0"
@@ -116,6 +124,10 @@
                   <p-button
                     icon="pi pi-trash"
                     (click)="goToEntity(entity.id)"
+                  ></p-button>
+                  <p-button
+                    icon="pi pi-eye"
+                    (click)="viewEntity(entity.id)"
                   ></p-button>
                   <p-button
                     icon="pi pi-arrow-right"

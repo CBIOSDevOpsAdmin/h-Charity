@@ -11,7 +11,7 @@ public interface FilesStorageService {
 
   public void save(MultipartFile file, Long entityId);
 
-  public Resource load(String filename);
+  public Resource load(String filename, Long entityId);
   public Resource loadCoverPhoto(String filename, Long entityId);
   public Resource loadQrCodePhoto(String filename, Long entityId);
   

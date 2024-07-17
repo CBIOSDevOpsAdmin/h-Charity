@@ -32,4 +32,5 @@ public class EntityResponseDto {
     private Date deletedDate; 
     private Address address;
     private EntityPhotosDto entityPhotos;
+    private EntityBankDetailsResDto entityBankDetails;
 }

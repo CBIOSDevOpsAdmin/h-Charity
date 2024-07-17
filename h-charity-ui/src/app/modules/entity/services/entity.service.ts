@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IEntity } from '../models/entity.model';
+import { IEntity, IEntityBankDetails } from '../models/entity.model';
 import { Observable } from 'rxjs';
-import { IEntityBankDetails } from '../models/entity-bank-details.model';
 
 @Injectable({
   providedIn: 'root',

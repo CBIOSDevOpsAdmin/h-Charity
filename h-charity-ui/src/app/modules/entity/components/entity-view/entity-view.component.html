@@ -1,0 +1,151 @@
+<p-card>
+  <div class="grid">
+    <div class="col-12 md:col-6 lg:col-12">
+      <div class="text-center p-3 border-round-sm font-bold">
+        <h1>{{ entity && entity.name }}</h1>
+        <h4>{{ address }}</h4>
+      </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-12">
+      <h1>About {{ entity && entity.name }}</h1>
+      <div [innerHTML]="entity && entity.description | safeHtml"></div>
+    </div>
+    <p-divider />
+    <div class="col-12 md:col-6 lg:col-12">
+      <h1>Donations</h1>
+      <h4>WHO IS INCHARGE OF THE FUNDS?</h4>
+      <p>
+        The Masjid committee that comprises of well qualified and dedicated
+        people working selflessly for the development of the Masjid, having pure
+        intentions for the Masjid. The committee will take care of money
+        collected for Masjid.
+      </p>
+      <p-divider />
+      <h4>HOW TO MAKE THE PAYMENTS?</h4>
+      <p>
+        You can make payments with different and most convenient way that you
+        may choose viz.
+      </p>
+      <p>
+        1. Direct transfer of funds to the Masjid’s Account by RTGS/NEFT or
+        digital payment
+      </p>
+      <p>
+        2. Send cheques/ DD/ Pay order in favor of {{ entity && entity.name }}
+      </p>
+      <p>3. Google pay/ Phone pay/ Paytm Scanner</p>
+      <p>4. Personally handover cash to the Treasurer and obtain receipt.</p>
+      <p-divider />
+      <h4>PAYMENTS DETAILS</h4>
+    </div>
+
+    <div class="col-12 md:col-6 lg:col-6">
+      <p-card header="Bank Account Details">
+        <ul>
+          <li>
+            <strong>Account Holder Name: </strong>
+            <span>{{ bankDetails && bankDetails.accountHolderName }}</span>
+          </li>
+          <li>
+            <strong>Bank Name: </strong>
+            <span>{{ bankDetails && bankDetails.bankName }}</span>
+          </li>
+          <li>
+            <strong>Branch Name: </strong>
+            <span>{{ bankDetails && bankDetails.branchName }}</span>
+          </li>
+          <li>
+            <strong>Account No.: </strong>
+            <span>{{ bankDetails && bankDetails.accountNo }}</span>
+          </li>
+          <li>
+            <strong>IFSC Code: </strong>
+            <span>{{ bankDetails && bankDetails.ifscCode }}</span>
+          </li>
+          <li>
+            <strong>UPI ID: </strong>
+            <span>{{ bankDetails && bankDetails.upiId }}</span>
+          </li>
+          <li>
+            <strong>UPI Number: </strong>
+            <span>{{ bankDetails && bankDetails.upiNumber }}</span>
+          </li>
+        </ul>
+      </p-card>
+    </div>
+    <div class="col-12 md:col-6 lg:col-6">
+      <img
+        src="{{ entity && entity.entityPhotos.qrCode }}"
+        alt="qrcode"
+        height="273px"
+      />
+    </div>
+
+    <div class="col-12 md:col-12 lg:col-12">
+      <p-card header="Contact Us" [style]="{ width: '360px' }">
+        <div class="grid">
+          <div class="col-12 md:col-6 lg:col-6">
+            <strong> President</strong>
+          </div>
+          <div class="col-12 md:col-6 lg:col-6">
+            {{ entity && entity.president }}
+          </div>
+          <div class="col-12 md:col-6 lg:col-6">
+            <strong> Point Of Contact</strong>
+          </div>
+          <div class="col-12 md:col-6 lg:col-6">{{ entity && entity.poc }}</div>
+          <div class="col-12 md:col-6 lg:col-6"><strong> Mobile</strong></div>
+          <div class="col-12 md:col-6 lg:col-6">
+            {{ entity && entity.mobile }}
+          </div>
+          <div class="col-12 md:col-6 lg:col-6"><strong> Office</strong></div>
+          <div class="col-12 md:col-6 lg:col-6">
+            {{ entity && entity.office }}
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col-12 md:col-12 lg:col-12">
+      <p-galleria
+        #galleria
+        [(value)]="images"
+        [(activeIndex)]="activeIndex"
+        [numVisible]="5"
+        [showItemNavigators]="true"
+        [showItemNavigatorsOnHover]="true"
+        [circular]="true"
+        [autoPlay]="true"
+        [transitionInterval]="3000"
+        [containerStyle]="{ 'max-width': '640px' }"
+        [containerClass]="galleriaClass()"
+      >
+        <ng-template pTemplate="item" let-item>
+          <img
+            [src]="item"
+            [ngStyle]="{
+              width: !fullscreen ? '100%' : '',
+              display: !fullscreen ? 'block' : '',
+            }"
+            alt=""
+          />
+        </ng-template>
+
+        <ng-template pTemplate="footer" let-item>
+          <div class="custom-galleria-footer">
+            <span *ngIf="images" class="title-container">
+              <span>{{ activeIndex + 1 }}/{{ images.length }}</span>
+            </span>
+            <button
+              type="button"
+              pButton
+              [icon]="fullScreenIcon()"
+              (click)="toggleFullScreen()"
+              class="fullscreen-button"
+            ></button>
+          </div>
+        </ng-template>
+      </p-galleria>
+    </div>
+  </div>
+</p-card>

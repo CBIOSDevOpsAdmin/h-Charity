@@ -17,6 +17,7 @@ import com.himanism.hcharityapi.dto.response.EntityResponseDto;
 import com.himanism.hcharityapi.entities.Entities;
 import com.himanism.hcharityapi.entities.EntityBankDetails;
 import com.himanism.hcharityapi.entities.EntityPhotos;
+import com.himanism.hcharityapi.mappers.EntityBankDetailsMapper;
 import com.himanism.hcharityapi.mappers.EntityMapper;
 import com.himanism.hcharityapi.repo.EntityBankDetailsRepo;
 import com.himanism.hcharityapi.repo.EntityPhotosRepository;
@@ -24,7 +25,6 @@ import com.himanism.hcharityapi.repo.EntityRepository;
 import com.himanism.hcharityapi.services.EntityService;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -98,9 +98,11 @@ public class EntityServiceImpl implements EntityService {
         Entities entity = optEntity.get();
 
         EntityPhotosDto entityPhotosDto = getEntityPhotos(entityId);
+        EntityBankDetailsResDto bankDetailsResDto = this.getEntityBankDetails(entityId);
         
         entityResponseDto = EntityMapper.INSTANCE.entityToEntityResponseDTO(entity);
         entityResponseDto.setEntityPhotos(entityPhotosDto);
+        entityResponseDto.setEntityBankDetails(bankDetailsResDto);
         
         return entityResponseDto;
     }
@@ -126,6 +128,18 @@ public class EntityServiceImpl implements EntityService {
       });
       entityPhotosDto.setPhotos(lstEntityPhotos);
       return entityPhotosDto;
+    }
+
+    private EntityBankDetailsResDto getEntityBankDetails(Long entityId) {
+      EntityBankDetailsResDto entityBankDetailsResDto = new EntityBankDetailsResDto();
+
+      Optional<EntityBankDetails> optEntityBankDetails = bankDetailsRepo.findByEntityId(entityId);
+      
+      if(optEntityBankDetails.isPresent()) {
+        EntityBankDetails entityBankDetails = optEntityBankDetails.get();
+        entityBankDetailsResDto = EntityBankDetailsMapper.INSTANCE.entityBankDetailsToEntityBankDetailsResDTO(entityBankDetails);
+      }
+      return entityBankDetailsResDto;
     }
 
     @Override

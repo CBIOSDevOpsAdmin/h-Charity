@@ -28,9 +28,9 @@ export class AppMenuComponent implements OnInit {
             routerLink: ['/entities/'],
           },
           {
-            label: 'Add/Update Entity',
+            label: 'Add Entity',
             icon: 'pi pi-fw pi-home',
-            routerLink: ['/entities/add-update'],
+            routerLink: ['/entities/add'],
           },
         ],
       },

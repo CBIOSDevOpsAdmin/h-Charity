@@ -8,9 +8,10 @@ export interface IEntity {
   isVerified?: boolean;
   hasInternet?: boolean;
   address?: IAddress;
-  photos?: string[];
+  entityPhotos?: IPhotos;
   mobile?: string;
   office?: string;
+  entityBankDetails?: IEntityBankDetails;
 }
 
 export interface IAddress {
@@ -22,4 +23,22 @@ export interface IAddress {
   city?: string;
   state?: string;
   country?: string;
+}
+
+export interface IPhotos {
+  coverPhoto?: string;
+  qrCode?: string;
+  photos?: string[];
+}
+
+export interface IEntityBankDetails {
+  id?: number;
+  accountHolderName?: string;
+  accountNo?: string;
+  bankName?: string;
+  branchName?: string;
+  entityId?: number;
+  ifscCode?: string;
+  upiId?: string;
+  upiNumber?: string;
 }

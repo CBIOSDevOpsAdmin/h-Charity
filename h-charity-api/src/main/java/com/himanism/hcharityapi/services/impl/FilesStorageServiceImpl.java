@@ -25,6 +25,8 @@ import com.himanism.hcharityapi.repo.EntityPhotosRepository;
 import com.himanism.hcharityapi.repo.EntityRepository;
 import com.himanism.hcharityapi.services.FilesStorageService;
 
+import net.coobird.thumbnailator.Thumbnails;
+
 @Service
 @Transactional
 public class FilesStorageServiceImpl implements FilesStorageService {
@@ -65,9 +67,9 @@ public class FilesStorageServiceImpl implements FilesStorageService {
   }
 
   @Override
-  public Resource load(String filename) {
+  public Resource load(String filename, Long entityId) {
     try {
-      Path imagePath = Paths.get("uploads/" + 5);
+      Path imagePath = Paths.get("uploads/" + entityId.toString());
       Path file = imagePath.resolve(filename);
       Resource resource = new UrlResource(file.toUri());
 
@@ -191,12 +193,13 @@ public class FilesStorageServiceImpl implements FilesStorageService {
         this.cleanDirectory("uploads/cover/" + entityId, entityId);
         entityPhotosRepository.deleteByEntityIdAndIsCoverPhoto(entityId, true);
       }
-      Files.copy(file.getInputStream(), coverPath.resolve(file.getOriginalFilename()));
+      // Compress cover photo in 300x200 size,
+      this.compressAndChangeResolutionForCoverPhotoAndQrCode(file, coverPath);
 
       this.loadAllByPath(coverPath).forEach(path -> {
-        String filename = coverPath.toString() + "/" + path.getFileName().toString();
+        String filename = path.getFileName().toString();
         String url = MvcUriComponentsBuilder
-            .fromMethodName(FilesController.class, "getFile", filename).build().toString();
+            .fromMethodName(FilesController.class, "coverPhoto", filename, entityId).build().toString();
   
         if(path.getFileName().toString().equalsIgnoreCase(file.getOriginalFilename())) {
           saveEntityPhotos(url, entityId, false, true);
@@ -249,4 +252,12 @@ public class FilesStorageServiceImpl implements FilesStorageService {
       throw new RuntimeException("Could not load the files!");
     }
   }
+
+    private void compressAndChangeResolutionForCoverPhotoAndQrCode(MultipartFile file, Path outputPath) throws IOException {
+        // Use Thumbnailator to compress and change resolution
+        Thumbnails.of(file.getInputStream())
+                .size(300, 200)  // Change resolution to 800x600
+                // .outputQuality(0.75)  // Compress the image to 75% quality
+                .toFile(outputPath.resolve(file.getOriginalFilename()).toFile());
+    }
 }

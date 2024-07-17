@@ -53,11 +53,10 @@ export class EntityComponent implements OnInit {
   }
 
   goToEntity(id: number) {
-    this.router.navigate(['entities/add-update', id]);
-    // this.entityService.getEntityById(id).subscribe({
-    //   next: (data: IEntity) => {
-    //     console.log(data);
-    //   },
-    // });
+    this.router.navigate(['entities/edit', id]);
+  }
+
+  viewEntity(id: number) {
+    this.router.navigate(['entities/view', id]);
   }
 }

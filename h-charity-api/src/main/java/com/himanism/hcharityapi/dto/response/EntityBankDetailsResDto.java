@@ -1,7 +1,5 @@
 package com.himanism.hcharityapi.dto.response;
 
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,10 +19,4 @@ public class EntityBankDetailsResDto {
     private String ifscCode;
     private String upiId;
     private String upiNumber;
-    private String createdBy;
-    private Date createdDate;
-    private String updatedBy;
-    private Date updatedDate;
-    private String deletedBy;
-    private Date deletedDate;
 }

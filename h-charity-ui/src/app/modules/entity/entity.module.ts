@@ -23,11 +23,18 @@ import { StripHtmlPipe } from '../shared/pipes/strip-html.pipe';
 import { ToastModule } from 'primeng/toast';
 import { TabViewModule } from 'primeng/tabview';
 import { SplitterModule } from 'primeng/splitter';
+import { CarouselModule } from 'primeng/carousel';
+import { CardModule } from 'primeng/card';
+import { DividerModule } from 'primeng/divider';
+import { TableModule } from 'primeng/table';
 import { EntityPhotosAddComponent } from './components/entity-photos-add/entity-photos-add.component';
 import { EntityPaymentAddComponent } from './components/entity-payment-add/entity-payment-add.component';
 import { EntityPaymentViewComponent } from './components/entity-payment-view/entity-payment-view.component';
 import { EntityAppealsComponent } from './components/entity-appeals/entity-appeals.component';
 import { EntityBankDetailsComponent } from './components/entity-bank-details/entity-bank-details.component';
+import { EntityViewComponent } from './components/entity-view/entity-view.component';
+import { SafeHtmlPipe } from '../shared/pipes/safe-html.pipe';
+import { GalleriaModule } from 'primeng/galleria';
 
 @NgModule({
   imports: [
@@ -52,16 +59,23 @@ import { EntityBankDetailsComponent } from './components/entity-bank-details/ent
     ToastModule,
     TabViewModule,
     SplitterModule,
+    CarouselModule,
+    CardModule,
+    TableModule,
+    DividerModule,
+    GalleriaModule,
   ],
   declarations: [
     EntityComponent,
     AddUpdateEntityComponent,
     StripHtmlPipe,
+    SafeHtmlPipe,
     EntityPhotosAddComponent,
     EntityPaymentAddComponent,
     EntityPaymentViewComponent,
     EntityAppealsComponent,
     EntityBankDetailsComponent,
+    EntityViewComponent,
   ],
   providers: [EntityService],
 })
