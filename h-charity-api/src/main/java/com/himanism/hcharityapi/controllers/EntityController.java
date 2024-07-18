@@ -43,8 +43,8 @@ public class EntityController {
 
     @GetMapping("")
     public ResponseEntity<?> getEntities(Authentication authentication) {
-            // log.info("UsersController: List users");
-            List<EntityResponseDto> entities = entityService.getEntities(authentication);
+        log.info("UsersController: List users");
+        List<EntityResponseDto> entities = entityService.getEntities(authentication);
         return ResponseEntity.ok().body(entities);
     }
 

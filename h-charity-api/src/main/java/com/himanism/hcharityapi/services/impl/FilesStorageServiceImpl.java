@@ -7,6 +7,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -55,7 +56,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
       if(!Files.exists(imagePath)) {
         Files.createDirectories(imagePath);
       } else {
-        Files.copy(file.getInputStream(), imagePath.resolve(file.getOriginalFilename()));
+        Files.copy(file.getInputStream(), imagePath.resolve(file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
         this.updatePhotosTableWithUrl(file, entityId);
       }
     } catch (Exception e) {
@@ -182,9 +183,9 @@ public class FilesStorageServiceImpl implements FilesStorageService {
       Files.copy(file.getInputStream(), qrcodePath.resolve(file.getOriginalFilename()));
 
       this.loadAllByPath(qrcodePath).forEach(path -> {
-        String filename = qrcodePath.toString() + "/" + path.getFileName().toString();
+        String filename = path.getFileName().toString();
         String url = MvcUriComponentsBuilder
-            .fromMethodName(FilesController.class, "getFile", filename).build().toString();
+            .fromMethodName(FilesController.class, "qrCodePhoto", filename, entityId).build().toString();
   
         if(path.getFileName().toString().equalsIgnoreCase(file.getOriginalFilename())) {
           saveEntityPhotos(url, entityId, true, false);
@@ -243,9 +244,9 @@ public class FilesStorageServiceImpl implements FilesStorageService {
 
   private void updatePhotosTableWithUrl(MultipartFile file, Long entityId) {
     this.loadAll(entityId).forEach(path -> {
-      String filename = "uploads/" + entityId.toString() + "/" + path.getFileName().toString();
+      String filename = path.getFileName().toString();
       String url = MvcUriComponentsBuilder
-          .fromMethodName(FilesController.class, "getFile", filename).build().toString();
+          .fromMethodName(FilesController.class, "entityPhotos", entityId, filename).build().toString();
 
       if(path.getFileName().toString().equalsIgnoreCase(file.getOriginalFilename())) {
         saveEntityPhotos(url, entityId, false, false);
@@ -271,10 +272,17 @@ public class FilesStorageServiceImpl implements FilesStorageService {
   }
 
     private void compressAndChangeResolutionForCoverPhotoAndQrCode(MultipartFile file, Path outputPath) throws IOException {
+      try {
         // Use Thumbnailator to compress and change resolution
         Thumbnails.of(file.getInputStream())
-                .size(300, 200)  // Change resolution to 800x600
-                // .outputQuality(0.75)  // Compress the image to 75% quality
-                .toFile(outputPath.resolve(file.getOriginalFilename()).toFile());
+        .size(300, 200)  // Change resolution to 800x600
+        .outputFormat("jpg")  // Change format to JPEG
+        // .outputQuality(0.75)  // Compress the image to 75% quality
+        .toFile(outputPath.resolve(file.getOriginalFilename()).toFile());
+      } catch(Exception ex) {
+        throw ex;
+      }
+      
+      
     }
 }

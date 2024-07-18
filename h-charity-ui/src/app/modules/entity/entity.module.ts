@@ -35,6 +35,8 @@ import { EntityBankDetailsComponent } from './components/entity-bank-details/ent
 import { EntityViewComponent } from './components/entity-view/entity-view.component';
 import { SafeHtmlPipe } from '../shared/pipes/safe-html.pipe';
 import { GalleriaModule } from 'primeng/galleria';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 
 @NgModule({
   imports: [
@@ -64,6 +66,8 @@ import { GalleriaModule } from 'primeng/galleria';
     TableModule,
     DividerModule,
     GalleriaModule,
+    MessageModule,
+    MessagesModule,
   ],
   declarations: [
     EntityComponent,
