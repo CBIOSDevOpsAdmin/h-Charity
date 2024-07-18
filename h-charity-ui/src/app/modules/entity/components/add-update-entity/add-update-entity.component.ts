@@ -289,7 +289,5 @@ export class AddUpdateEntityComponent implements OnInit {
       },
     });
   }
-
   //#endregion
 }
-// Reference: https://api.countrystatecity.in/play

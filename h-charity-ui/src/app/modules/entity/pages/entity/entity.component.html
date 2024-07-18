@@ -17,9 +17,9 @@
             class="flex flex-column md:flex-row md:justify-content-between gap-2"
           >
             <p-dropdown
-              [options]="sortOptions"
+              [options]="viewOptions"
               placeholder="Sort By Price"
-              (onChange)="onSortChange($event)"
+              (onChange)="onViewChange($event)"
             ></p-dropdown>
             <span class="p-input-icon-left">
               <i class="pi pi-search"></i>

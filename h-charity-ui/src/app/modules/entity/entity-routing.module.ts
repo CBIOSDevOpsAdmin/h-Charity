@@ -7,24 +7,6 @@ import { EntityViewComponent } from './components/entity-view/entity-view.compon
 @NgModule({
   imports: [
     RouterModule.forChild([
-      // {
-      //   path: 'list',
-      //   data: { breadcrumb: 'List' },
-      //   loadChildren: () =>
-      //     import('./list/listdemo.module').then(m => m.ListDemoModule),
-      // },
-      // {
-      //   path: 'media',
-      //   data: { breadcrumb: 'Media' },
-      //   loadChildren: () =>
-      //     import('./media/mediademo.module').then(m => m.MediaDemoModule),
-      // },
-      // {
-      //   path: 'table',
-      //   data: { breadcrumb: 'Table' },
-      //   loadChildren: () =>
-      //     import('./table/tabledemo.module').then(m => m.TableDemoModule),
-      // },
       { path: '', component: EntityComponent },
       { path: 'add', component: AddUpdateEntityComponent },
       { path: 'edit/:id', component: AddUpdateEntityComponent },

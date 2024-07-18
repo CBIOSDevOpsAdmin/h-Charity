@@ -81,6 +81,13 @@ public class FilesController {
         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
   }
 
+  @GetMapping("uploads/static/{filename:.+}")
+  public ResponseEntity<Resource> defaultImage(@PathVariable String filename) {
+    Resource file = storageService.loadDefaultImage(filename);
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+  }
+
   @DeleteMapping("/{filename:.+}")
   public ResponseEntity<MessageResponseDto> deleteFile(@PathVariable String filename) {
     String message = "";

@@ -118,6 +118,23 @@ public class FilesStorageServiceImpl implements FilesStorageService {
   }
 
   @Override
+  public Resource loadDefaultImage(String filename) {
+    try {
+      Path imagePath = Paths.get("uploads/static");
+      Path file = imagePath.resolve(filename);
+      Resource resource = new UrlResource(file.toUri());
+
+      if (resource.exists() || resource.isReadable()) {
+        return resource;
+      } else {
+        throw new RuntimeException("Could not read the file!");
+      }
+    } catch (MalformedURLException e) {
+      throw new RuntimeException("Error: " + e.getMessage());
+    }
+  }
+
+  @Override
   public boolean delete(String filename) {
     try {
       Path file = root.resolve(filename);

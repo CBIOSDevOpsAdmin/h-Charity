@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,9 @@ public class EntityServiceImpl implements EntityService {
     private final EntityBankDetailsRepo bankDetailsRepo;
     private final EntityPhotosRepository photosRepository;
 
+    @Value("${images.default-image}")
+    private String defImgUrl;
+
     @Override
     public List<EntityResponseDto> getEntities(Authentication authentication) {
         List<Entities> entities = entityRepository.findAll();
@@ -62,7 +66,10 @@ public class EntityServiceImpl implements EntityService {
         entity.setCreatedBy(entityRequestDto.getCreatedBy());
         entity.setCreatedDate(new Date());
         entity.setAddress(entityRequestDto.getAddress());
-        return entityRepository.save(entity);
+        entityRepository.save(entity);
+
+        this.saveEntityPhotos(defImgUrl, entity.getId(), false, true);
+        return entity;
     }
 
     @Override
@@ -206,4 +213,13 @@ public class EntityServiceImpl implements EntityService {
        throw e;
       }
     }
-}
+
+    private void saveEntityPhotos(String url, Long entityId, Boolean isQRCode, Boolean isCoverPhoto) {
+      EntityPhotos entityPhotos = new EntityPhotos();
+      entityPhotos.setIsQRCode(isQRCode);
+      entityPhotos.setPhotoUrl(url);
+      entityPhotos.setEntityId(entityId);
+      entityPhotos.setIsCoverPhoto(isCoverPhoto);
+      photosRepository.save(entityPhotos);
+    }
+  }

@@ -14,6 +14,7 @@ public interface FilesStorageService {
   public Resource load(String filename, Long entityId);
   public Resource loadCoverPhoto(String filename, Long entityId);
   public Resource loadQrCodePhoto(String filename, Long entityId);
+  public Resource loadDefaultImage(String filename);
   
   public boolean delete(String filename);
 
