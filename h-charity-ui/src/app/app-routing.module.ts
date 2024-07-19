@@ -1,7 +1,7 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from './layout/app.layout.component';
+import { NotfoundComponent } from './modules/shared/components/notfound/notfound.component';
 
 @NgModule({
   imports: [
@@ -31,13 +31,6 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                 import('./modules/auth/auth.module').then(m => m.AuthModule),
             },
             {
-              path: 'uikit',
-              loadChildren: () =>
-                import('./demo/components/uikit/uikit.module').then(
-                  m => m.UIkitModule
-                ),
-            },
-            {
               path: 'pages',
               loadChildren: () =>
                 import('./demo/components/pages/pages.module').then(
@@ -52,13 +45,6 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                 ),
             },
           ],
-        },
-        {
-          path: 'auth',
-          loadChildren: () =>
-            import('./demo/components/auth/auth.module').then(
-              m => m.AuthModule
-            ),
         },
         { path: 'notfound', component: NotfoundComponent },
         { path: '**', redirectTo: '/notfound' },

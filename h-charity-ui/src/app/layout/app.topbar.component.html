@@ -46,6 +46,7 @@
     <p-menu #profileMenu [model]="profileMenuItems" [popup]="true" />
 
     <button
+      *ngIf="storageService.loggedIn()"
       class="p-link layout-topbar-button"
       (click)="profileMenu.toggle($event)"
     >

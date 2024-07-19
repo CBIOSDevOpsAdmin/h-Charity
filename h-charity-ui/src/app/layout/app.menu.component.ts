@@ -35,65 +35,13 @@ export class AppMenuComponent implements OnInit {
         ],
       },
       {
-        label: 'UI Components',
-        items: [
-          {
-            label: 'Table',
-            icon: 'pi pi-fw pi-table',
-            routerLink: ['/uikit/table'],
-          },
-          {
-            label: 'List',
-            icon: 'pi pi-fw pi-list',
-            routerLink: ['/uikit/list'],
-          },
-
-          {
-            label: 'Media',
-            icon: 'pi pi-fw pi-image',
-            routerLink: ['/uikit/media'],
-          },
-        ],
-      },
-      {
         label: 'Pages',
         icon: 'pi pi-fw pi-briefcase',
         items: [
           {
-            label: 'Auth',
-            icon: 'pi pi-fw pi-user',
-            items: [
-              {
-                label: 'Login',
-                icon: 'pi pi-fw pi-sign-in',
-                routerLink: ['/auth/login'],
-              },
-              {
-                label: 'Error',
-                icon: 'pi pi-fw pi-times-circle',
-                routerLink: ['/auth/error'],
-              },
-              {
-                label: 'Access Denied',
-                icon: 'pi pi-fw pi-lock',
-                routerLink: ['/auth/access'],
-              },
-            ],
-          },
-          {
             label: 'Crud',
             icon: 'pi pi-fw pi-pencil',
             routerLink: ['/pages/crud'],
-          },
-          {
-            label: 'Not Found',
-            icon: 'pi pi-fw pi-exclamation-circle',
-            routerLink: ['/notfound'],
-          },
-          {
-            label: 'Empty',
-            icon: 'pi pi-fw pi-circle-off',
-            routerLink: ['/pages/empty'],
           },
         ],
       },

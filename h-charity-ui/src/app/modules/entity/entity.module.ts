@@ -37,6 +37,7 @@ import { SafeHtmlPipe } from '../shared/pipes/safe-html.pipe';
 import { GalleriaModule } from 'primeng/galleria';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { ScrollTopModule } from 'primeng/scrolltop';
 
 @NgModule({
   imports: [
@@ -68,6 +69,7 @@ import { MessageModule } from 'primeng/message';
     GalleriaModule,
     MessageModule,
     MessagesModule,
+    ScrollTopModule,
   ],
   declarations: [
     EntityComponent,
