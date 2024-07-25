@@ -10,22 +10,18 @@ import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.himanism.hcharityapi.dto.request.LoginRequestDto;
 import com.himanism.hcharityapi.dto.request.SignupRequestDto;
-import com.himanism.hcharityapi.dto.response.JwtResponseDto;
 import com.himanism.hcharityapi.dto.response.MessageResponseDto;
 import com.himanism.hcharityapi.dto.response.UserInfoResponse;
 import com.himanism.hcharityapi.entities.RefreshToken;
 import com.himanism.hcharityapi.entities.Role;
 import com.himanism.hcharityapi.entities.User;
-import com.himanism.hcharityapi.exception.AppException;
 import com.himanism.hcharityapi.exception.TokenRefreshException;
 import com.himanism.hcharityapi.models.Erole;
 import com.himanism.hcharityapi.repo.RoleRepository;
@@ -35,7 +31,6 @@ import com.himanism.hcharityapi.security.services.RefreshTokenService;
 import com.himanism.hcharityapi.security.services.UserDetailsImpl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;

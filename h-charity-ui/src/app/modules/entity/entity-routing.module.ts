@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { EntityComponent } from './pages/entity/entity.component';
-import { AddUpdateEntityComponent } from './components/add-update-entity/add-update-entity.component';
-import { EntityViewComponent } from './components/entity-view/entity-view.component';
+import { AddUpdateEntityComponent } from './pages/add-update-entity/add-update-entity.component';
+import { EntityViewComponent } from './pages/entity-view/entity-view.component';
 
 @NgModule({
   imports: [

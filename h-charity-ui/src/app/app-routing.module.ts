@@ -19,10 +19,17 @@ import { NotfoundComponent } from './modules/shared/components/notfound/notfound
                 ),
             },
             {
-              path: 'entities',
+              path: 'institutions',
               loadChildren: () =>
                 import('./modules/entity/entity.module').then(
                   m => m.EntityModule
+                ),
+            },
+            {
+              path: 'appeals',
+              loadChildren: () =>
+                import('./modules/appeals/appeals.module').then(
+                  m => m.AppealsModule
                 ),
             },
             {

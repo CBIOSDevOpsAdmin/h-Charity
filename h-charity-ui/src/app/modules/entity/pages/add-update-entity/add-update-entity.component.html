@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="card">
       <h5>
-        <strong> {{ mode }} Entity</strong>
+        <strong> {{ mode }} Institution</strong>
       </h5>
       <form [formGroup]="entityForm" (ngSubmit)="saveEntity()">
         <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
@@ -10,7 +10,7 @@
             <div class="grid">
               <div class="col-12 md:col-6 lg:col-12">
                 <input
-                  placeholder="Entity Name"
+                  placeholder="Institution Name"
                   type="text"
                   pInputText
                   formControlName="name"

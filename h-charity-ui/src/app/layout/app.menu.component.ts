@@ -20,17 +20,32 @@ export class AppMenuComponent implements OnInit {
         ],
       },
       {
-        label: 'Entities',
+        label: 'Institutions',
         items: [
           {
-            label: 'Entities',
+            label: 'Institutions',
             icon: 'pi pi-fw pi-home',
-            routerLink: ['/entities/'],
+            routerLink: ['/institutions/'],
           },
           {
-            label: 'Add Entity',
+            label: 'Add Institution',
             icon: 'pi pi-fw pi-home',
-            routerLink: ['/entities/add'],
+            routerLink: ['/institutions/add'],
+          },
+        ],
+      },
+      {
+        label: 'Appeals',
+        items: [
+          {
+            label: 'Appeals',
+            icon: 'pi pi-fw pi-home',
+            routerLink: ['/appeals/'],
+          },
+          {
+            label: 'Add Appeal',
+            icon: 'pi pi-fw pi-home',
+            routerLink: ['/appeals/add'],
           },
         ],
       },

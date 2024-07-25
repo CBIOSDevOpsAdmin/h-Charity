@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EntityService } from '../../services/entity.service';
 import { IDropdown } from 'src/app/modules/shared/models/dropdown.model';
@@ -41,17 +41,15 @@ export class AddUpdateEntityComponent implements OnInit {
 
   entity: IEntity;
 
+  entityService = inject(EntityService);
+  worldService = inject(WorldService);
+  formBuilder = inject(FormBuilder);
+  messageService = inject(MessageService);
+  fileService = inject(FileService);
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+
   //#endregion
-  constructor(
-    private entityService: EntityService,
-    private worldService: WorldService,
-    private formBuilder: FormBuilder,
-    private config: PrimeNGConfig,
-    private messageService: MessageService,
-    private fileService: FileService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
 
   ngOnInit() {
     this.initDDFields();
@@ -75,7 +73,7 @@ export class AddUpdateEntityComponent implements OnInit {
             summary: 'Save',
             detail: 'Entity saved successfully',
           });
-          this.router.navigateByUrl('/entities');
+          this.router.navigateByUrl('/institutions');
         },
       });
     }

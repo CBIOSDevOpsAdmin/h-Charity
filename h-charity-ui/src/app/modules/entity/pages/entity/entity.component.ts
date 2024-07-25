@@ -84,10 +84,10 @@ export class EntityComponent implements OnInit {
   }
 
   goToEntity(id: number) {
-    this.router.navigate(['entities/edit', id]);
+    this.router.navigate(['institutions/edit', id]);
   }
 
   viewEntity(id: number) {
-    this.router.navigate(['entities/view', id]);
+    this.router.navigate(['institutions/view', id]);
   }
 }

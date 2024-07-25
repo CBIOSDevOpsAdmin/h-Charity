@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { EntityAppealsComponent } from './entity-appeals.component';
+import { AppealViewComponent } from './appeal-view.component';
 
-describe('EntityAppealsComponent', () => {
-  let component: EntityAppealsComponent;
-  let fixture: ComponentFixture<EntityAppealsComponent>;
+describe('AppealViewComponent', () => {
+  let component: AppealViewComponent;
+  let fixture: ComponentFixture<AppealViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EntityAppealsComponent ]
+      declarations: [ AppealViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EntityAppealsComponent);
+    fixture = TestBed.createComponent(AppealViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
