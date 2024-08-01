@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AppealService } from '../../services/appeal.service';
 import { IAppeal } from '../../models/appeal.model';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { TableDemoModule } from 'src/app/demo/components/uikit/table/tabledemo.module';
+import { TableDemoComponent } from 'src/app/demo/components/uikit/table/tabledemo.component';
 
 @Component({
   selector: 'app-appeal',
@@ -49,37 +54,127 @@ export class AppealComponent implements OnInit {
   //   table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   // }
 
-  appeals: IAppeal[] = [
-    {
-      title: 'Appeal 1',
-      description: 'Namaz Carpet',
-      status: 'Pending',
-      category: '',
+  appealDialog: boolean = false;
 
-    },
-    {
-      title: 'Appeal 2',
-      description: 'Lights',
-      status: 'Approved',
-      category: '',
+  viewDialog: boolean = false;
 
-    },
-    {
-      title: 'Appeal 3',
-      description: 'Loud Speaker',
-      status: 'Rejected',
-      category: '',
-    }
-  ];
+  submitted: boolean = false;
 
-  constructor(private appealsService: AppealService) { }
+  appeals: IAppeal[] = [];
+
+  appeal: IAppeal;
+
+
+  appealsForm: FormGroup;
+
+
+
+  constructor(private appealsService: AppealService, private messageService: MessageService, private confirmationService: ConfirmationService, private fb: FormBuilder) { }
 
   ngOnInit() {
     this.appealsService.getData().subscribe((data: any[]) => {
-      console.log(this.appeals);
+      this.appeals = data;
+      // console.log(this.appeals);
     });
+
+    this.appealsForm = this.fb.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      onBehalfName: [{ value: '', disabled: true }],
+      requirementDate: [''],
+      totalFundsRequired: [null],
+      fundsRecived: [null],
+      fundsNeeded: [null],
+      zakatEligible: [''],
+      interestEligible: [''],
+      isAnonymous: [''],
+      appealer: [''],
+      appealerMobile: [''],
+      verifier: [{ value: '', disabled: true }],
+      verifierMobile: [{ value: '', disabled: true }],
+      verifiedDate: [{ value: '', disabled: true }]
+    });
+
   }
 
+
+  editAppeal(appeal: IAppeal) {
+    this.appealsForm.patchValue({
+      id: [appeal.id],
+      title: [appeal.title],
+      description: appeal.description,
+      onBehalfName: [appeal.onBehalfName],
+      requirementDate: [appeal.requirementDate],
+      fundsRequired: [appeal.totalFundsRequired],
+      fundsRecived: [appeal.fundsReceived],
+      fundsPending: [appeal.fundsNeeded],
+      zakatEligible: appeal.isZakatEligible,
+      interestEligible: appeal.isInterestEligible,
+      isAnonymous: appeal.isAnonymous,
+      appealer: [appeal.appealer],
+      appealerMobile: [appeal.appealerMobile],
+      verifier: [appeal.verifier],
+      verifierMobile: [appeal.verifierMobile],
+      verifiedDate: [appeal.verifiedDate]
+    });
+    this.appealDialog = true;
+  }
+
+
+  viewAppeal(appeal: IAppeal) {
+    this.viewDialog = true;
+    this.appeal = appeal;
+  }
+
+  hideDialog() {
+    this.appealDialog = false;
+    this.viewDialog = false;
+    this.submitted = false;
+  }
+
+
+
+
+
+
+  //   saveAppeal() {
+  //     this.submitted = true;
+
+  //     if (this.appeals.title?.trim()) {
+  //         if (this.appeals.id) {
+  //             this.appeal[this.findIndexById(appeal.id)] = this.appeal;
+  //             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Appeal Updated', life: 3000 });
+  //         } else {
+  //             this.appeals.id = this.createId();
+  //             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Appeal Created', life: 3000 });
+  //         }
+
+  //         this.appeals = [...this.appeals];
+  //         this.appealDialog = false;
+  //         this.appeal = {};
+  //     }
+  // }
+
+  // findIndexById(id: string): number {
+  //   let index = -1;
+  //   for (let i = 0; i < this.appeals.length; i++) {
+  //     if (this.appeal[i].id === id) {
+  //       index = i;
+  //       break;
+  //     }
+  //   }
+
+  //   return index;
+  // }
+
+  // createId(): string {
+  //   let id = '';
+  //   var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  //   for (var i = 0; i < 5; i++) {
+  //     id += chars.charAt(Math.floor(Math.random() * chars.length));
+  //   }
+  //   return id;
+  // }
 
 
 }

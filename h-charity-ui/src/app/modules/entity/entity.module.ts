@@ -33,6 +33,8 @@ import { CarouselModule } from 'primeng/carousel';
 import { CardModule } from 'primeng/card';
 import { ImageModule } from 'primeng/image';
 import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+
 
 
 @NgModule({
@@ -62,9 +64,7 @@ import { TableModule } from 'primeng/table';
     CardModule,
     ImageModule,
     TableModule,
-
-
-
+    DialogModule,
   ],
   declarations: [
     EntityComponent,

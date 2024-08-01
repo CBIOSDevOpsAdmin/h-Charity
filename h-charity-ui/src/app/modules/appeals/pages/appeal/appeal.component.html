@@ -419,7 +419,10 @@
                 </ng-template>
             </p-table> -->
 
-            <p-table [value]="appeals" [tableStyle]="{'min-width': '60rem'}">
+            <p-table [value]="appeals" [paginator]="true" [rows]="5" [tableStyle]="{ 'min-width': '50rem' }"
+                [rowsPerPageOptions]="[5, 10, 20]"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [showCurrentPageReport]="true">
                 <ng-template pTemplate="caption">
                     <div class="flex align-items-center justify-content-between">
                         Appeals
@@ -428,27 +431,228 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Category</th>
-                        <th>Status</th>
+                        <th pSortableColumn="title" style="min-width:12rem">Title<p-sortIcon field="title" /></th>
+
+                        <th pSortableColumn="requirementDate" style="min-width:15rem">
+                            Requirement Date<p-sortIcon field="requirementDate" /></th>
+
+                        <th pSortableColumn="totalFundsRequired" style="min-width:15rem">
+                            Total Funds Required<p-sortIcon field="totalFundsRequired" /></th>
+
+                        <th pSortableColumn="fundsReceived" style="min-width:12rem">Funds
+                            Received<p-sortIcon field="fundsReceived" /></th>
+
+                        <th pSortableColumn="fundsNeeded" style="min-width:12rem">Funds Needed<p-sortIcon
+                                field="fundsNeeded" /></th>
+
+                        <th pSortableColumn="isZakatEligible" style="min-width:12rem">Zakat
+                            Eligible<p-sortIcon field="isZakatEligible" /> </th>
+
+                        <th pSortableColumn="isIntrestEligible" style="min-width:12rem">
+                            Interest Eligible<p-sortIcon field="isIntrestEligible" /></th>
+
+
+                        <th pSortableColumn="isAnonymous" style="min-width:12rem">
+                            Is Anonymous<p-sortIcon field="isAnonymous" /></th>
+
+                        <th style="min-width:15rem"></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-product>
+                <ng-template pTemplate="body" let-appeal>
                     <tr>
-                        <td>{{item.title}}</td>
-                        <td>{{item.description}}</td>
-                        <td>{{item.category}}</td>
-                        <td>{{item.status}}</td>
+                        <td>{{appeal.title}}</td>
+                        <td>{{appeal.requirementDate}}</td>
+                        <td>{{appeal.totalFundsRequired}}</td>
+                        <td>{{appeal.fundsReceived}}</td>
+                        <td>{{appeal.fundsNeeded}}</td>
+                        <td>{{appeal.isZakatEligible}}</td>
+                        <td>{{appeal.isIntrestEligible}}</td>
+                        <td>{{appeal.isAnonymous}}</td>
+
+
+                        <td>
+                            <div class="flex justify-content-center flex-wrap gap-3 mb-4">
+                                <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" severity="success"
+                                    (onClick)="editAppeal(appeal)" />
+                                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                                    (onClick)="deleteAppeal(appeal)" />
+                                <p-button icon="pi pi-eye" class="mr-1" [rounded]="true" [outlined]="true"
+                                    (onClick)="viewAppeal(appeal)" />
+                            </div>
+                        </td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
                     <div class="flex align-items-center justify-content-between">
-                        In total there are {{products ? products.length : 0 }} products.
+                        In total there are {{ appeals ? appeals.length : 0 }} appeals.
                     </div>
                 </ng-template>
             </p-table>
+
+            <p-dialog [(visible)]="appealDialog" [style]="{ width: '1200px' }" header="Edit Appeal" [modal]="true"
+                styleClass="p-fluid">
+                <ng-template pTemplate="content">
+                    <div class="grid">
+                        <div class="col-12">
+                            <div class="card">
+                                <form [formGroup]="appealsForm" (ngSubmit)="saveAppeal()">
+                                    <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
+
+                                        <div class="col-12 md:col-6 lg:col-8">
+                                            <div class="grid">
+                                                <div class="col-12 md:col-12 lg:col-12">
+                                                    <input placeholder=" Appeals Title" type="text" pInputText
+                                                        formControlName="title" />
+                                                </div>
+
+                                                <div class="col-12 md:col-6 lg:col-12">
+                                                    <p-editor formControlName="description"
+                                                        [style]="{ height: '200px' }"
+                                                        placeholder="Enter the Description" />
+                                                </div>
+                                                <div class="col-12 md:col-6 lg:col-6">
+                                                    <p-inputSwitch />
+                                                </div>
+                                                <div class="col-12 md:col-6 lg:col-6">
+                                                    <input placeholder=" on Behalf Name" type="text" pInputText
+                                                        formControlName="onBehalfName" />
+                                                </div>
+                                                <div class="col-12 md:col-6 lg:col-4">
+                                                    <p-inputNumber placeholder="Total Funds Required" mode="currency"
+                                                        inputId="currency-india" currency="INR" currencyDisplay="code"
+                                                        locale="en-IN" formControlName="totalFundsRequired" />
+                                                </div>
+
+                                                <div class="col-12 md:col-6 lg:col-4">
+                                                    <p-inputNumber placeholder="Funds Received" mode="currency"
+                                                        inputId="currency-india" currency="INR" currencyDisplay="code"
+                                                        locale="en-IN" formControlName="fundsRecived" />
+                                                </div>
+
+                                                <div class="col-12 md:col-6 lg:col-4">
+                                                    <p-inputNumber placeholder="Funds Needed" mode="currency"
+                                                        inputId="currency-india" currency="INR" currencyDisplay="code"
+                                                        locale="en-IN" formControlName="fundsNeeded" />
+                                                </div>
+                                                <div class="col-12 md:col-6 lg:col-4">
+                                                    <p-checkbox formControlName="zakatEligible" [binary]="true"
+                                                        inputId="binary" />
+                                                    <label>Is Zakat Eligible</label>
+                                                </div>
+                                                <div class="col-12 md:col-6 lg:col-4">
+                                                    <p-checkbox formControlName="interestEligible" [binary]="true"
+                                                        inputId="binary" />
+                                                    <label>Is Interest Eligible</label>
+                                                </div>
+                                                <div class="col-12 md:col-6 lg:col-4">
+                                                    <p-checkbox formControlName="isAnonymous" [binary]="true"
+                                                        inputId="binary" />
+                                                    <label>Is Anonymous</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex-1 w-full lg:w-3 xl:w-4 flex flex-column row-gap-3">
+                                            <div class="grid">
+                                                <div class="col-12 md:col-6 lg:col-12">
+                                                    <input placeholder=" Appealer" type="text" pInputText
+                                                        formControlName="appealer" />
+                                                </div>
+                                                <div class="col-12 md:col-6 lg:col-12">
+                                                    <input placeholder=" Appealer Mobile" type="text" pInputText
+                                                        formControlName="appealerMobile" />
+                                                </div>
+                                                <div class="col-12 md:col-6 lg:col-12">
+                                                    <p-calendar type="text" formControlName="requirementDate"
+                                                        [showIcon]="true" [showOnFocus]="false">
+                                                    </p-calendar>
+
+                                                </div>
+                                                <div class="col-12 md:col-6 lg:col-12">
+                                                    <input placeholder=" Verifier" type="text" pInputText
+                                                        formControlName="verifier" />
+                                                </div>
+                                                <div class="col-12 md:col-6 lg:col-12">
+                                                    <input placeholder=" Verifier Mobile" type="text" pInputText
+                                                        formControlName="verifierMobile" />
+                                                </div>
+                                                <div class="col-12 md:col-6 lg:col-12">
+                                                    <input placeholder=" Verified date" type="text" pInputText
+                                                        formControlName="verifiedDate" />
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </ng-template>
+
+                <ng-template pTemplate="footer">
+                    <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="hideDialog()" />
+                    <p-button label="Save" icon="pi pi-check" [text]="true" (onClick)="saveAppeal()" />
+                </ng-template>
+            </p-dialog>
+
+
+            <p-dialog [(visible)]="viewDialog" [style]="{ width: '1200px' }" header="Appeals Details" [modal]="true"
+                styleClass="p-fluid">
+                <div class="card">
+                    <div class="col-12 md:col-12 lg:col-12">
+                        <h2 style="text-align: center;">{{appeal && appeal.title}}</h2>
+                    </div>
+                    <div class="p-col-12 description">
+                        <p>{{appeal && appeal.description}}</p>
+                    </div>
+                    <br><br>
+                    <h3 style="text-align: center;">Fund Details</h3>
+                    <div
+                        style="display: flex; justify-content: center; gap: 100px; margin-top: 20px; color: blue; font-size: 17px">
+                        <span>Total Funds Required: {{appeal && appeal.totalFundsRequired }}</span>
+                        <span>Funds Received: {{ appeal && appeal.fundsReceived }}</span>
+                        <span>Funds Remaining: {{ appeal && appeal.fundsNeeded }}</span>
+                    </div>
+                    <br><br>
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <div style="flex: 1;">
+                            <div class="card">
+                                <h3>Applear Details</h3>
+                                <br>
+                                <p>Applear:{{appeal && appeal.appealer}}</p>
+                                <p>Mobile:{{appeal && appeal.appealerMobile}}</p>
+                                <br><br>
+                            </div>
+                        </div>
+                        <div style="flex: 2;">
+                            <div class="card">
+                                <h3>Payment Details</h3>
+                                <p>Account Number:</p>
+                                <p>Bank Name:</p>
+                                <p>Branch Name:</p>
+                                <p>IFSC Code:</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="col-12">
+                        <h3>Verifier Details</h3>
+                        <p>Verifier:{{appeal && appeal.verifier}} </p>
+                        <p>Mobile: {{appeal && appeal.verifierMobile}}</p>
+                        <p>Verified Date: {{appeal && appeal.verifiedDate}}</p>
+                    </div>
+                    <p-button label="Close" [text]="true" severity="close" (onClick)="hideDialog()" />
+
+                </div>
+            </p-dialog>
         </div>
 
     </div>
 </div>
+
+<p-confirmDialog [style]=" { width: '450px' }" />

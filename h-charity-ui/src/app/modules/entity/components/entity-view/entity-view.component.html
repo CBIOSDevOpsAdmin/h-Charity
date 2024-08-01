@@ -320,6 +320,36 @@ Name of the account holder : MADEENA mASJID
                         </p-tabPanel>
                     </p-tabView>
 
+                    <p-button label="Give Feedback" [outlined]="true" severity="feedback" (click)="showFeedback()" />
+
+
+                    <p-dialog header="Feedback" [(visible)]="displayDialog" [modal]="true" [closable]="false">
+                        <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
+
+                            <div class="col-12 md:col-12 lg:col-12">
+                                <input placeholder=" Feedback Title" type="text" pInputText
+                                    formControlName="feedbacktitle" />
+                            </div>
+
+                            <div class="col-12 md:col-6 lg:col-12">
+                                <p-editor formControlName="description" [style]="{ height: '200px' }"
+                                    placeholder="Enter the Description" />
+                            </div>
+
+                            <p-footer>
+                                <p-button label="Close" icon="pi pi-times" [text]="true"
+                                    (click)="hideDialog()"></p-button>
+                                <p-button label="Clear" icon="pi pi-minus" [text]="true"
+                                    (click)="clearForm()"></p-button>
+                                <p-button label="Submit" icon="pi pi-check" [text]="true" type="submit"></p-button>
+
+
+                            </p-footer>
+
+                        </form>
+                    </p-dialog>
+
+
                 </div>
             </div>
         </div>

@@ -1,6 +1,19 @@
 export interface IAppeal {
-    title: string;
-    description: string;
-    status: string;
-    category: string;
+    id?: number;
+    title?: string;
+    description?: string;
+    selfOrBehalf?: boolean;
+    onBehalfName?: string;
+    totalFundsRequired?: number;
+    fundsReceived?: number;
+    fundsNeeded?: number;
+    isZakatEligible?: boolean;
+    isInterestEligible?: boolean;
+    isAnonymous?: boolean;
+    appealer?: string;
+    appealerMobile?: string;
+    requirementDate?: string;
+    verifier?: string;
+    verifierMobile?: string;
+    verifiedDate?: string;
 }

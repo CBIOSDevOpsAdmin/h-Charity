@@ -3,6 +3,7 @@ import { IAppeal } from '../../models/appeal.model';
 import { ActivatedRoute } from '@angular/router';
 import { EntityService } from '../../services/entity.service';
 import { IEntity } from '../../models/entity.model';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-entity-view',
@@ -21,8 +22,10 @@ export class EntityViewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private entityService: EntityService,
+    private fb: FormBuilder,
   ) { }
-
+  displayDialog: boolean = false;
+  feedbackForm: FormGroup;
   entity: IEntity;
   address: string;
 
@@ -59,6 +62,8 @@ export class EntityViewComponent implements OnInit {
     { name: 'XYZ', position: 'Point Of Contact' },
   ];
 
+
+
   ngOnInit() {
 
     // this.updateDateTime();
@@ -81,6 +86,11 @@ export class EntityViewComponent implements OnInit {
         this.address = eAddress.address1 + ", " + eAddress.address2 + "," + eAddress.landmark + "," + eAddress.city + "," + eAddress.state + "," + eAddress.country + "," + eAddress.pincode;
       }
     })
+
+    this.feedbackForm = this.fb.group({
+      title: [''],
+      description: ['']
+    });
   }
 
 
@@ -109,6 +119,23 @@ export class EntityViewComponent implements OnInit {
     const dayOfMonth = date.getDate().toString();
     const year = date.getFullYear().toString();
     this.dateString = `${day}, ${dayOfMonth} ${month} ${year}`;
+  }
+  showFeedback() {
+    this.displayDialog = true;
+  }
+
+  hideDialog() {
+    this.displayDialog = false;
+  }
+
+  submitFeedback() {
+    console.log(this.feedbackForm.value);
+    this.feedbackForm.reset();
+    this.hideDialog();
+  }
+
+  clearForm() {
+    this.feedbackForm.reset();
   }
 
 }

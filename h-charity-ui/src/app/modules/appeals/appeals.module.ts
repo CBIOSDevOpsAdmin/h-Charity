@@ -16,6 +16,17 @@ import { ToastModule } from 'primeng/toast';
 import { AppealComponent } from './pages/appeal/appeal.component';
 import { DataViewModule } from 'primeng/dataview';
 import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
+
+
+
 
 
 @NgModule({
@@ -39,9 +50,15 @@ import { TableModule } from 'primeng/table';
     ToastModule,
     DataViewModule,
     TableModule,
+    DialogModule,
+    ConfirmDialogModule,
+    ToggleButtonModule,
+    CalendarModule,
+    CheckboxModule,
+    InputSwitchModule,
   ],
 
-  providers: [AppealService],
+  providers: [AppealService, ConfirmationService, MessageService, DialogService],
 
 })
 export class AppealsModule { }
