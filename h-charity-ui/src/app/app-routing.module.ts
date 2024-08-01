@@ -31,6 +31,13 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                 import('./modules/auth/auth.module').then(m => m.AuthModule),
             },
             {
+              path: 'appeals',
+              loadChildren: () =>
+                import('./modules/appeals/appeals.module').then(
+                  m => m.AppealsModule
+                ),
+            },
+            {
               path: 'uikit',
               loadChildren: () =>
                 import('./demo/components/uikit/uikit.module').then(
@@ -65,4 +72,4 @@ import { AppLayoutComponent } from './layout/app.layout.component';
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

@@ -19,6 +19,7 @@ import { MessageService } from 'primeng/api';
 import { httpInterceptorProviders } from './modules/shared/utilities/http.interceptor';
 import { ToastModule } from 'primeng/toast';
 
+
 @NgModule({
   declarations: [AppComponent, NotfoundComponent],
   imports: [AppRoutingModule, AppLayoutModule, ToastModule],
@@ -36,4 +37,4 @@ import { ToastModule } from 'primeng/toast';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

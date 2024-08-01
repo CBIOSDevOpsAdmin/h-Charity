@@ -28,6 +28,12 @@ import { EntityPaymentAddComponent } from './components/entity-payment-add/entit
 import { EntityPaymentViewComponent } from './components/entity-payment-view/entity-payment-view.component';
 import { EntityAppealsComponent } from './components/entity-appeals/entity-appeals.component';
 import { EntityBankDetailsComponent } from './components/entity-bank-details/entity-bank-details.component';
+import { EntityViewComponent } from './components/entity-view/entity-view.component';
+import { CarouselModule } from 'primeng/carousel';
+import { CardModule } from 'primeng/card';
+import { ImageModule } from 'primeng/image';
+import { TableModule } from 'primeng/table';
+
 
 @NgModule({
   imports: [
@@ -52,6 +58,13 @@ import { EntityBankDetailsComponent } from './components/entity-bank-details/ent
     ToastModule,
     TabViewModule,
     SplitterModule,
+    CarouselModule,
+    CardModule,
+    ImageModule,
+    TableModule,
+
+
+
   ],
   declarations: [
     EntityComponent,
@@ -62,7 +75,8 @@ import { EntityBankDetailsComponent } from './components/entity-bank-details/ent
     EntityPaymentViewComponent,
     EntityAppealsComponent,
     EntityBankDetailsComponent,
+    EntityViewComponent
   ],
   providers: [EntityService],
 })
-export class EntityModule {}
+export class EntityModule { }

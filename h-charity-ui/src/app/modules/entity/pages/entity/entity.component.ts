@@ -20,6 +20,14 @@ export class EntityComponent implements OnInit {
   sortField: string = '';
   entities: IEntity[] = [];
   imageInfos?: Observable<any>;
+  // coverImageSrc: any;
+  entity: any = {
+    name: 'Example Entity',
+    description: 'Description of the entity.',
+    type: 'Entity Type',
+    isVerified: false,
+    id: 1
+  };
 
   ngOnInit() {
     this.entityService.getEntities().subscribe({
@@ -34,6 +42,16 @@ export class EntityComponent implements OnInit {
       { label: 'Price High to Low', value: '!price' },
       { label: 'Price Low to High', value: 'price' },
     ];
+
+    // this.entityService.getEntity().subscribe(entity => {
+    //   if (entity.coverImage) {
+    //     this.coverImageSrc = entity.coverImage;
+    //   } else if (entity.images && entity.images.length > 0) {
+    //     this.coverImageSrc = entity.images[0];
+    //   } else {
+    //     this.coverImageSrc = 'assets/mosque-details/dummy-mosque-image'; // dummy image
+    //   }
+    // });
   }
 
   onSortChange(event: any) {
@@ -49,7 +67,7 @@ export class EntityComponent implements OnInit {
   }
 
   onFilter(dv: DataView, event: Event) {
-    // dv.filter((event.target as HTMLInputElement).value);
+    // v.filter((event.target as HTMLInputElement).value);
   }
 
   goToEntity(id: number) {
@@ -60,4 +78,23 @@ export class EntityComponent implements OnInit {
     //   },
     // });
   }
+
+  viewEntity(id: number) {
+    this.router.navigate(['entities/entity-view', id]);
+    // this.entityService.getEntityById(id).subscribe({
+    //   next: (data: IEntity) => {
+    //     console.log(data);
+    //   },
+    // });
+    // this.entityId = this.router.snapshot.params['id'];
+    // if (this.entityId && this.entityId > 0) {
+    //   this.initFormNew();
+    //   this.initFormEdit();
+    // } else {
+    //   this.initFormNew();
+    // }
+
+
+  }
+
 }

@@ -10,7 +10,7 @@ import { IEntityBankDetails } from '../models/entity-bank-details.model';
 export class EntityService {
   rootURL = 'http://localhost:8080/api/v1/entity';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   saveEntity(entity: IEntity) {
     return entity.id > 0
@@ -25,6 +25,10 @@ export class EntityService {
   getEntities(): Observable<IEntity[]> {
     const url = `${this.rootURL}`;
     return this.http.get<IEntity[]>(url);
+  }
+
+  getEntity(): Observable<any> {
+    return this.http.get(this.rootURL);
   }
 
   saveEntityBankDetails(entityBankDetails: IEntityBankDetails) {

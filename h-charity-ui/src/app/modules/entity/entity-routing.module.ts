@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { EntityComponent } from './pages/entity/entity.component';
 import { AddUpdateEntityComponent } from './components/add-update-entity/add-update-entity.component';
+import { EntityViewComponent } from './components/entity-view/entity-view.component';
 
 @NgModule({
   imports: [
@@ -27,9 +28,10 @@ import { AddUpdateEntityComponent } from './components/add-update-entity/add-upd
       { path: '', component: EntityComponent },
       { path: 'add-update', component: AddUpdateEntityComponent },
       { path: 'add-update/:id', component: AddUpdateEntityComponent },
+      { path: 'entity-view/:id', component: EntityViewComponent },
       { path: '**', redirectTo: '/notfound' },
     ]),
   ],
   exports: [RouterModule],
 })
-export class EntityRoutingModule {}
+export class EntityRoutingModule { }

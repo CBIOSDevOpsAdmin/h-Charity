@@ -9,7 +9,7 @@ import { LayoutService } from './service/app.layout.service';
 export class AppMenuComponent implements OnInit {
   model: any[] = [];
 
-  constructor(public layoutService: LayoutService) {}
+  constructor(public layoutService: LayoutService) { }
 
   ngOnInit() {
     this.model = [
@@ -32,8 +32,27 @@ export class AppMenuComponent implements OnInit {
             icon: 'pi pi-fw pi-home',
             routerLink: ['/entities/add-update'],
           },
+
         ],
       },
+
+      {
+        label: 'Appeals',
+        items: [
+          {
+            label: 'Appeals',
+            icon: 'pi pi-fw pi-home',
+            routerLink: ['/appeals/'],
+          },
+          {
+            label: 'Add/Update Appeals',
+            icon: 'pi pi-fw pi-home',
+            routerLink: ['/appeals/add-update'],
+          },
+
+        ],
+      },
+
       {
         label: 'UI Components',
         items: [

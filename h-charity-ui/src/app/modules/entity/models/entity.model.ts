@@ -9,6 +9,7 @@ export interface IEntity {
   hasInternet?: boolean;
   address?: IAddress;
   photos?: string[];
+  coverImage?: string;
   mobile?: string;
   office?: string;
 }
