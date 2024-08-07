@@ -2,6 +2,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { AppealService } from '../../services/appeal.service';
+import { IAppeal } from '../../models/appeal.model';
+import { InputSwitchChangeEvent } from 'primeng/inputswitch';
 
 @Component({
   selector: 'app-add-update-appeal',
@@ -16,12 +19,12 @@ export class AddUpdateAppealComponent implements OnInit {
 
   formBuilder = inject(FormBuilder);
   messageService = inject(MessageService);
+  appealService = inject(AppealService);
   route = inject(ActivatedRoute);
   router = inject(Router);
   //#endregion
 
   ngOnInit() {
-    // this.initDDFields();
     this.appealId = this.route.snapshot.params['id'];
     if (this.appealId && this.appealId > 0) {
       this.initFormNew();
@@ -33,41 +36,36 @@ export class AddUpdateAppealComponent implements OnInit {
 
   //#region Public Methods
   public saveAppeal() {
-    console.log(this.appealForm.value);
-
-    //   let payload = this.generatePayload(this.entityForm.value);
-    //   if (!this.validateEntityDetails()) {
-    //     this.entityService.saveEntity(payload).subscribe({
-    //       next: response => {
-    //         this.messageService.add({
-    //           severity: 'success',
-    //           summary: 'Save',
-    //           detail: 'Entity saved successfully',
-    //         });
-    //         this.router.navigateByUrl('/institutions');
-    //       },
-    //     });
-    //   }
+    let payload = this.appealForm.value;
+    if (!this.validateAppealDetails()) {
+      this.appealService.saveAppeal(payload).subscribe({
+        next: (response: IAppeal) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Save',
+            detail: 'Appeal saved successfully',
+          });
+          this.router.navigate(['appeals/edit', response.id]);
+        },
+      });
+    }
   }
+
+  onSelfOrBehalfChange(e: InputSwitchChangeEvent) {
+    if (e.checked) {
+      this.appealForm.get('onBehalfName')?.enable();
+    }
+  }
+
   //#endregion
 
   //#region Private Methods
 
-  // private validateEntityDetails() {
-  //   let isError: boolean = false;
+  private validateAppealDetails() {
+    let isError: boolean = false;
 
-  //   return isError;
-  // }
-  // private initDDFields() {
-  //   if (!(this.appealId > 0)) {
-  //   }
-
-  //   this.entityTypes = convertArrStringToArrDDObject([
-  //     'Mosque',
-  //     'School',
-  //     'Orphanage',
-  //   ]);
-  // }
+    return isError;
+  }
 
   private initFormNew() {
     this.appealForm = this.formBuilder.group({
@@ -82,8 +80,8 @@ export class AddUpdateAppealComponent implements OnInit {
       isZakatEligible: [false],
       isInterestEligible: [false],
       isAnonymous: [false],
-      appealer: [''],
-      appealerMobile: [''],
+      appealer: [{ value: '', disabled: true }, Validators.required],
+      appealerMobile: [{ value: '', disabled: true }, Validators.required],
       requirementDate: [''],
       verifier: [{ value: '', disabled: true }, Validators.required],
       verifierMobile: [{ value: '', disabled: true }, Validators.required],

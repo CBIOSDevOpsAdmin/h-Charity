@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
   }
 
   redirectToHome(): void {
+    this.storageService.callInit();
     this.router.navigate(['']);
   }
 }

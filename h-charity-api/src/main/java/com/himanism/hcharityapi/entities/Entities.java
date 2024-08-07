@@ -1,10 +1,6 @@
 package com.himanism.hcharityapi.entities;
 
 import java.util.Date;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -35,8 +30,6 @@ public class Entities {
     private String description;
     private Boolean isVerified;
     private Boolean hasInternet;
-    // @OneToMany(mappedBy = "entity")
-    // private List<EntityPhotos> photos;
     private String mobile;
     private String office;
     private String createdBy;

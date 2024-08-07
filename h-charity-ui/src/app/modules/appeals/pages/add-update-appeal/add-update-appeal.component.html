@@ -27,7 +27,10 @@
 
               <div class="col-12 md:col-6 lg:col-4">
                 <span style="font-size: large; font-weight: bold">Self </span>
-                <p-inputSwitch formControlName="selfOrBehalf" />
+                <p-inputSwitch
+                  formControlName="selfOrBehalf"
+                  (onChange)="onSelfOrBehalfChange($event)"
+                />
                 <span style="font-size: large; font-weight: bold"
                   >On Behalf</span
                 >
@@ -109,7 +112,6 @@
                   type="text"
                   pInputText
                   formControlName="appealer"
-                  [disabled]="true"
                 />
               </div>
               <div class="col-12 md:col-6 lg:col-12">
@@ -117,7 +119,6 @@
                   mask="(999) 999-9999"
                   formControlName="appealerMobile"
                   placeholder="Appealer Mobile"
-                  [disabled]="true"
                 />
               </div>
               <div class="col-12 md:col-6 lg:col-12">
@@ -136,7 +137,6 @@
                   type="text"
                   pInputText
                   formControlName="verifier"
-                  [disabled]="true"
                 />
               </div>
 
@@ -145,7 +145,6 @@
                   mask="(999) 999-99999"
                   formControlName="verifierMobile"
                   placeholder="Verifier Mobile"
-                  [disabled]="true"
                 />
               </div>
               <div class="col-12 md:col-6 lg:col-12">
@@ -154,7 +153,6 @@
                   type="text"
                   pInputText
                   formControlName="verifiedDate"
-                  [disabled]="true"
                 />
               </div>
               <div class="col-12 md:col-6 lg:col-12"></div>

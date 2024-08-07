@@ -95,7 +95,7 @@ public class EntityServiceImpl implements EntityService {
 
     @Override
     public void deleteEntity(Long entityId) {
-         entityRepository.deleteById(entityId);
+      entityRepository.deleteById(entityId);
     }
 
     @Override

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { IEntity, IEntityBankDetails } from '../models/entity.model';
 import { Observable } from 'rxjs';
 
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class EntityService {
   rootURL = 'http://localhost:8080/api/v1/entity';
 
-  constructor(private http: HttpClient) {}
+  http = inject(HttpClient);
 
   saveEntity(entity: IEntity) {
     return entity.id > 0

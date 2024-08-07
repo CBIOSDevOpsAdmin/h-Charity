@@ -1,6 +1,8 @@
-import { OnInit } from '@angular/core';
+import { inject, OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { StorageService } from '../modules/shared/services/storage.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
@@ -8,29 +10,44 @@ import { LayoutService } from './service/app.layout.service';
 })
 export class AppMenuComponent implements OnInit {
   model: any[] = [];
+  userRole: string = '';
 
-  constructor(public layoutService: LayoutService) {}
+  private initSubscription: Subscription;
+
+  layoutService = inject(LayoutService);
+  storageService = inject(StorageService);
 
   ngOnInit() {
+    this.initSubscription = this.storageService.initCalled$.subscribe(() => {
+      this.loadMenuOptions();
+    });
+
+    this.model = [];
+    this.loadMenuOptions();
+  }
+
+  public loadMenuOptions() {
+    console.log('Apple');
+
+    this.loadUnauthenticatedMenuOptions();
+
+    if (this.storageService.getUser() && this.storageService.getUser().roles) {
+      console.log('Auth');
+
+      this.userRole = this.storageService.getUser().roles[0];
+      this.loadAuthenticatedMenuOptions(this.userRole);
+    }
+  }
+
+  private loadUnauthenticatedMenuOptions() {
     this.model = [
-      {
-        label: 'Home',
-        items: [
-          { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-        ],
-      },
       {
         label: 'Institutions',
         items: [
           {
             label: 'Institutions',
-            icon: 'pi pi-fw pi-home',
+            icon: 'pi pi-fw pi-warehouse',
             routerLink: ['/institutions/'],
-          },
-          {
-            label: 'Add Institution',
-            icon: 'pi pi-fw pi-home',
-            routerLink: ['/institutions/add'],
           },
         ],
       },
@@ -39,24 +56,8 @@ export class AppMenuComponent implements OnInit {
         items: [
           {
             label: 'Appeals',
-            icon: 'pi pi-fw pi-home',
+            icon: 'pi pi-fw pi-file',
             routerLink: ['/appeals/'],
-          },
-          {
-            label: 'Add Appeal',
-            icon: 'pi pi-fw pi-home',
-            routerLink: ['/appeals/add'],
-          },
-        ],
-      },
-      {
-        label: 'Pages',
-        icon: 'pi pi-fw pi-briefcase',
-        items: [
-          {
-            label: 'Crud',
-            icon: 'pi pi-fw pi-pencil',
-            routerLink: ['/pages/crud'],
           },
         ],
       },
@@ -66,11 +67,37 @@ export class AppMenuComponent implements OnInit {
         items: [
           {
             label: 'About Us',
-            icon: 'pi pi-fw pi-pencil',
+            icon: 'pi pi-fw pi-id-card',
             routerLink: ['/himanism/about-us'],
           },
         ],
       },
     ];
+  }
+
+  private loadAuthenticatedMenuOptions(userRole: string) {
+    switch (userRole) {
+      case 'NORMAL_USER':
+        console.log('NORMAL USER');
+
+        this.model.find(x => {
+          if (x.label === 'Institutions') {
+            x.items.push({
+              label: 'Add Appeal',
+              icon: 'pi pi-fw pi-file-edit',
+              routerLink: ['/appeals/add'],
+            });
+          }
+        });
+        break;
+      case 'INSTITUTE_OWNER':
+        break;
+
+      case 'ORGANISATION_VOLUNTEER':
+        break;
+
+      case 'ADMIN':
+        break;
+    }
   }
 }

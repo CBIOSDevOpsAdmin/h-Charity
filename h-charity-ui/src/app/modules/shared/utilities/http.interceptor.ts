@@ -1,12 +1,5 @@
 import { Inject, Injectable, inject } from '@angular/core';
-import {
-  HttpEvent,
-  HttpInterceptor,
-  HttpHandler,
-  HttpRequest,
-  HTTP_INTERCEPTORS,
-  HttpErrorResponse,
-} from '@angular/common/http';
+import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTERCEPTORS, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../../auth/services/auth.service';
 import { EventData } from '../models/event.model';
