@@ -69,7 +69,9 @@ public class WebSecurityConfig {
         .cors(Customizer.withDefaults())
         .authorizeHttpRequests(auth -> 
           auth.requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/auth/**")).permitAll()
-              .anyRequest().authenticated()
+          .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/entity/**")).permitAll()
+          .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/files/**")).permitAll()
+          .anyRequest().authenticated()
         )
         .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

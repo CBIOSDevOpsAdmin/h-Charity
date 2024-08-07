@@ -1,6 +1,8 @@
-import { OnInit } from '@angular/core';
+import { inject, OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { StorageService } from '../modules/shared/services/storage.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
@@ -8,95 +10,94 @@ import { LayoutService } from './service/app.layout.service';
 })
 export class AppMenuComponent implements OnInit {
   model: any[] = [];
+  userRole: string = '';
 
-  constructor(public layoutService: LayoutService) {}
+  private initSubscription: Subscription;
+
+  layoutService = inject(LayoutService);
+  storageService = inject(StorageService);
 
   ngOnInit() {
+    this.initSubscription = this.storageService.initCalled$.subscribe(() => {
+      this.loadMenuOptions();
+    });
+
+    this.model = [];
+    this.loadMenuOptions();
+  }
+
+  public loadMenuOptions() {
+    console.log('Apple');
+
+    this.loadUnauthenticatedMenuOptions();
+
+    if (this.storageService.getUser() && this.storageService.getUser().roles) {
+      console.log('Auth');
+
+      this.userRole = this.storageService.getUser().roles[0];
+      this.loadAuthenticatedMenuOptions(this.userRole);
+    }
+  }
+
+  private loadUnauthenticatedMenuOptions() {
     this.model = [
       {
-        label: 'Home',
-        items: [
-          { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-        ],
-      },
-      {
-        label: 'Entities',
+        label: 'Institutions',
         items: [
           {
-            label: 'Entities',
-            icon: 'pi pi-fw pi-home',
-            routerLink: ['/entities/'],
-          },
-          {
-            label: 'Add/Update Entity',
-            icon: 'pi pi-fw pi-home',
-            routerLink: ['/entities/add-update'],
+            label: 'Institutions',
+            icon: 'pi pi-fw pi-warehouse',
+            routerLink: ['/institutions/'],
           },
         ],
       },
       {
-        label: 'UI Components',
+        label: 'Appeals',
         items: [
           {
-            label: 'Table',
-            icon: 'pi pi-fw pi-table',
-            routerLink: ['/uikit/table'],
-          },
-          {
-            label: 'List',
-            icon: 'pi pi-fw pi-list',
-            routerLink: ['/uikit/list'],
-          },
-
-          {
-            label: 'Media',
-            icon: 'pi pi-fw pi-image',
-            routerLink: ['/uikit/media'],
+            label: 'Appeals',
+            icon: 'pi pi-fw pi-file',
+            routerLink: ['/appeals/'],
           },
         ],
       },
       {
-        label: 'Pages',
+        label: 'HIMANISM',
         icon: 'pi pi-fw pi-briefcase',
         items: [
           {
-            label: 'Auth',
-            icon: 'pi pi-fw pi-user',
-            items: [
-              {
-                label: 'Login',
-                icon: 'pi pi-fw pi-sign-in',
-                routerLink: ['/auth/login'],
-              },
-              {
-                label: 'Error',
-                icon: 'pi pi-fw pi-times-circle',
-                routerLink: ['/auth/error'],
-              },
-              {
-                label: 'Access Denied',
-                icon: 'pi pi-fw pi-lock',
-                routerLink: ['/auth/access'],
-              },
-            ],
-          },
-          {
-            label: 'Crud',
-            icon: 'pi pi-fw pi-pencil',
-            routerLink: ['/pages/crud'],
-          },
-          {
-            label: 'Not Found',
-            icon: 'pi pi-fw pi-exclamation-circle',
-            routerLink: ['/notfound'],
-          },
-          {
-            label: 'Empty',
-            icon: 'pi pi-fw pi-circle-off',
-            routerLink: ['/pages/empty'],
+            label: 'About Us',
+            icon: 'pi pi-fw pi-id-card',
+            routerLink: ['/himanism/about-us'],
           },
         ],
       },
     ];
+  }
+
+  private loadAuthenticatedMenuOptions(userRole: string) {
+    switch (userRole) {
+      case 'NORMAL_USER':
+        console.log('NORMAL USER');
+
+        this.model.find(x => {
+          if (x.label === 'Institutions') {
+            x.items.push({
+              label: 'Add Appeal',
+              icon: 'pi pi-fw pi-file-edit',
+              routerLink: ['/appeals/add'],
+            });
+          }
+        });
+        break;
+      case 'INSTITUTE_OWNER':
+        break;
+
+      case 'ORGANISATION_VOLUNTEER':
+        break;
+
+      case 'ADMIN':
+        break;
+    }
   }
 }

@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { IEntity } from '../models/entity.model';
+import { inject, Injectable } from '@angular/core';
+import { IEntity, IEntityBankDetails } from '../models/entity.model';
 import { Observable } from 'rxjs';
-import { IEntityBankDetails } from '../models/entity-bank-details.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +9,7 @@ import { IEntityBankDetails } from '../models/entity-bank-details.model';
 export class EntityService {
   rootURL = 'http://localhost:8080/api/v1/entity';
 
-  constructor(private http: HttpClient) {}
+  http = inject(HttpClient);
 
   saveEntity(entity: IEntity) {
     return entity.id > 0
@@ -38,14 +37,6 @@ export class EntityService {
   getEntityBankDetails(entityId: number) {
     return this.http.get(`${this.rootURL}/bankDetails/${entityId}`);
   }
-
-  // addParty(party: Party): Observable<Party> {
-  //   return this.http.post(`${this.baseUrl}`, party);
-  // }
-
-  // updateParty(party: Party): Observable<Party> {
-  //   return this.http.put(`${this.baseUrl}`, party);
-  // }
 
   // deleteParty(partyId: number): Observable<any> {
   //   return this.http.delete(`${this.baseUrl}/${partyId}`);

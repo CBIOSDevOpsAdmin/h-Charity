@@ -7,7 +7,6 @@ import {
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
-import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { ProductService } from './demo/service/product.service';
 import { CountryService } from './demo/service/country.service';
 import { CustomerService } from './demo/service/customer.service';
@@ -18,6 +17,7 @@ import { PhotoService } from './demo/service/photo.service';
 import { MessageService } from 'primeng/api';
 import { httpInterceptorProviders } from './modules/shared/utilities/http.interceptor';
 import { ToastModule } from 'primeng/toast';
+import { NotfoundComponent } from './modules/shared/components/notfound/notfound.component';
 
 @NgModule({
   declarations: [AppComponent, NotfoundComponent],

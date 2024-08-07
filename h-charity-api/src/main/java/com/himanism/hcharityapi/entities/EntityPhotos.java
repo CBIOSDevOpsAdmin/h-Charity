@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,8 +22,7 @@ public class EntityPhotos {
     private String photoUrl;
     @Column(columnDefinition="tinyint(1) default 0")
     private Boolean isQRCode;
+    @Column(columnDefinition="tinyint(1) default 0")
+    private Boolean isCoverPhoto;
     private Long entityId;
-    // @ManyToOne
-    // @JoinColumn(name = "entity_id")
-    // private Entities entity;
 }

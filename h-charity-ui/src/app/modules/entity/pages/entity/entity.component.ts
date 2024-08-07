@@ -5,6 +5,7 @@ import { IEntity } from '../../models/entity.model';
 import { Router } from '@angular/router';
 import { FileService } from '../../services/file.service';
 import { Observable } from 'rxjs';
+import { DataView } from 'primeng/dataview';
 
 @Component({
   selector: 'app-entity',
@@ -15,49 +16,78 @@ export class EntityComponent implements OnInit {
   entityService = inject(EntityService);
   fileService = inject(FileService);
   router = inject(Router);
-  sortOptions: SelectItem[] = [];
+  viewOptions: SelectItem[] = [];
   sortOrder: number = 0;
   sortField: string = '';
   entities: IEntity[] = [];
+  untouchedEntities: IEntity[] = [];
   imageInfos?: Observable<any>;
 
   ngOnInit() {
     this.entityService.getEntities().subscribe({
       next: entities => {
         this.entities = entities;
+        this.untouchedEntities = entities;
       },
     });
 
-    // this.imageInfos = this.fileService.getFiles();
-
-    this.sortOptions = [
-      { label: 'Price High to Low', value: '!price' },
-      { label: 'Price Low to High', value: 'price' },
+    this.viewOptions = [
+      { label: 'Show All', value: 'Show All' },
+      { label: 'Show Verified', value: 'Show Verified' },
+      { label: 'Show Unverified', value: 'Show Unverified' },
+      { label: 'Show Mosques', value: 'Show Mosques' },
+      { label: 'Show Schools', value: 'Show Schools' },
+      { label: 'Show Orphanages', value: 'Show Orphanages' },
     ];
   }
 
-  onSortChange(event: any) {
+  onViewChange(event: any) {
     const value = event.value;
+    debugger;
+    switch (value) {
+      case 'Show Verified':
+        this.entities = this.untouchedEntities.filter(
+          (item: IEntity) => item.isVerified
+        );
+        break;
+      case 'Show Unverified':
+        this.entities = this.untouchedEntities.filter(
+          (item: IEntity) => !item.isVerified
+        );
+        break;
+      case 'Show Mosques':
+        this.entities = this.untouchedEntities.filter((item: IEntity) =>
+          item.type.toLowerCase().includes('mosque')
+        );
+        break;
 
-    if (value.indexOf('!') === 0) {
-      this.sortOrder = -1;
-      this.sortField = value.substring(1, value.length);
-    } else {
-      this.sortOrder = 1;
-      this.sortField = value;
+      case 'Show Schools':
+        this.entities = this.untouchedEntities.filter((item: IEntity) =>
+          item.type.toLowerCase().includes('school')
+        );
+        break;
+
+      case 'Show Orphanages':
+        this.entities = this.untouchedEntities.filter((item: IEntity) =>
+          item.type.toLowerCase().includes('orphanage')
+        );
+        break;
+
+      default:
+        this.entities = this.untouchedEntities;
+        break;
     }
   }
 
   onFilter(dv: DataView, event: Event) {
-    // dv.filter((event.target as HTMLInputElement).value);
+    dv.filter((event.target as HTMLInputElement).value);
   }
 
   goToEntity(id: number) {
-    this.router.navigate(['entities/add-update', id]);
-    // this.entityService.getEntityById(id).subscribe({
-    //   next: (data: IEntity) => {
-    //     console.log(data);
-    //   },
-    // });
+    this.router.navigate(['institutions/edit', id]);
+  }
+
+  viewEntity(id: number) {
+    this.router.navigate(['institutions/view', id]);
   }
 }

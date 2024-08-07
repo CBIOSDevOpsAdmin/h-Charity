@@ -1,7 +1,7 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from './layout/app.layout.component';
+import { NotfoundComponent } from './modules/shared/components/notfound/notfound.component';
 
 @NgModule({
   imports: [
@@ -19,10 +19,17 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                 ),
             },
             {
-              path: 'entities',
+              path: 'institutions',
               loadChildren: () =>
                 import('./modules/entity/entity.module').then(
                   m => m.EntityModule
+                ),
+            },
+            {
+              path: 'appeals',
+              loadChildren: () =>
+                import('./modules/appeals/appeals.module').then(
+                  m => m.AppealsModule
                 ),
             },
             {
@@ -31,27 +38,20 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                 import('./modules/auth/auth.module').then(m => m.AuthModule),
             },
             {
-              path: 'uikit',
-              loadChildren: () =>
-                import('./demo/components/uikit/uikit.module').then(
-                  m => m.UIkitModule
-                ),
-            },
-            {
               path: 'pages',
               loadChildren: () =>
                 import('./demo/components/pages/pages.module').then(
                   m => m.PagesModule
                 ),
             },
+            {
+              path: 'himanism',
+              loadChildren: () =>
+                import('./modules/himanism/himanism.module').then(
+                  m => m.HimanismModule
+                ),
+            },
           ],
-        },
-        {
-          path: 'auth',
-          loadChildren: () =>
-            import('./demo/components/auth/auth.module').then(
-              m => m.AuthModule
-            ),
         },
         { path: 'notfound', component: NotfoundComponent },
         { path: '**', redirectTo: '/notfound' },

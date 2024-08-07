@@ -9,12 +9,6 @@ import { RouterModule } from '@angular/router';
         loadChildren: () =>
           import('./crud/crud.module').then(m => m.CrudModule),
       },
-      {
-        path: 'empty',
-        loadChildren: () =>
-          import('./empty/emptydemo.module').then(m => m.EmptyDemoModule),
-      },
-
       { path: '**', redirectTo: '/notfound' },
     ]),
   ],

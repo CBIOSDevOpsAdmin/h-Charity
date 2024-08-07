@@ -7,28 +7,29 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
+import java.nio.file.StandardCopyOption;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import com.himanism.hcharityapi.controllers.FilesController;
-import com.himanism.hcharityapi.entities.Entities;
 import com.himanism.hcharityapi.entities.EntityPhotos;
 import com.himanism.hcharityapi.repo.EntityPhotosRepository;
 import com.himanism.hcharityapi.repo.EntityRepository;
 import com.himanism.hcharityapi.services.FilesStorageService;
 
+import net.coobird.thumbnailator.Thumbnails;
+
 @Service
+@Transactional
 public class FilesStorageServiceImpl implements FilesStorageService {
 
   @Autowired
@@ -55,7 +56,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
       if(!Files.exists(imagePath)) {
         Files.createDirectories(imagePath);
       } else {
-        Files.copy(file.getInputStream(), imagePath.resolve(file.getOriginalFilename()));
+        Files.copy(file.getInputStream(), imagePath.resolve(file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
         this.updatePhotosTableWithUrl(file, entityId);
       }
     } catch (Exception e) {
@@ -67,9 +68,60 @@ public class FilesStorageServiceImpl implements FilesStorageService {
   }
 
   @Override
-  public Resource load(String filename) {
+  public Resource load(String filename, Long entityId) {
     try {
-      Path imagePath = Paths.get("uploads/" + 5);
+      Path imagePath = Paths.get("uploads/" + entityId.toString());
+      Path file = imagePath.resolve(filename);
+      Resource resource = new UrlResource(file.toUri());
+
+      if (resource.exists() || resource.isReadable()) {
+        return resource;
+      } else {
+        throw new RuntimeException("Could not read the file!");
+      }
+    } catch (MalformedURLException e) {
+      throw new RuntimeException("Error: " + e.getMessage());
+    }
+  }
+
+  @Override
+  public Resource loadCoverPhoto(String filename, Long entityId) {
+    try {
+      Path imagePath = Paths.get("uploads/cover/" + entityId.toString());
+      Path file = imagePath.resolve(filename);
+      Resource resource = new UrlResource(file.toUri());
+
+      if (resource.exists() || resource.isReadable()) {
+        return resource;
+      } else {
+        throw new RuntimeException("Could not read the file!");
+      }
+    } catch (MalformedURLException e) {
+      throw new RuntimeException("Error: " + e.getMessage());
+    }
+  }
+
+  @Override
+  public Resource loadQrCodePhoto(String filename, Long entityId) {
+    try {
+      Path imagePath = Paths.get("uploads/qrcodes/" + entityId.toString());
+      Path file = imagePath.resolve(filename);
+      Resource resource = new UrlResource(file.toUri());
+
+      if (resource.exists() || resource.isReadable()) {
+        return resource;
+      } else {
+        throw new RuntimeException("Could not read the file!");
+      }
+    } catch (MalformedURLException e) {
+      throw new RuntimeException("Error: " + e.getMessage());
+    }
+  }
+
+  @Override
+  public Resource loadDefaultImage(String filename) {
+    try {
+      Path imagePath = Paths.get("uploads/static");
       Path file = imagePath.resolve(filename);
       Resource resource = new UrlResource(file.toUri());
 
@@ -125,17 +177,18 @@ public class FilesStorageServiceImpl implements FilesStorageService {
       if(!Files.exists(qrcodePath)) {
         Files.createDirectories(qrcodePath);
       } else {
-        this.cleanDirectory("uploads/qrcodes/" + entityId);
+        this.cleanDirectory("uploads/qrcodes/" + entityId, entityId);
+        entityPhotosRepository.deleteByEntityIdAndIsQRCode(entityId, true);
       }
       Files.copy(file.getInputStream(), qrcodePath.resolve(file.getOriginalFilename()));
 
       this.loadAllByPath(qrcodePath).forEach(path -> {
         String filename = path.getFileName().toString();
         String url = MvcUriComponentsBuilder
-            .fromMethodName(FilesController.class, "getFile", filename).build().toString();
+            .fromMethodName(FilesController.class, "qrCodePhoto", filename, entityId).build().toString();
   
         if(path.getFileName().toString().equalsIgnoreCase(file.getOriginalFilename())) {
-          saveEntityPhotos(url, entityId, true);
+          saveEntityPhotos(url, entityId, true, false);
         }
       });
 
@@ -155,17 +208,19 @@ public class FilesStorageServiceImpl implements FilesStorageService {
       if(!Files.exists(coverPath)) {
         Files.createDirectories(coverPath);
       } else {
-        this.cleanDirectory("uploads/cover/" + entityId);
+        this.cleanDirectory("uploads/cover/" + entityId, entityId);
+        entityPhotosRepository.deleteByEntityIdAndIsCoverPhoto(entityId, true);
       }
-      Files.copy(file.getInputStream(), coverPath.resolve(file.getOriginalFilename()));
+      // Compress cover photo in 300x200 size,
+      this.compressAndChangeResolutionForCoverPhotoAndQrCode(file, coverPath);
 
       this.loadAllByPath(coverPath).forEach(path -> {
         String filename = path.getFileName().toString();
         String url = MvcUriComponentsBuilder
-            .fromMethodName(FilesController.class, "getFile", filename).build().toString();
+            .fromMethodName(FilesController.class, "coverPhoto", filename, entityId).build().toString();
   
         if(path.getFileName().toString().equalsIgnoreCase(file.getOriginalFilename())) {
-          saveEntityPhotos(url, entityId, false);
+          saveEntityPhotos(url, entityId, false, true);
         }
       });
 
@@ -178,7 +233,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
   }
 
-  private void cleanDirectory(String path) {
+  private void cleanDirectory(String path, Long entityId) {
     File directory = new File(path);
     for (File fileObj: Objects.requireNonNull(directory.listFiles())) {
       if (!fileObj.isDirectory()) {
@@ -191,19 +246,20 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     this.loadAll(entityId).forEach(path -> {
       String filename = path.getFileName().toString();
       String url = MvcUriComponentsBuilder
-          .fromMethodName(FilesController.class, "getFile", filename).build().toString();
+          .fromMethodName(FilesController.class, "entityPhotos", entityId, filename).build().toString();
 
       if(path.getFileName().toString().equalsIgnoreCase(file.getOriginalFilename())) {
-        saveEntityPhotos(url, entityId, false);
+        saveEntityPhotos(url, entityId, false, false);
       }
     });
   }
 
-  private void saveEntityPhotos(String url, Long entityId, Boolean isQRCode) {
+  private void saveEntityPhotos(String url, Long entityId, Boolean isQRCode, Boolean isCoverPhoto) {
     EntityPhotos entityPhotos = new EntityPhotos();
     entityPhotos.setIsQRCode(isQRCode);
     entityPhotos.setPhotoUrl(url);
     entityPhotos.setEntityId(entityId);
+    entityPhotos.setIsCoverPhoto(isCoverPhoto);
     entityPhotosRepository.save(entityPhotos);
   }
 
@@ -214,4 +270,19 @@ public class FilesStorageServiceImpl implements FilesStorageService {
       throw new RuntimeException("Could not load the files!");
     }
   }
+
+    private void compressAndChangeResolutionForCoverPhotoAndQrCode(MultipartFile file, Path outputPath) throws IOException {
+      try {
+        // Use Thumbnailator to compress and change resolution
+        Thumbnails.of(file.getInputStream())
+        .size(300, 200)  // Change resolution to 800x600
+        .outputFormat("jpg")  // Change format to JPEG
+        // .outputQuality(0.75)  // Compress the image to 75% quality
+        .toFile(outputPath.resolve(file.getOriginalFilename()).toFile());
+      } catch(Exception ex) {
+        throw ex;
+      }
+      
+      
+    }
 }
