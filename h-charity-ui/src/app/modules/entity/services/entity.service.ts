@@ -26,6 +26,10 @@ export class EntityService {
     return this.http.get<IEntity[]>(url);
   }
 
+  getEntity(): Observable<any> {
+    return this.http.get(this.rootURL);
+  }
+
   saveEntityBankDetails(entityBankDetails: IEntityBankDetails) {
     return this.http.post(`${this.rootURL}/bankDetails`, entityBankDetails);
   }

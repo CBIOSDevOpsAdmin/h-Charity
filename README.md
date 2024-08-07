@@ -13,7 +13,7 @@
 
 ## Introduction
 
-Welcome to the HIMANISM Charity Project! This project is dedicated to helping Mosques, Madarsas (Schools) and Orphanages, manage donations, events, and volunteers more effectively. Our goal is to create a seamless and user-friendly platform that allows donors to focus on their mission rather than administrative tasks.
+Welcome to the HIMANISM Charity Project!!! This project is dedicated to helping Mosques, Madarsas (Schools) and Orphanages, manage donations, events, and volunteers more effectively. Our goal is to create a seamless and user-friendly platform that allows donors to focus on their mission rather than administrative tasks.
 
 ## Project Goals
 

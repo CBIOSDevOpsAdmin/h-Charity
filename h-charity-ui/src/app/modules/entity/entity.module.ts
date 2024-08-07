@@ -23,7 +23,6 @@ import { StripHtmlPipe } from '../shared/pipes/strip-html.pipe';
 import { ToastModule } from 'primeng/toast';
 import { TabViewModule } from 'primeng/tabview';
 import { SplitterModule } from 'primeng/splitter';
-import { CarouselModule } from 'primeng/carousel';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
@@ -35,6 +34,9 @@ import { GalleriaModule } from 'primeng/galleria';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { ScrollTopModule } from 'primeng/scrolltop';
+import { CarouselModule } from 'primeng/carousel';
+import { ImageModule } from 'primeng/image';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   imports: [
@@ -67,6 +69,8 @@ import { ScrollTopModule } from 'primeng/scrolltop';
     MessageModule,
     MessagesModule,
     ScrollTopModule,
+    ImageModule,
+    DialogModule,
   ],
   declarations: [
     EntityComponent,
@@ -79,4 +83,4 @@ import { ScrollTopModule } from 'primeng/scrolltop';
   ],
   providers: [EntityService],
 })
-export class EntityModule {}
+export class EntityModule { }

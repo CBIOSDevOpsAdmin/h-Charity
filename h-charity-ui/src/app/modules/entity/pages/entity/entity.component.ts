@@ -22,6 +22,14 @@ export class EntityComponent implements OnInit {
   entities: IEntity[] = [];
   untouchedEntities: IEntity[] = [];
   imageInfos?: Observable<any>;
+  // coverImageSrc: any;
+  entity: any = {
+    name: 'Example Entity',
+    description: 'Description of the entity.',
+    type: 'Entity Type',
+    isVerified: false,
+    id: 1
+  };
 
   ngOnInit() {
     this.entityService.getEntities().subscribe({
@@ -39,6 +47,16 @@ export class EntityComponent implements OnInit {
       { label: 'Show Schools', value: 'Show Schools' },
       { label: 'Show Orphanages', value: 'Show Orphanages' },
     ];
+
+    // this.entityService.getEntity().subscribe(entity => {
+    //   if (entity.coverImage) {
+    //     this.coverImageSrc = entity.coverImage;
+    //   } else if (entity.images && entity.images.length > 0) {
+    //     this.coverImageSrc = entity.images[0];
+    //   } else {
+    //     this.coverImageSrc = 'assets/mosque-details/dummy-mosque-image'; // dummy image
+    //   }
+    // });
   }
 
   onViewChange(event: any) {

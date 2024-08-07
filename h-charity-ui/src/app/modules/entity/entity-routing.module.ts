@@ -16,4 +16,4 @@ import { EntityViewComponent } from './pages/entity-view/entity-view.component';
   ],
   exports: [RouterModule],
 })
-export class EntityRoutingModule {}
+export class EntityRoutingModule { }

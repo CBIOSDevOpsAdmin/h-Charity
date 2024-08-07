@@ -19,6 +19,7 @@ import { httpInterceptorProviders } from './modules/shared/utilities/http.interc
 import { ToastModule } from 'primeng/toast';
 import { NotfoundComponent } from './modules/shared/components/notfound/notfound.component';
 
+
 @NgModule({
   declarations: [AppComponent, NotfoundComponent],
   imports: [AppRoutingModule, AppLayoutModule, ToastModule],
@@ -36,4 +37,4 @@ import { NotfoundComponent } from './modules/shared/components/notfound/notfound
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

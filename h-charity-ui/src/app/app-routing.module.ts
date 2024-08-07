@@ -65,4 +65,4 @@ import { NotfoundComponent } from './modules/shared/components/notfound/notfound
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

@@ -1,0 +1,177 @@
+.mosque-details {
+    margin: 20px;
+}
+
+.ui-card-shadow {
+    margin-bottom: 20px;
+}
+
+.ui-card-shadow img {
+    width: 100%;
+    height: auto;
+}
+
+:host ::ng-deep.ui-carousel {
+    width: 100%;
+    height: 300px;
+}
+
+:host ::ng-deep.ui-carousel-item {
+    text-align: center;
+}
+
+
+.time {
+    font-size: 3em;
+    font-weight: bold;
+    margin-top: 0;
+    text-align: end;
+}
+
+.date {
+    text-align: end;
+}
+
+#map {
+    height: 350px;
+    /* Set the height as needed */
+    width: 100%;
+    /* Set the width as needed */
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    border: 1px solid #527cab;
+    border-radius: 1px;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-4 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.payment-image {
+    width: 50px;
+    /* Set the desired width */
+    height: 50px;
+    /* Set the desired height */
+    object-fit: cover;
+    /* Ensure the image covers the entire area */
+    margin: 5px;
+    /* Add some spacing between images */
+}
+
+.card-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-content .col-7,
+.card-content .col-5 {
+    padding: 10px;
+}
+
+.payment-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.product-grid-item {
+    border: 1px solid #d5d5d5;
+    padding: 1em;
+    margin-bottom: 2em;
+    text-align: center;
+}
+
+.product-grid-item .product-grid-item-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product-grid-item img {
+    width: 150px;
+    height: 150px;
+}
+
+.product-category {
+    font-weight: bold;
+    margin-bottom: .5em;
+}
+
+.product-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: .5em 0;
+}
+
+.product-description {
+    margin: .5em 0;
+}
+
+.product-price {
+    margin: .5em 0;
+    color: #007ad9;
+}
+
+.appeal-item {
+    border: 1px solid #ccc;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+}
+
+.appeal-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 16px;
+}
+
+.appeal-details {
+    flex: 1;
+}
+
+.appeal-status {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: #eee;
+}
+
+
+.text-center {
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+p-table {
+    width: 100%;
+}
+
+th,
+td {
+    padding: 0.75rem;
+    text-align: left;
+}

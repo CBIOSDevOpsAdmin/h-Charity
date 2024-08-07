@@ -25,4 +25,12 @@ export class AppealService {
     const url = `${this.rootURL}`;
     return this.http.get<IAppeal[]>(url);
   }
+
+  getAllAppeals(): Observable<any> {
+    return this.http.get<any>('assets/appeals.json');
+  }
+
+  getData(): Observable<any[]> {
+    return this.http.get<any[]>('assets/appeals.json');
+  }
 }

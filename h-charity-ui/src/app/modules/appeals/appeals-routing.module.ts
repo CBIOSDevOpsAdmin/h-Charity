@@ -16,4 +16,4 @@ import { AppealViewComponent } from './pages/appeal-view/appeal-view.component';
   ],
   exports: [RouterModule],
 })
-export class AppealsRoutingModule {}
+export class AppealsRoutingModule { }

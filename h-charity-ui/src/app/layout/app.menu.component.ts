@@ -49,8 +49,27 @@ export class AppMenuComponent implements OnInit {
             icon: 'pi pi-fw pi-warehouse',
             routerLink: ['/institutions/'],
           },
+
         ],
       },
+
+      {
+        label: 'Appeals',
+        items: [
+          {
+            label: 'Appeals',
+            icon: 'pi pi-fw pi-home',
+            routerLink: ['/appeals/'],
+          },
+          {
+            label: 'Add/Update Appeals',
+            icon: 'pi pi-fw pi-home',
+            routerLink: ['/appeals/add-update'],
+          },
+
+        ],
+      },
+
       {
         label: 'Appeals',
         items: [
