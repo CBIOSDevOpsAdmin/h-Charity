@@ -1,12 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AddUpdateAppealComponent } from './components/add-update-appeal/add-update-appeal.component';
-import { AppealsRoutingModule } from './appeals-routing.module';
 import { FileUploadModule } from 'primeng/fileupload';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { EditorModule } from 'primeng/editor';
-import { ReactiveFormsModule } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CardModule } from 'primeng/card';
@@ -20,20 +14,29 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToggleButtonModule } from 'primeng/togglebutton';
-import { CalendarModule } from 'primeng/calendar';
-import { CheckboxModule } from 'primeng/checkbox';
-import { InputSwitchModule } from 'primeng/inputswitch';
 import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
-
-
-
-
+import { AppealsComponent } from './pages/appeals/appeals.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppealsRoutingModule } from './appeals-routing.module';
+import { AppealViewComponent } from './pages/appeal-view/appeal-view.component';
+import { AddUpdateAppealComponent } from './pages/add-update-appeal/add-update-appeal.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
+import { EditorModule } from 'primeng/editor';
+import { InputMaskModule } from 'primeng/inputmask';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CalendarModule } from 'primeng/calendar';
+import { ButtonModule } from 'primeng/button';
+import { StepperModule } from 'primeng/stepper';
 
 @NgModule({
   declarations: [
     AddUpdateAppealComponent,
     AppealComponent,
-
+    AppealsComponent,
+    AppealViewComponent,
+    AddUpdateAppealComponent,
   ],
   imports: [
     CommonModule,
@@ -56,9 +59,25 @@ import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dy
     CalendarModule,
     CheckboxModule,
     InputSwitchModule,
+    CommonModule,
+    AppealsRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    FormsModule,
+    InputTextModule,
+    CheckboxModule,
+    EditorModule,
+    InputMaskModule,
+    InputSwitchModule,
+    InputNumberModule,
+    CalendarModule,
+    ButtonModule,
+    StepperModule,
   ],
 
   providers: [AppealService, ConfirmationService, MessageService, DialogService],
 
 })
+
+
 export class AppealsModule { }

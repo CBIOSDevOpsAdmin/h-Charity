@@ -5,22 +5,29 @@ import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
 
+import com.himanism.hcharityapi.dto.request.EntityBankDetailsReqDto;
 import com.himanism.hcharityapi.dto.request.EntityRequestDto;
+import com.himanism.hcharityapi.dto.response.EntityBankDetailsResDto;
+import com.himanism.hcharityapi.dto.response.EntityResponseDto;
 import com.himanism.hcharityapi.entities.Entities;
 import com.himanism.hcharityapi.entities.EntityBankDetails;
 import com.himanism.hcharityapi.entities.EntityPhotos;
 
 public interface EntityService {
-    List<Entities> getEntities(Authentication authentication);
+    List<EntityResponseDto> getEntities(Authentication authentication);
 
-    Entities addEntity(EntityRequestDto EntityDto);
+    Entities addEntity(EntityRequestDto entityDto);
 
-    Entities updateEntity(EntityRequestDto EntityDto);
+    Entities updateEntity(EntityRequestDto entityDto);
 
     void deleteEntity(Long entityId);
 
-    Optional<Entities> getEntityById(Long entityId);
+    EntityResponseDto getEntityById(Long entityId);
 
     Optional<EntityBankDetails> getBankDetailsByEntityId(Long entityId);
-    Optional<EntityPhotos> getPhotosByEntityId(Long entityId);
+    Optional<List<EntityPhotos>> getPhotosByEntityId(Long entityId);
+
+    EntityBankDetailsResDto addEntityBankDetails(EntityBankDetailsReqDto bankDetailsReqDto, String username);
+
+    EntityBankDetailsResDto updateEntityBankDetails(EntityBankDetailsReqDto bankDetailsReqDto, String username);
 }

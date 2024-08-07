@@ -1,23 +1,19 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AddUpdateAppealComponent } from './components/add-update-appeal/add-update-appeal.component';
-import { AppealComponent } from './pages/appeal/appeal.component';
-
-const routes: Routes = [
-    {
-        path: '',
-        component: AddUpdateAppealComponent,
-    }
-];
+import { RouterModule } from '@angular/router';
+import { AppealsComponent } from './pages/appeals/appeals.component';
+import { AddUpdateAppealComponent } from './pages/add-update-appeal/add-update-appeal.component';
+import { AppealViewComponent } from './pages/appeal-view/appeal-view.component';
 
 @NgModule({
-    imports: [
-        RouterModule.forChild([
-            { path: '', component: AppealComponent },
-            { path: 'add-update', component: AddUpdateAppealComponent },
-            { path: '**', redirectTo: '/notfound' },
-        ]),
-    ],
-    exports: [RouterModule]
+  imports: [
+    RouterModule.forChild([
+      { path: '', component: AppealsComponent },
+      { path: 'add', component: AddUpdateAppealComponent },
+      { path: 'edit/:id', component: AddUpdateAppealComponent },
+      { path: 'view/:id', component: AppealViewComponent },
+      { path: '**', redirectTo: '/notfound' },
+    ]),
+  ],
+  exports: [RouterModule],
 })
 export class AppealsRoutingModule { }

@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+/* tslint:disable:no-unused-variable */
 
+import { TestBed, async, inject } from '@angular/core/testing';
 import { AppealService } from './appeal.service';
 
-describe('AppealService', () => {
-  let service: AppealService;
-
+describe('Service: Appeal', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(AppealService);
+    TestBed.configureTestingModule({
+      providers: [AppealService]
+    });
   });
 
-  it('should be created', () => {
+  it('should ...', inject([AppealService], (service: AppealService) => {
     expect(service).toBeTruthy();
-  });
+  }));
 });

@@ -1,29 +1,32 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IAppeal } from '../models/appeal.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AppealService {
+  rootURL = 'http://localhost:8080/api/v1/appeal';
 
-  // private apiUrl = 'http://localhost:8080/api/v1/entity';
+  http = inject(HttpClient);
 
-  private appealsUrl = 'assets/appeals.json';
-
-
-  constructor(private http: HttpClient) { }
-
-  // saveAppeal(formData: any): Observable<any> {
-  //   return this.http.post(this.apiUrl, formData);
-  // }
-
-  getAllAppeals(): Observable<any> {
-    return this.http.get<any>('assets/appeals.json');
+  saveAppeal(appeal: IAppeal) {
+    return appeal.id > 0
+      ? this.http.put(`${this.rootURL}`, appeal)
+      : this.http.post(`${this.rootURL}`, appeal);
   }
 
-  saveAppeal(Appeal: IAppeal): Observable<any> {
+  getAppealById(appealId: number): Observable<IAppeal> {
+    return this.http.get(`${this.rootURL}/${appealId}`);
+  }
+
+  getAppeals(): Observable<IAppeal[]> {
+    const url = `${this.rootURL}`;
+    return this.http.get<IAppeal[]>(url);
+  }
+
+  getAllAppeals(): Observable<any> {
     return this.http.get<any>('assets/appeals.json');
   }
 

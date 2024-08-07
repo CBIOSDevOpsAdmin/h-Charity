@@ -11,7 +11,10 @@ public interface FilesStorageService {
 
   public void save(MultipartFile file, Long entityId);
 
-  public Resource load(String filename);
+  public Resource load(String filename, Long entityId);
+  public Resource loadCoverPhoto(String filename, Long entityId);
+  public Resource loadQrCodePhoto(String filename, Long entityId);
+  public Resource loadDefaultImage(String filename);
   
   public boolean delete(String filename);
 
@@ -22,5 +25,4 @@ public interface FilesStorageService {
 
   public void saveQRCode(Long entityId, MultipartFile file);
   public void saveCoverPhoto(Long entityId, MultipartFile file);
-
 }

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EntityComponent } from './pages/entity/entity.component';
-import { AddUpdateEntityComponent } from './components/add-update-entity/add-update-entity.component';
+import { AddUpdateEntityComponent } from './pages/add-update-entity/add-update-entity.component';
 import { EntityRoutingModule } from './entity-routing.module';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,19 +23,20 @@ import { StripHtmlPipe } from '../shared/pipes/strip-html.pipe';
 import { ToastModule } from 'primeng/toast';
 import { TabViewModule } from 'primeng/tabview';
 import { SplitterModule } from 'primeng/splitter';
-import { EntityPhotosAddComponent } from './components/entity-photos-add/entity-photos-add.component';
-import { EntityPaymentAddComponent } from './components/entity-payment-add/entity-payment-add.component';
-import { EntityPaymentViewComponent } from './components/entity-payment-view/entity-payment-view.component';
-import { EntityAppealsComponent } from './components/entity-appeals/entity-appeals.component';
-import { EntityBankDetailsComponent } from './components/entity-bank-details/entity-bank-details.component';
-import { EntityViewComponent } from './components/entity-view/entity-view.component';
-import { CarouselModule } from 'primeng/carousel';
 import { CardModule } from 'primeng/card';
-import { ImageModule } from 'primeng/image';
+import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
+import { EntityPaymentAddComponent } from './components/entity-payment-add/entity-payment-add.component';
+import { EntityBankDetailsComponent } from './components/entity-bank-details/entity-bank-details.component';
+import { EntityViewComponent } from './pages/entity-view/entity-view.component';
+import { SafeHtmlPipe } from '../shared/pipes/safe-html.pipe';
+import { GalleriaModule } from 'primeng/galleria';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { ScrollTopModule } from 'primeng/scrolltop';
+import { CarouselModule } from 'primeng/carousel';
+import { ImageModule } from 'primeng/image';
 import { DialogModule } from 'primeng/dialog';
-
-
 
 @NgModule({
   imports: [
@@ -62,20 +63,23 @@ import { DialogModule } from 'primeng/dialog';
     SplitterModule,
     CarouselModule,
     CardModule,
-    ImageModule,
     TableModule,
+    DividerModule,
+    GalleriaModule,
+    MessageModule,
+    MessagesModule,
+    ScrollTopModule,
+    ImageModule,
     DialogModule,
   ],
   declarations: [
     EntityComponent,
     AddUpdateEntityComponent,
     StripHtmlPipe,
-    EntityPhotosAddComponent,
+    SafeHtmlPipe,
     EntityPaymentAddComponent,
-    EntityPaymentViewComponent,
-    EntityAppealsComponent,
     EntityBankDetailsComponent,
-    EntityViewComponent
+    EntityViewComponent,
   ],
   providers: [EntityService],
 })

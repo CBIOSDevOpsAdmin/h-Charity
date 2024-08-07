@@ -1,0 +1,187 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <h5>
+        <strong> {{ mode }} Appeal</strong>
+      </h5>
+      <form [formGroup]="appealForm" (ngSubmit)="saveAppeal()">
+        <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
+          <div class="col-12 md:col-6 lg:col-8">
+            <div class="grid">
+              <div class="col-12 md:col-6 lg:col-12">
+                <input
+                  placeholder="Appeal Title"
+                  type="text"
+                  pInputText
+                  formControlName="title"
+                />
+              </div>
+
+              <div class="col-12 md:col-6 lg:col-12">
+                <p-editor
+                  formControlName="description"
+                  [style]="{ height: '200px' }"
+                  placeholder="Enter the Description"
+                />
+              </div>
+
+              <div class="col-12 md:col-6 lg:col-4">
+                <span style="font-size: large; font-weight: bold">Self </span>
+                <p-inputSwitch
+                  formControlName="selfOrBehalf"
+                  (onChange)="onSelfOrBehalfChange($event)"
+                />
+                <span style="font-size: large; font-weight: bold"
+                  >On Behalf</span
+                >
+              </div>
+              <div class="col-12 md:col-6 lg:col-4">
+                <input
+                  placeholder="On Behalf Name"
+                  type="text"
+                  pInputText
+                  formControlName="onBehalfName"
+                />
+              </div>
+              <div class="col-12 md:col-6 lg:col-4"></div>
+
+              <div class="col-12 md:col-6 lg:col-4">
+                <p-inputNumber
+                  inputId="totalFundRequired"
+                  placeholder="Total Funds Required"
+                  formControlName="totalFundsRequired"
+                />
+              </div>
+
+              <div class="col-12 md:col-6 lg:col-4">
+                <p-inputNumber
+                  inputId="fundsReceived"
+                  placeholder="Funds Received"
+                  formControlName="fundsReceived"
+                />
+              </div>
+
+              <div class="col-12 md:col-6 lg:col-4">
+                <p-inputNumber
+                  inputId="fundsNeeded"
+                  placeholder="Funds Needed"
+                  formControlName="fundsNeeded"
+                />
+              </div>
+
+              <div
+                class="flex align-items-center gap-1 col-12 md:col-6 lg:col-4"
+              >
+                <p-checkbox
+                  formControlName="isZakatEligible"
+                  inputId="isZakatEligible"
+                  [binary]="true"
+                />
+                <label for="isZakatEligible">Is Zakat Eligible</label>
+              </div>
+
+              <div
+                class="flex align-items-center gap-1 col-12 md:col-6 lg:col-4"
+              >
+                <p-checkbox
+                  formControlName="isInterestEligible"
+                  [binary]="true"
+                  inputId="isInterestEligible"
+                />
+                <label for="isInterestEligible">Is Interest Eligible</label>
+              </div>
+
+              <div
+                class="flex align-items-center gap-1 col-12 md:col-6 lg:col-4"
+              >
+                <p-checkbox
+                  formControlName="isAnonymous"
+                  [binary]="true"
+                  inputId="isAnonymous"
+                />
+                <label for="isAnonymous">Is Anonymous</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-1 w-full lg:w-3 xl:w-4 flex flex-column row-gap-3">
+            <div class="grid">
+              <div class="col-12 md:col-6 lg:col-12">
+                <input
+                  placeholder="Appealer"
+                  type="text"
+                  pInputText
+                  formControlName="appealer"
+                />
+              </div>
+              <div class="col-12 md:col-6 lg:col-12">
+                <p-inputMask
+                  mask="(999) 999-9999"
+                  formControlName="appealerMobile"
+                  placeholder="Appealer Mobile"
+                />
+              </div>
+              <div class="col-12 md:col-6 lg:col-12">
+                <p-calendar
+                  placeholder="Requirement Date"
+                  formControlName="requirementDate"
+                  [showIcon]="true"
+                  [showOnFocus]="false"
+                  [showButtonBar]="true"
+                  [appendTo]="'body'"
+                />
+              </div>
+              <div class="col-12 md:col-6 lg:col-12">
+                <input
+                  placeholder="Verifier"
+                  type="text"
+                  pInputText
+                  formControlName="verifier"
+                />
+              </div>
+
+              <div class="col-12 md:col-6 lg:col-12">
+                <p-inputMask
+                  mask="(999) 999-99999"
+                  formControlName="verifierMobile"
+                  placeholder="Verifier Mobile"
+                />
+              </div>
+              <div class="col-12 md:col-6 lg:col-12">
+                <input
+                  placeholder="Verified Date"
+                  type="text"
+                  pInputText
+                  formControlName="verifiedDate"
+                />
+              </div>
+              <div class="col-12 md:col-6 lg:col-12"></div>
+              <div class="col-12 md:col-6 lg:col-12"></div>
+            </div>
+            <div
+              class="flex flex-column sm:flex-row justify-content-between align-items-center gap-3 py-2"
+            >
+              <button
+                pButton
+                pRipple
+                type="button"
+                label="Discard"
+                icon="pi pi-fw pi-trash"
+                class="p-button-danger p-button-outlined flex-1"
+              ></button>
+
+              <button
+                pButton
+                pRipple
+                type="submit"
+                label="Save"
+                icon="pi pi-fw pi-check"
+                class="p-button-primary flex-1"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

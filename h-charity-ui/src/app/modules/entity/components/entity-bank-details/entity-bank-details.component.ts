@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EntityService } from '../../services/entity.service';
-import { IEntityBankDetails } from '../../models/entity-bank-details.model';
 import { MessageService } from 'primeng/api';
+import { IEntityBankDetails } from '../../models/entity.model';
 
 @Component({
   selector: 'app-entity-bank-details',
@@ -27,14 +27,14 @@ export class EntityBankDetailsComponent implements OnInit {
 
   private initEditForm(entityBankDetails: any) {
     this.entityBankDetailsForm.patchValue({
-      id: [entityBankDetails.id],
-      bankName: [entityBankDetails.bankName],
-      accountHolderName: [entityBankDetails.accountHolderName],
-      branchName: [entityBankDetails.branchName],
-      accountNo: [entityBankDetails.accountNo],
-      ifscCode: [entityBankDetails.ifscCode],
-      upiId: [entityBankDetails.upiId],
-      upiNumber: [entityBankDetails.upiNumber],
+      id: entityBankDetails.id,
+      bankName: entityBankDetails.bankName,
+      accountHolderName: entityBankDetails.accountHolderName,
+      branchName: entityBankDetails.branchName,
+      accountNo: entityBankDetails.accountNo,
+      ifscCode: entityBankDetails.ifscCode,
+      upiId: entityBankDetails.upiId,
+      upiNumber: entityBankDetails.upiNumber,
     });
   }
 
@@ -42,7 +42,6 @@ export class EntityBankDetailsComponent implements OnInit {
     let entityBankDetails: IEntityBankDetails =
       this.entityBankDetailsForm.value;
     entityBankDetails.entityId = this.entityId;
-    console.log(entityBankDetails);
     this.entityService.saveEntityBankDetails(entityBankDetails).subscribe({
       next: data => {
         this.messageService.add({
@@ -65,5 +64,9 @@ export class EntityBankDetailsComponent implements OnInit {
       upiId: [''],
       upiNumber: [''],
     });
+  }
+
+  onReset() {
+    this.entityBankDetailsForm.reset();
   }
 }

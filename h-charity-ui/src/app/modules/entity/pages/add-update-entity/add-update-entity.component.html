@@ -1,0 +1,131 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <h5>
+        <strong> {{ mode }} Institution</strong>
+      </h5>
+      <form [formGroup]="entityForm" (ngSubmit)="saveEntity()">
+        <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
+          <div class="col-12 md:col-6 lg:col-8">
+            <div class="grid">
+              <div class="col-12 md:col-6 lg:col-12">
+                <input placeholder="Institution Name" type="text" pInputText formControlName="name" />
+              </div>
+              <div class="col-12 md:col-6 lg:col-4">
+                <p-dropdown formControlName="type" [options]="entityTypes" optionLabel="name" optionLabel="value"
+                  placeholder="Select Type" dataKey="value" />
+              </div>
+              <div class="col-12 md:col-6 lg:col-4">
+                <input placeholder="President" type="text" pInputText formControlName="president" />
+              </div>
+              <div class="col-12 md:col-6 lg:col-4">
+                <input placeholder="Point of Contact" type="text" pInputText formControlName="poc" />
+              </div>
+
+              <div class="col-12 md:col-6 lg:col-12">
+                <p-editor formControlName="description" [style]="{ height: '200px' }"
+                  placeholder="Enter the Description" />
+              </div>
+
+              <div class="flex align-items-center gap-1 col-12 md:col-6 lg:col-4">
+                <p-checkbox formControlName="isVerified" inputId="isVerified" [binary]="true" />
+                <label for="isVerified">Is Verified</label>
+              </div>
+
+              <div class="flex align-items-center gap-1 col-12 md:col-6 lg:col-4">
+                <p-checkbox formControlName="hasInternet" [binary]="true" inputId="hasInternet" />
+                <label for="hasInternet">Has Internet</label>
+              </div>
+
+              <div class="col-12 md:col-6 lg:col-4"></div>
+
+              <div class="col-12 md:col-6 lg:col-4">
+                <p-inputMask mask="(999) 999-9999" formControlName="mobile" placeholder="Mobile" />
+              </div>
+
+              <div class="col-12 md:col-6 lg:col-4">
+                <p-inputMask mask="(999) 999-99999" formControlName="office" placeholder="Office" />
+              </div>
+            </div>
+          </div>
+
+          <div formGroupName="address" class="flex-1 w-full lg:w-3 xl:w-4 flex flex-column row-gap-3">
+            <p-panel header="Address">
+              <div class="grid">
+                <div class="col-12 md:col-6 lg:col-12">
+                  <input placeholder="Flat, House no., Building, Company, Apartment" type="text" pInputText
+                    formControlName="address1" />
+                </div>
+                <div class="col-12 md:col-6 lg:col-12">
+                  <input placeholder="Area, Street, Sector, Village" type="text" pInputText
+                    formControlName="address2" />
+                </div>
+                <div class="col-12 md:col-6 lg:col-12">
+                  <input placeholder="Landmark" type="text" pInputText formControlName="landmark" />
+                </div>
+                <div class="col-12 md:col-6 lg:col-12">
+                  <input placeholder="Pincode" type="text" pInputText formControlName="pincode" />
+                </div>
+                <div class="col-12 md:col-6 lg:col-12">
+                  <p-dropdown formControlName="country" [options]="countries" optionLabel="name"
+                    placeholder="Select Country" (onChange)="onCountrySelect($event)" />
+                </div>
+                <div class="col-12 md:col-6 lg:col-12">
+                  <p-dropdown formControlName="state" [options]="states" optionLabel="name" placeholder="Select State"
+                    (onChange)="onStateSelect($event)" />
+                </div>
+                <div class="col-12 md:col-6 lg:col-12">
+                  <p-dropdown formControlName="city" [options]="cities" optionLabel="name" placeholder="Select City" />
+                </div>
+              </div>
+            </p-panel>
+
+            <div class="flex flex-column sm:flex-row justify-content-between align-items-center gap-3 py-2">
+              <button pButton pRipple label="Discard" icon="pi pi-fw pi-trash"
+                class="p-button-danger p-button-outlined flex-1"></button>
+
+              <button pButton pRipple label="Save" icon="pi pi-fw pi-check" class="p-button-primary flex-1"></button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+@if(entityId > 0) {
+<p-tabView>
+  <p-tabPanel header="Payments">
+    <app-entity-payment-add [entity]="entityId"></app-entity-payment-add>
+  </p-tabPanel>
+  <p-tabPanel header="Photos">
+    <div class="grid">
+      <div class="col-12 md:col-6 lg:col-12">
+        <p-fileUpload name="photos" [customUpload]="true" (uploadHandler)="onUpload($event)" [multiple]="true"
+          accept="image/*" maxFileSize="5000000">
+          <ng-template pTemplate="content">
+            <ul *ngIf="uploadedFiles.length">
+              <li *ngFor="let file of uploadedFiles">
+                {{ file.name }} - {{ file.size }} bytes
+              </li>
+            </ul>
+          </ng-template>
+        </p-fileUpload>
+      </div>
+
+      <div class="col-12 md:col-6 lg:col-12">
+        <<<<<<< HEAD:h-charity-ui/src/app/modules/entity/components/add-update-entity/add-update-entity.component.html
+          <p-fileUpload mode="basic" chooseLabel="Upload Cover Photo" chooseIcon="pi pi-upload" name="coverPhoto"
+          [customUpload]="true" (uploadHandler)="onUploadCoverPhoto($event)" mode="advanced" [multiple]="false"
+          accept="image/*" maxFileSize="1000000" />
+        =======
+        <p-fileUpload mode="basic" chooseLabel="Upload Cover Photo" chooseIcon="pi pi-upload" name="coverPhoto"
+          [customUpload]="true" (uploadHandler)="onUploadCoverPhoto($event)" mode="advanced" [multiple]="false"
+          accept="image/*" maxFileSize="10000000" />
+        >>>>>>>
+        release/hcy1.0:h-charity-ui/src/app/modules/entity/pages/add-update-entity/add-update-entity.component.html
+      </div>
+    </div>
+  </p-tabPanel>
+</p-tabView>
+
+}

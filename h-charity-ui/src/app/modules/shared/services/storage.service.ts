@@ -1,4 +1,5 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
+import { Subject } from 'rxjs';
 
 const USER_KEY = 'auth-user';
 
@@ -8,9 +9,17 @@ const USER_KEY = 'auth-user';
 export class StorageService {
   loggedIn: WritableSignal<boolean> = signal(false);
 
+  private initSource = new Subject<void>();
+  initCalled$ = this.initSource.asObservable();
+
+  callInit() {
+    this.initSource.next();
+  }
+
   clean(): void {
     window.sessionStorage.clear();
     this.loggedIn.set(false);
+    this.initSource.next();
   }
 
   public saveUser(user: any): void {
