@@ -511,7 +511,7 @@
                                                         placeholder="Enter the Description" />
                                                 </div>
                                                 <div class="col-12 md:col-6 lg:col-6">
-                                                    <p-inputSwitch />
+                                                    Self <p-inputSwitch /> OnBehalf
                                                 </div>
                                                 <div class="col-12 md:col-6 lg:col-6">
                                                     <input placeholder=" on Behalf Name" type="text" pInputText
@@ -563,11 +563,10 @@
                                                         formControlName="appealerMobile" />
                                                 </div>
                                                 <div class="col-12 md:col-6 lg:col-12">
-                                                    <p-calendar type="text" formControlName="requirementDate"
-                                                        [showIcon]="true" [showOnFocus]="false">
-                                                    </p-calendar>
-
+                                                    <p-calendar id="requirementDate" formControlName="requirementDate"
+                                                        [showIcon]="true"></p-calendar>
                                                 </div>
+
                                                 <div class="col-12 md:col-6 lg:col-12">
                                                     <input placeholder=" Verifier" type="text" pInputText
                                                         formControlName="verifier" />
@@ -580,8 +579,15 @@
                                                     <input placeholder=" Verified date" type="text" pInputText
                                                         formControlName="verifiedDate" />
                                                 </div>
+                                                <div
+                                                    class="flex flex-column sm:flex-row justify-content-between align-items-center gap-3 py-2">
+                                                    <button pButton pRipple label="Discard" icon="pi pi-fw pi-trash"
+                                                        class="p-button-danger p-button-outlined flex-1"
+                                                        (click)="hideDialog()"></button>
 
-
+                                                    <button pButton pRipple label="Save" icon="pi pi-fw pi-check"
+                                                        class="p-button-primary flex-1" (click)="saveAppeal()"></button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -593,10 +599,7 @@
 
                 </ng-template>
 
-                <ng-template pTemplate="footer">
-                    <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="hideDialog()" />
-                    <p-button label="Save" icon="pi pi-check" [text]="true" (onClick)="saveAppeal()" />
-                </ng-template>
+
             </p-dialog>
 
 

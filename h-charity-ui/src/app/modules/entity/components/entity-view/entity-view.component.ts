@@ -3,7 +3,7 @@ import { IAppeal } from '../../models/appeal.model';
 import { ActivatedRoute } from '@angular/router';
 import { EntityService } from '../../services/entity.service';
 import { IEntity } from '../../models/entity.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-entity-view',
@@ -88,8 +88,10 @@ export class EntityViewComponent implements OnInit {
     })
 
     this.feedbackForm = this.fb.group({
-      title: [''],
-      description: ['']
+      feedbackTitle: ['', Validators.required],
+      description: ['', Validators.required],
+      userName: ['', Validators.required],
+      mobileNumber: ['', Validators.required]
     });
   }
 

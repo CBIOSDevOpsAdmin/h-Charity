@@ -12,7 +12,7 @@ export interface IAppeal {
     isAnonymous?: boolean;
     appealer?: string;
     appealerMobile?: string;
-    requirementDate?: string;
+    requirementDate?: number;
     verifier?: string;
     verifierMobile?: string;
     verifiedDate?: string;

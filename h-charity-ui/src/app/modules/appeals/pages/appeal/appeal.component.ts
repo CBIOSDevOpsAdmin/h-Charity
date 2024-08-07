@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TableDemoModule } from 'src/app/demo/components/uikit/table/tabledemo.module';
 import { TableDemoComponent } from 'src/app/demo/components/uikit/table/tabledemo.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-appeal',
@@ -69,7 +70,7 @@ export class AppealComponent implements OnInit {
 
 
 
-  constructor(private appealsService: AppealService, private messageService: MessageService, private confirmationService: ConfirmationService, private fb: FormBuilder) { }
+  constructor(private appealsService: AppealService, private messageService: MessageService, private confirmationService: ConfirmationService, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit() {
     this.appealsService.getData().subscribe((data: any[]) => {
@@ -81,7 +82,7 @@ export class AppealComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', Validators.required],
       onBehalfName: [{ value: '', disabled: true }],
-      requirementDate: [''],
+      requirementDate: [null],
       totalFundsRequired: [null],
       fundsRecived: [null],
       fundsNeeded: [null],
@@ -100,22 +101,22 @@ export class AppealComponent implements OnInit {
 
   editAppeal(appeal: IAppeal) {
     this.appealsForm.patchValue({
-      id: [appeal.id],
-      title: [appeal.title],
+      id: appeal.id,
+      title: appeal.title,
       description: appeal.description,
-      onBehalfName: [appeal.onBehalfName],
-      requirementDate: [appeal.requirementDate],
-      fundsRequired: [appeal.totalFundsRequired],
-      fundsRecived: [appeal.fundsReceived],
-      fundsPending: [appeal.fundsNeeded],
+      onBehalfName: appeal.onBehalfName,
+      requirementDate: appeal.requirementDate,
+      fundsRequired: appeal.totalFundsRequired,
+      fundsRecived: appeal.fundsReceived,
+      fundsPending: appeal.fundsNeeded,
       zakatEligible: appeal.isZakatEligible,
       interestEligible: appeal.isInterestEligible,
       isAnonymous: appeal.isAnonymous,
-      appealer: [appeal.appealer],
-      appealerMobile: [appeal.appealerMobile],
-      verifier: [appeal.verifier],
-      verifierMobile: [appeal.verifierMobile],
-      verifiedDate: [appeal.verifiedDate]
+      appealer: appeal.appealer,
+      appealerMobile: appeal.appealerMobile,
+      verifier: appeal.verifier,
+      verifierMobile: appeal.verifierMobile,
+      verifiedDate: appeal.verifiedDate
     });
     this.appealDialog = true;
   }
@@ -133,48 +134,36 @@ export class AppealComponent implements OnInit {
   }
 
 
+  public saveAppeal() {
+    debugger;
+    if (!this.validateAppealDetails()) {
+      this.appealsService.saveAppeal(this.appealsForm.value).subscribe({
+        next: response => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Save',
+            detail: 'Appeal saved successfully',
+          });
+          this.router.navigateByUrl('/appeals');
+        },
+      });
+    }
+  }
+
+  private validateAppealDetails() {
+    let isError: boolean = false;
+
+    return isError;
+  }
+
+  private generatePayload(data: any): IAppeal {
+    let payload = data;
+    payload.type = payload.type.title;
+    payload.type = payload.type.description;
+    return payload;
+  }
 
 
-
-
-  //   saveAppeal() {
-  //     this.submitted = true;
-
-  //     if (this.appeals.title?.trim()) {
-  //         if (this.appeals.id) {
-  //             this.appeal[this.findIndexById(appeal.id)] = this.appeal;
-  //             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Appeal Updated', life: 3000 });
-  //         } else {
-  //             this.appeals.id = this.createId();
-  //             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Appeal Created', life: 3000 });
-  //         }
-
-  //         this.appeals = [...this.appeals];
-  //         this.appealDialog = false;
-  //         this.appeal = {};
-  //     }
-  // }
-
-  // findIndexById(id: string): number {
-  //   let index = -1;
-  //   for (let i = 0; i < this.appeals.length; i++) {
-  //     if (this.appeal[i].id === id) {
-  //       index = i;
-  //       break;
-  //     }
-  //   }
-
-  //   return index;
-  // }
-
-  // createId(): string {
-  //   let id = '';
-  //   var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  //   for (var i = 0; i < 5; i++) {
-  //     id += chars.charAt(Math.floor(Math.random() * chars.length));
-  //   }
-  //   return id;
-  // }
 
 
 }

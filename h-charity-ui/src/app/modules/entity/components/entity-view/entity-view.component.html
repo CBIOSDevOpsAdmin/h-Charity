@@ -265,6 +265,65 @@ Name of the account holder : MADEENA mASJID
                         </p-dataView>
                     </div>
 
+                    <p-table [value]="appeals" [paginator]="true" [rows]="5" [tableStyle]="{ 'min-width': '50rem' }"
+                        [rowsPerPageOptions]="[5, 10, 20]"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [showCurrentPageReport]="true">
+                        <ng-template pTemplate="caption">
+                            <div class="flex align-items-center justify-content-between">
+                                Feedback's
+                                <p-button icon="pi pi-refresh" />
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="feedbackTitle" style="min-width:12rem">Feedback Title<p-sortIcon
+                                        field="feedbackTitle" />
+                                </th>
+
+                                <th pSortableColumn="description" style="min-width:10rem">
+                                    Description <p-sortIcon field="description" /></th>
+
+                                <th pSortableColumn="userName" style="min-width:10rem">
+                                    User Name<p-sortIcon field="userName" /></th>
+
+                                <th pSortableColumn="mobileNumber" style="min-width:10rem">
+                                    Mobile Number<p-sortIcon field="mobileNumber" /></th>
+
+                                <th style="min-width:10rem"></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-appeal>
+                            <tr>
+                                <td>{{appeal.title}}</td>
+                                <td>{{appeal.requirementDate}}</td>
+                                <td>{{appeal.totalFundsRequired}}</td>
+                                <td>{{appeal.fundsReceived}}</td>
+                                <td>{{appeal.fundsNeeded}}</td>
+                                <td>{{appeal.isZakatEligible}}</td>
+                                <td>{{appeal.isIntrestEligible}}</td>
+                                <td>{{appeal.isAnonymous}}</td>
+
+
+                                <td>
+                                    <div class="flex justify-content-center flex-wrap gap-3 mb-4">
+                                        <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true"
+                                            severity="success" (onClick)="editAppeal(appeal)" />
+                                        <p-button icon="pi pi-trash" severity="danger" [rounded]="true"
+                                            [outlined]="true" (onClick)="deleteAppeal(appeal)" />
+                                        <p-button icon="pi pi-eye" class="mr-1" [rounded]="true" [outlined]="true"
+                                            (onClick)="viewAppeal(appeal)" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="summary">
+                            <div class="flex align-items-center justify-content-between">
+                                In total there are {{ appeals ? appeals.length : 0 }} appeals.
+                            </div>
+                        </ng-template>
+                    </p-table>
+
 
                     <div class="card">
                         <h2 class="text-center">Our “Team”</h2>
@@ -323,19 +382,29 @@ Name of the account holder : MADEENA mASJID
                     <p-button label="Give Feedback" [outlined]="true" severity="feedback" (click)="showFeedback()" />
 
 
-                    <p-dialog header="Feedback" [(visible)]="displayDialog" [modal]="true" [closable]="false">
+                    <p-dialog header="Feedback" [(visible)]="displayDialog" [modal]="true" [closable]="false"
+                        [style]="{ height: '500px' }" [style]="{ width: '800px' }">
                         <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
+                            <div class="grid">
+                                <div class="col-12 md:col-6 lg:col-12">
+                                    <input placeholder=" Feedback Title" type="text" pInputText
+                                        formControlName="feedbackTitle" />
+                                </div>
 
-                            <div class="col-12 md:col-12 lg:col-12">
-                                <input placeholder=" Feedback Title" type="text" pInputText
-                                    formControlName="feedbacktitle" />
+                                <div class="col-12 md:col-6 lg:col-12">
+                                    <p-editor formControlName="description" [style]="{ height: '200px' }"
+                                        placeholder="Enter the Description" />
+                                </div>
+
+                                <div class="col-12 md:col-8 lg:col-4">
+                                    <input placeholder=" User Name" type="text" pInputText formControlName="userName" />
+                                </div>
+
+                                <div class="col-12 md:col-8 lg:col-4">
+                                    <input placeholder=" Mobile Number" type="text" pInputText
+                                        formControlName="mobileNumber" />
+                                </div>
                             </div>
-
-                            <div class="col-12 md:col-6 lg:col-12">
-                                <p-editor formControlName="description" [style]="{ height: '200px' }"
-                                    placeholder="Enter the Description" />
-                            </div>
-
                             <p-footer>
                                 <p-button label="Close" icon="pi pi-times" [text]="true"
                                     (click)="hideDialog()"></p-button>
