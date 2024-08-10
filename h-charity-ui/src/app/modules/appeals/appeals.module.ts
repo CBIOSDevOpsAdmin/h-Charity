@@ -7,15 +7,14 @@ import { CardModule } from 'primeng/card';
 import { TabViewModule } from 'primeng/tabview';
 import { AppealService } from './services/appeal.service';
 import { ToastModule } from 'primeng/toast';
-import { AppealComponent } from './pages/appeal/appeal.component';
 import { DataViewModule } from 'primeng/dataview';
+import { AppealComponent } from './pages/appeals/appeal.component';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToggleButtonModule } from 'primeng/togglebutton';
-import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AppealsComponent } from './pages/appeals/appeals.component';
+import { DialogService } from 'primeng/dynamicdialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppealsRoutingModule } from './appeals-routing.module';
 import { AppealViewComponent } from './pages/appeal-view/appeal-view.component';
@@ -34,7 +33,6 @@ import { StepperModule } from 'primeng/stepper';
   declarations: [
     AddUpdateAppealComponent,
     AppealComponent,
-    AppealsComponent,
     AppealViewComponent,
     AddUpdateAppealComponent,
   ],
