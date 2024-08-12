@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AppealService } from '../../services/appeal.service';
@@ -67,27 +67,27 @@ export class AddUpdateAppealComponent implements OnInit {
     return isError;
   }
 
-  private initFormNew() {
-    this.appealForm = this.formBuilder.group({
-      id: [0],
-      title: [''],
-      description: [''],
-      selfOrBehalf: [false],
-      onBehalfName: [{ value: '', disabled: true }, Validators.required],
-      totalFundsRequired: [],
-      fundsReceived: [],
-      fundsNeeded: [],
-      isZakatEligible: [false],
-      isInterestEligible: [false],
-      isAnonymous: [false],
-      appealer: [{ value: '', disabled: true }, Validators.required],
-      appealerMobile: [{ value: '', disabled: true }, Validators.required],
-      requirementDate: [''],
-      verifier: [{ value: '', disabled: true }, Validators.required],
-      verifierMobile: [{ value: '', disabled: true }, Validators.required],
-      verifiedDate: [{ value: '', disabled: true }, Validators.required],
-    });
-  }
+  // private initFormNew() {
+  //   this.appealForm = this.formBuilder.group({
+  //     id: [0],
+  //     title: [''],
+  //     description: [''],
+  //     selfOrBehalf: [false],
+  //     onBehalfName: [{ value: '', disabled: true }, Validators.required],
+  //     totalFundsRequired: [],
+  //     fundsReceived: [],
+  //     fundsNeeded: [],
+  //     isZakatEligible: [false],
+  //     isInterestEligible: [false],
+  //     isAnonymous: [false],
+  //     appealer: [{ value: '', disabled: true }, Validators.required],
+  //     appealerMobile: [{ value: '', disabled: true }, Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")],
+  //     requirementDate: [''],
+  //     verifier: [{ value: '', disabled: true }, Validators.required],
+  //     verifierMobile: [{ value: '', disabled: true }, Validators.required],
+  //     verifiedDate: [{ value: '', disabled: true }, Validators.required],
+  //   });
+  // }
 
   // private initFormEdit() {
   //   this.entityService.getEntityById(this.appealId).subscribe({
@@ -125,5 +125,69 @@ export class AddUpdateAppealComponent implements OnInit {
   //   payload.address.city = payload.address.city.name;
   //   return payload;
   // }
+
+  private initFormNew() {
+    this.appealForm = this.formBuilder.group({
+      id: [0],
+      title: ['', Validators.required, Validators.pattern('[a-zA-Z ][0-9]*')],
+      description: [''],
+      selfOrBehalf: [false],
+      onBehalfName: [{ value: '', disabled: true }, Validators.required],
+      totalFundsRequired: [],
+      fundsReceived: [],
+      fundsNeeded: [],
+      isZakatEligible: [false],
+      isInterestEligible: [false],
+      isAnonymous: [false],
+      appealer: [{ value: '', disabled: true }, Validators.required],
+      appealerMobile: [
+        { value: '', disabled: true },
+        [
+          Validators.required,
+          Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
+        ]
+      ],
+      requirementDate: ['', this.dateValidator],
+      verifier: [{ value: '', disabled: true }, Validators.required],
+      verifierMobile: [
+        { value: '', disabled: true },
+        [
+          Validators.required,
+          Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
+        ]
+      ],
+      verifiedDate: [{ value: '', disabled: true }, Validators.required],
+    });
+
+    this.appealForm.get('selfOrBehalf')?.valueChanges.subscribe((isOnBehalf) => {
+      this.toggleOnBehalfFields(isOnBehalf);
+    });
+  }
+
+  private toggleOnBehalfFields(isOnBehalf: boolean): void {
+    const onBehalfFields = ['onBehalfName', 'appealer', 'appealerMobile'];
+
+    if (isOnBehalf) {
+      onBehalfFields.forEach(field => {
+        this.appealForm.get(field)?.enable();
+      });
+    } else {
+      onBehalfFields.forEach(field => {
+        this.appealForm.get(field)?.disable();
+        this.appealForm.get(field)?.reset();
+      });
+    }
+  }
+
+
+  private dateValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const dateValue = control.value;
+    if (dateValue && new Date(dateValue) < new Date()) {
+      return { 'invalidDate': true };
+    }
+    return null;
+  }
+
+
   //#endregion
 }
