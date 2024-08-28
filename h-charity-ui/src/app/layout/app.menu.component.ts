@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './app.menu.component.html',
 })
 export class AppMenuComponent implements OnInit {
+  //#region Variables
   model: any[] = [];
   userRole: string = '';
 
@@ -16,6 +17,7 @@ export class AppMenuComponent implements OnInit {
 
   layoutService = inject(LayoutService);
   storageService = inject(StorageService);
+  //#endregion
 
   ngOnInit() {
     this.initSubscription = this.storageService.initCalled$.subscribe(() => {
@@ -26,14 +28,11 @@ export class AppMenuComponent implements OnInit {
     this.loadMenuOptions();
   }
 
-  public loadMenuOptions() {
-    console.log('Apple');
-
+  //#region Private methods
+  private loadMenuOptions() {
     this.loadUnauthenticatedMenuOptions();
 
-    if (this.storageService.getUser() && this.storageService.getUser().roles) {
-      console.log('Auth');
-
+    if (this.storageService.getUser()?.roles) {
       this.userRole = this.storageService.getUser().roles[0];
       this.loadAuthenticatedMenuOptions(this.userRole);
     }
@@ -47,9 +46,8 @@ export class AppMenuComponent implements OnInit {
           {
             label: 'Institutions',
             icon: 'pi pi-fw pi-warehouse',
-            routerLink: ['/institutions/'],
+            routerLink: ['/'],
           },
-
         ],
       },
 
@@ -61,15 +59,8 @@ export class AppMenuComponent implements OnInit {
             icon: 'pi pi-fw pi-home',
             routerLink: ['/appeals/'],
           },
-          {
-            label: 'Add/Update Appeals',
-            icon: 'pi pi-fw pi-home',
-            routerLink: ['/appeals/add'],
-          },
-
         ],
       },
-
       {
         label: 'HIMANISM',
         icon: 'pi pi-fw pi-briefcase',
@@ -85,28 +76,49 @@ export class AppMenuComponent implements OnInit {
   }
 
   private loadAuthenticatedMenuOptions(userRole: string) {
+    this.addAppealOptionToAllAuthenticatedUsers();
     switch (userRole) {
       case 'NORMAL_USER':
-        console.log('NORMAL USER');
+        break;
+      case 'INSTITUTE_OWNER':
+        break;
 
+      case 'ORGANISATION_VOLUNTEER':
         this.model.find(x => {
           if (x.label === 'Institutions') {
             x.items.push({
-              label: 'Add Appeal',
+              label: 'Add Institute',
               icon: 'pi pi-fw pi-file-edit',
               routerLink: ['/appeals/add'],
             });
           }
         });
         break;
-      case 'INSTITUTE_OWNER':
-        break;
-
-      case 'ORGANISATION_VOLUNTEER':
-        break;
 
       case 'ADMIN':
+        this.model.find(x => {
+          if (x.label === 'Institutions') {
+            x.items.push({
+              label: 'Add Institute',
+              icon: 'pi pi-fw pi-file-edit',
+              routerLink: ['/appeals/add'],
+            });
+          }
+        });
         break;
     }
   }
+
+  private addAppealOptionToAllAuthenticatedUsers() {
+    this.model.find(x => {
+      if (x.label === 'Appeals') {
+        x.items.push({
+          label: 'Add Appeal',
+          icon: 'pi pi-fw pi-file-edit',
+          routerLink: ['/appeals/add'],
+        });
+      }
+    });
+  }
+  //#endregion
 }
