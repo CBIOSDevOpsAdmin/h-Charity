@@ -13,10 +13,12 @@ import { NotfoundComponent } from './modules/shared/components/notfound/notfound
           children: [
             {
               path: '',
-              loadChildren: () =>
-                import('./demo/components/dashboard/dashboard.module').then(
-                  m => m.DashboardModule
-                ),
+              redirectTo: 'institutions',
+              pathMatch: 'full',
+              // loadChildren: () =>
+              //   import('./demo/components/dashboard/dashboard.module').then(
+              //     m => m.DashboardModule
+              //   ),
             },
             {
               path: 'institutions',
@@ -65,4 +67,4 @@ import { NotfoundComponent } from './modules/shared/components/notfound/notfound
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

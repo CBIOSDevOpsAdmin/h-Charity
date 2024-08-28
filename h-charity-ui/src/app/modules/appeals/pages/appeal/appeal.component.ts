@@ -4,17 +4,16 @@ import { IAppeal } from '../../models/appeal.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { TableDemoModule } from 'src/app/demo/components/uikit/table/tabledemo.module';
-import { TableDemoComponent } from 'src/app/demo/components/uikit/table/tabledemo.component';
+// import { TableDemoModule } from 'src/app/demo/components/uikit/table/tabledemo.module';
+// import { TableDemoComponent } from 'src/app/demo/components/uikit/table/tabledemo.component';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-appeal',
   templateUrl: './appeal.component.html',
-  styleUrl: './appeal.component.scss'
+  styleUrl: './appeal.component.scss',
 })
 export class AppealComponent implements OnInit {
-
   // loading: boolean = true;
 
   // appeals: IAppeal[] = [
@@ -65,12 +64,15 @@ export class AppealComponent implements OnInit {
 
   appeal: IAppeal;
 
-
   appealsForm: FormGroup;
 
-
-
-  constructor(private appealsService: AppealService, private messageService: MessageService, private confirmationService: ConfirmationService, private fb: FormBuilder, private router: Router) { }
+  constructor(
+    private appealsService: AppealService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.appealsService.getData().subscribe((data: any[]) => {
@@ -93,11 +95,9 @@ export class AppealComponent implements OnInit {
       appealerMobile: [''],
       verifier: [{ value: '', disabled: true }],
       verifierMobile: [{ value: '', disabled: true }],
-      verifiedDate: [{ value: '', disabled: true }]
+      verifiedDate: [{ value: '', disabled: true }],
     });
-
   }
-
 
   editAppeal(appeal: IAppeal) {
     this.appealsForm.patchValue({
@@ -116,11 +116,10 @@ export class AppealComponent implements OnInit {
       appealerMobile: appeal.appealerMobile,
       verifier: appeal.verifier,
       verifierMobile: appeal.verifierMobile,
-      verifiedDate: appeal.verifiedDate
+      verifiedDate: appeal.verifiedDate,
     });
     this.appealDialog = true;
   }
-
 
   viewAppeal(appeal: IAppeal) {
     this.viewDialog = true;
@@ -132,7 +131,6 @@ export class AppealComponent implements OnInit {
     this.viewDialog = false;
     this.submitted = false;
   }
-
 
   public saveAppeal() {
     debugger;
@@ -162,8 +160,4 @@ export class AppealComponent implements OnInit {
     payload.type = payload.type.description;
     return payload;
   }
-
-
-
-
 }

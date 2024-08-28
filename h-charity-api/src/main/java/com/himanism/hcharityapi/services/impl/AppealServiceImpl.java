@@ -11,13 +11,8 @@ import lombok.RequiredArgsConstructor;
 
 import com.himanism.hcharityapi.dto.request.AppealRequestDto;
 import com.himanism.hcharityapi.dto.response.AppealResDto;
-import com.himanism.hcharityapi.dto.response.EntityBankDetailsResDto;
-import com.himanism.hcharityapi.dto.response.EntityPhotosDto;
-import com.himanism.hcharityapi.dto.response.EntityResponseDto;
 import com.himanism.hcharityapi.entities.Appeal;
-import com.himanism.hcharityapi.entities.Entities;
 import com.himanism.hcharityapi.mappers.AppealMapper;
-import com.himanism.hcharityapi.mappers.EntityMapper;
 import com.himanism.hcharityapi.repo.AppealRepository;
 import com.himanism.hcharityapi.services.AppealService;
 
@@ -30,7 +25,7 @@ public class AppealServiceImpl implements AppealService {
 
     @Override
     public List<AppealResDto> getAppeals(Authentication authentication) {
-          List<Appeal> appeals = appealRepository.findAll();
+        List<Appeal> appeals = appealRepository.findAll();
         return appeals.stream().map(AppealMapper.INSTANCE::appealToAppealResponseDTO).collect(Collectors.toList());
     }
 
@@ -43,7 +38,8 @@ public class AppealServiceImpl implements AppealService {
     @Override
     public Appeal updateAppeal(AppealRequestDto appealDto) {
         Optional<Appeal> existingAppeal = appealRepository.findById(appealDto.getId());
-        if (existingAppeal.isEmpty()) throw new IllegalArgumentException("Invalid Appeal ID");
+        if (existingAppeal.isEmpty())
+            throw new IllegalArgumentException("Invalid Appeal ID");
         Appeal updatedAppeal = existingAppeal.get();
         updatedAppeal.setTitle(appealDto.getTitle());
         updatedAppeal.setDescription(appealDto.getDescription());
@@ -55,12 +51,12 @@ public class AppealServiceImpl implements AppealService {
         updatedAppeal.setIsZakatEligible(appealDto.getIsZakatEligible());
         updatedAppeal.setIsInterestEligible(appealDto.getIsInterestEligible());
         updatedAppeal.setIsAnonymous(appealDto.getIsAnonymous());
-        return appealRepository.save(updatedAppeal);        
+        return appealRepository.save(updatedAppeal);
     }
 
     @Override
     public void deleteAppeal(Long appealId) {
-       appealRepository.deleteById(appealId);
+        appealRepository.deleteById(appealId);
     }
 
     @Override

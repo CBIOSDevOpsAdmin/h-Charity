@@ -43,7 +43,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/auth")
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
 public class AuthController {
   @Autowired
   AuthenticationManager authenticationManager;
@@ -70,25 +70,25 @@ public class AuthController {
         new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
-    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
     ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
     List<String> roles = userDetails.getAuthorities().stream()
         .map(item -> item.getAuthority())
         .collect(Collectors.toList());
-    
+
     RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
-    
+
     ResponseCookie jwtRefreshCookie = jwtUtils.generateRefreshJwtCookie(refreshToken.getToken());
 
     return ResponseEntity.ok()
-              .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-              .header(HttpHeaders.SET_COOKIE, jwtRefreshCookie.toString())
-              .body(new UserInfoResponse(userDetails.getId(),
-                                         userDetails.getUsername(),
-                                         userDetails.getEmail(),
-                                         roles));
+        .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+        .header(HttpHeaders.SET_COOKIE, jwtRefreshCookie.toString())
+        .body(new UserInfoResponse(userDetails.getId(),
+            userDetails.getUsername(),
+            userDetails.getEmail(),
+            roles));
   }
 
   @PostMapping("/signup")
@@ -106,36 +106,36 @@ public class AuthController {
     }
 
     // Create new user's account
-    User user = new User(signUpRequest.getUsername(), 
-               signUpRequest.getEmail(),
-               encoder.encode(signUpRequest.getPassword()));
+    User user = new User(signUpRequest.getUsername(),
+        signUpRequest.getEmail(),
+        encoder.encode(signUpRequest.getPassword()));
 
     Set<String> strRoles = signUpRequest.getRole();
     Set<Role> roles = new HashSet<>();
 
     if (strRoles == null) {
-      Role userRole = roleRepository.findByName(Erole.ROLE_USER)
+      Role userRole = roleRepository.findByName(Erole.NORMAL_USER)
           .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
       roles.add(userRole);
     } else {
       strRoles.forEach(role -> {
         switch (role) {
-        case "admin":
-          Role adminRole = roleRepository.findByName(Erole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(adminRole);
+          case "admin":
+            Role adminRole = roleRepository.findByName(Erole.ADMIN)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(adminRole);
 
-          break;
-        case "mod":
-          Role modRole = roleRepository.findByName(Erole.ROLE_MODERATOR)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(modRole);
+            break;
+          case "mod":
+            Role modRole = roleRepository.findByName(Erole.ORGANISATION_VOLUNTEER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(modRole);
 
-          break;
-        default:
-          Role userRole = roleRepository.findByName(Erole.ROLE_USER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(userRole);
+            break;
+          default:
+            Role userRole = roleRepository.findByName(Erole.NORMAL_USER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
         }
       });
     }
@@ -149,11 +149,11 @@ public class AuthController {
   @PostMapping("/signout")
   public ResponseEntity<?> logoutUser() {
     Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    if (principle.toString() != "anonymousUser") {      
+    if (principle.toString() != "anonymousUser") {
       Long userId = ((UserDetailsImpl) principle).getId();
       refreshTokenService.deleteByUserId(userId);
     }
-    
+
     ResponseCookie jwtCookie = jwtUtils.getCleanJwtCookie();
     ResponseCookie jwtRefreshCookie = jwtUtils.getCleanJwtRefreshCookie();
 
@@ -166,14 +166,14 @@ public class AuthController {
   @PostMapping("/refreshtoken")
   public ResponseEntity<?> refreshtoken(HttpServletRequest request) {
     String refreshToken = jwtUtils.getJwtRefreshFromCookies(request);
-    
+
     if ((refreshToken != null) && (refreshToken.length() > 0)) {
       return refreshTokenService.findByToken(refreshToken)
           .map(refreshTokenService::verifyExpiration)
           .map(RefreshToken::getUser)
           .map(user -> {
             ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(user);
-            
+
             return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .body(new MessageResponseDto("Token is refreshed successfully!"));
@@ -181,7 +181,7 @@ public class AuthController {
           .orElseThrow(() -> new TokenRefreshException(refreshToken,
               "Refresh token is not in database!"));
     }
-    
+
     return ResponseEntity.badRequest().body(new MessageResponseDto("Refresh Token is empty!"));
   }
 }

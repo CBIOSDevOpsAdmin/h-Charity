@@ -1,7 +1,8 @@
 package com.himanism.hcharityapi.models;
 
 public enum Erole {
-    ROLE_USER,
-    ROLE_MODERATOR,
-    ROLE_ADMIN
-  }
+  NORMAL_USER,
+  INSTITUTE_OWNER,
+  ORGANISATION_VOLUNTEER,
+  ADMIN
+}
