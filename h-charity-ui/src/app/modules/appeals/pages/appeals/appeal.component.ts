@@ -4,6 +4,7 @@ import { IAppeal } from '../../models/appeal.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-appeal',
@@ -32,12 +33,13 @@ export class AppealComponent implements OnInit {
   constructor(private appealsService: AppealService, private messageService: MessageService, private confirmationService: ConfirmationService, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit() {
-    this.appealsService.getData().subscribe((data: any[]) => {
+    this.appealsService.getAppeals().subscribe((data: any[]) => {
       this.appeals = data;
       // console.log(this.appeals);
     });
 
     this.appealsForm = this.fb.group({
+      id: [0],
       title: ['', Validators.required],
       description: ['', Validators.required],
       onBehalfName: [''],
@@ -64,7 +66,7 @@ export class AppealComponent implements OnInit {
       title: appeal.title,
       description: appeal.description,
       onBehalfName: appeal.onBehalfName,
-      requirementDate: appeal.requirementDate,
+      requirementDate: formatDate(appeal.requirementDate, 'dd-MM-yyyy', 'en-US'),
       fundsRequired: appeal.totalFundsRequired,
       fundsRecived: appeal.fundsReceived,
       fundsPending: appeal.fundsNeeded,
@@ -94,7 +96,6 @@ export class AppealComponent implements OnInit {
 
 
   public saveAppeal() {
-    debugger;
     if (!this.validateAppealDetails()) {
       this.appealsService.saveAppeal(this.appealsForm.value).subscribe({
         next: response => {

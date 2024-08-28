@@ -61,7 +61,6 @@ export class EntityComponent implements OnInit {
 
   onViewChange(event: any) {
     const value = event.value;
-    debugger;
     switch (value) {
       case 'Show Verified':
         this.entities = this.untouchedEntities.filter(

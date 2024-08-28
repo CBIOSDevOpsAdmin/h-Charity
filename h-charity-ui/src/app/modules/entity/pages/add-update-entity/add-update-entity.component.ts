@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EntityService } from '../../services/entity.service';
 import { IDropdown } from 'src/app/modules/shared/models/dropdown.model';
 import { WorldService } from 'src/app/modules/shared/services/world.service';
@@ -201,17 +201,41 @@ export class AddUpdateEntityComponent implements OnInit {
       });
   }
 
+  // private initFormNew() {
+  //   this.entityForm = this.formBuilder.group({
+  //     id: [0],
+  //     name: [''],
+  //     type: [''],
+  //     president: [''],
+  //     poc: [''],
+  //     description: [''],
+  //     isVerified: [false],
+  //     hasInternet: [false],
+  //     mobile: [''],
+  //     office: [''],
+  //     address: this.formBuilder.group({
+  //       address1: [''],
+  //       address2: [''],
+  //       landmark: [''],
+  //       pincode: [''],
+  //       city: [''],
+  //       state: [''],
+  //       country: [''],
+  //     }),
+  //   });
+  // }
+
   private initFormNew() {
     this.entityForm = this.formBuilder.group({
       id: [0],
-      name: [''],
-      type: [''],
-      president: [''],
+      name: ['', Validators.required], // Required validator for name
+      type: ['', Validators.required], // Required validator for type
+      president: ['', Validators.required], // Required validator for president
       poc: [''],
-      description: [''],
+      description: ['', Validators.required], // Required validator for description
       isVerified: [false],
       hasInternet: [false],
-      mobile: [''],
+      mobile: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]], // Required validator and pattern for mobile number
       office: [''],
       address: this.formBuilder.group({
         address1: [''],
@@ -224,6 +248,7 @@ export class AddUpdateEntityComponent implements OnInit {
       }),
     });
   }
+
 
   private initFormEdit() {
     this.entityService.getEntityById(this.entityId).subscribe({

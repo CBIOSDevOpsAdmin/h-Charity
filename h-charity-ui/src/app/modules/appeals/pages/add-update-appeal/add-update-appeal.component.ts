@@ -16,7 +16,6 @@ export class AddUpdateAppealComponent implements OnInit {
   mode: string = 'Add';
   appealForm!: FormGroup;
   appealId: number = 0;
-
   formBuilder = inject(FormBuilder);
   messageService = inject(MessageService);
   appealService = inject(AppealService);
@@ -67,75 +66,16 @@ export class AddUpdateAppealComponent implements OnInit {
     return isError;
   }
 
-  // private initFormNew() {
-  //   this.appealForm = this.formBuilder.group({
-  //     id: [0],
-  //     title: [''],
-  //     description: [''],
-  //     selfOrBehalf: [false],
-  //     onBehalfName: [{ value: '', disabled: true }, Validators.required],
-  //     totalFundsRequired: [],
-  //     fundsReceived: [],
-  //     fundsNeeded: [],
-  //     isZakatEligible: [false],
-  //     isInterestEligible: [false],
-  //     isAnonymous: [false],
-  //     appealer: [{ value: '', disabled: true }, Validators.required],
-  //     appealerMobile: [{ value: '', disabled: true }, Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")],
-  //     requirementDate: [''],
-  //     verifier: [{ value: '', disabled: true }, Validators.required],
-  //     verifierMobile: [{ value: '', disabled: true }, Validators.required],
-  //     verifiedDate: [{ value: '', disabled: true }, Validators.required],
-  //   });
-  // }
-
-  // private initFormEdit() {
-  //   this.entityService.getEntityById(this.appealId).subscribe({
-  //     next: (entity: IEntity) => {
-  //       this.entity = entity;
-
-  //       this.entityForm.patchValue({
-  //         id: entity.id,
-  //         name: entity.name,
-  //         type: { ...convertStringToDDObject(entity.type) },
-  //         president: entity.president,
-  //         poc: entity.poc,
-  //         description: entity.description,
-  //         isVerified: entity.isVerified,
-  //         hasInternet: entity.hasInternet,
-  //         mobile: entity.mobile,
-  //         office: entity.office,
-  //         address: {
-  //           address1: entity.address.address1,
-  //           address2: entity.address.address2,
-  //           landmark: entity.address.landmark,
-  //           pincode: entity.address.pincode,
-  //         },
-  //       });
-  //       this.updateLocationFields();
-  //     },
-  //   });
-  // }
-
-  // private generatePayload(data: any): IEntity {
-  //   let payload = data;
-  //   payload.type = payload.type.name;
-  //   payload.address.country = payload.address.country.name;
-  //   payload.address.state = payload.address.state.name;
-  //   payload.address.city = payload.address.city.name;
-  //   return payload;
-  // }
-
   private initFormNew() {
     this.appealForm = this.formBuilder.group({
       id: [0],
-      title: ['', Validators.required, Validators.pattern('[a-zA-Z ][0-9]*')],
-      description: [''],
+      title: ['', [Validators.required]], // Mandatory validation
+      description: ['', Validators.required], // Mandatory validation
       selfOrBehalf: [false],
-      onBehalfName: [{ value: '', disabled: true }, Validators.required],
-      totalFundsRequired: [],
-      fundsReceived: [],
-      fundsNeeded: [],
+      onBehalfName: [{ value: '', disabled: true }], // Enable validator conditionally
+      totalFundsRequired: ['', [Validators.required]], // Mandatory validation
+      fundsReceived: ['', [Validators.required]], // Adding required validator for completeness
+      fundsNeeded: ['', [Validators.required]], // Adding required validator for completeness
       isZakatEligible: [false],
       isInterestEligible: [false],
       isAnonymous: [false],
@@ -147,7 +87,7 @@ export class AddUpdateAppealComponent implements OnInit {
           Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
         ]
       ],
-      requirementDate: ['', this.dateValidator],
+      requirementDate: ['', [Validators.required, this.dateValidator]], // Mandatory validation and custom date validator
       verifier: [{ value: '', disabled: true }, Validators.required],
       verifierMobile: [
         { value: '', disabled: true },
@@ -157,6 +97,8 @@ export class AddUpdateAppealComponent implements OnInit {
         ]
       ],
       verifiedDate: [{ value: '', disabled: true }, Validators.required],
+    }, {
+      validators: this.totalFundsValidator.bind(this) // Custom group validator for funds validation
     });
 
     this.appealForm.get('selfOrBehalf')?.valueChanges.subscribe((isOnBehalf) => {
@@ -164,30 +106,31 @@ export class AddUpdateAppealComponent implements OnInit {
     });
   }
 
-  private toggleOnBehalfFields(isOnBehalf: boolean): void {
-    const onBehalfFields = ['onBehalfName', 'appealer', 'appealerMobile'];
-
+  private toggleOnBehalfFields(isOnBehalf: boolean) {
+    const onBehalfName = this.appealForm.get('onBehalfName');
     if (isOnBehalf) {
-      onBehalfFields.forEach(field => {
-        this.appealForm.get(field)?.enable();
-      });
+      onBehalfName?.enable();
+      onBehalfName?.setValidators(Validators.required); // Conditional validator
     } else {
-      onBehalfFields.forEach(field => {
-        this.appealForm.get(field)?.disable();
-        this.appealForm.get(field)?.reset();
-      });
+      onBehalfName?.disable();
+      onBehalfName?.clearValidators(); // Clear validators when not on behalf
     }
+    onBehalfName?.updateValueAndValidity();
   }
-
 
   private dateValidator(control: AbstractControl): { [key: string]: boolean } | null {
-    const dateValue = control.value;
-    if (dateValue && new Date(dateValue) < new Date()) {
-      return { 'invalidDate': true };
-    }
-    return null;
+    const currentDate = new Date().setHours(0, 0, 0, 0);
+    const selectedDate = new Date(control.value).setHours(0, 0, 0, 0);
+
+    return selectedDate && selectedDate < currentDate ? { 'invalidDate': true } : null;
   }
 
+  private totalFundsValidator(group: FormGroup): { [key: string]: boolean } | null {
+    const totalFundsRequired = group.get('totalFundsRequired')?.value;
+    const fundsReceived = group.get('fundsReceived')?.value;
+    const fundsNeeded = group.get('fundsNeeded')?.value;
 
+    return totalFundsRequired > (fundsReceived + fundsNeeded) ? { 'fundsMismatch': true } : null;
+  }
   //#endregion
 }
