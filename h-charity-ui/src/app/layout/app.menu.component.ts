@@ -64,22 +64,12 @@ export class AppMenuComponent implements OnInit {
           {
             label: 'Add/Update Appeals',
             icon: 'pi pi-fw pi-home',
-            routerLink: ['/appeals/add-update'],
+            routerLink: ['/appeals/add'],
           },
 
         ],
       },
 
-      {
-        label: 'Appeals',
-        items: [
-          {
-            label: 'Appeals',
-            icon: 'pi pi-fw pi-file',
-            routerLink: ['/appeals/'],
-          },
-        ],
-      },
       {
         label: 'HIMANISM',
         icon: 'pi pi-fw pi-briefcase',

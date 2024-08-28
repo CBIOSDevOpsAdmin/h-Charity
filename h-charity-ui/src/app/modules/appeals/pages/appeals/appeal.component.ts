@@ -3,57 +3,17 @@ import { AppealService } from '../../services/appeal.service';
 import { IAppeal } from '../../models/appeal.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { TableDemoModule } from 'src/app/demo/components/uikit/table/tabledemo.module';
-import { TableDemoComponent } from 'src/app/demo/components/uikit/table/tabledemo.component';
 import { Router } from '@angular/router';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-appeal',
   templateUrl: './appeal.component.html',
-  styleUrl: './appeal.component.scss'
+  styleUrl: './appeal.component.css'
 })
 export class AppealComponent implements OnInit {
 
-  // loading: boolean = true;
 
-  // appeals: IAppeal[] = [
-  //   {
-  //     image: 'assets/mosque-details/madina-masjid1.png',
-  //     title: 'Appeal 1',
-  //     description: 'Namaz Carpet',
-  //     status: 'Pending'
-  //   },
-  //   {
-  //     image: 'assets/mosque-details/madina-masjid2.png',
-  //     title: 'Appeal 2',
-  //     description: 'Lights',
-  //     status: 'Approved'
-  //   },
-  //   {
-  //     image: 'assets/mosque-details/madina-masjid3.png',
-  //     title: 'Appeal 3',
-  //     description: 'Loud Speaker',
-  //     status: 'Rejected'
-  //   }
-  // ];
-
-  // constructor(private appealsService: AppealService) { }
-
-  // ngOnInit() {
-  //   this.appealsService.getData().subscribe((data: any[]) => {
-  //     console.log(this.appeals);
-  //     this.loading = false;
-  //   });
-  // }
-
-  // clear(dt: any) {
-  //   dt.clear();
-  // }
-
-  // onGlobalFilter(table: any, event: Event) {
-  //   table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-  // }
 
   appealDialog: boolean = false;
 
@@ -73,15 +33,16 @@ export class AppealComponent implements OnInit {
   constructor(private appealsService: AppealService, private messageService: MessageService, private confirmationService: ConfirmationService, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit() {
-    this.appealsService.getData().subscribe((data: any[]) => {
+    this.appealsService.getAppeals().subscribe((data: any[]) => {
       this.appeals = data;
       // console.log(this.appeals);
     });
 
     this.appealsForm = this.fb.group({
+      id: [0],
       title: ['', Validators.required],
       description: ['', Validators.required],
-      onBehalfName: [{ value: '', disabled: true }],
+      onBehalfName: [''],
       requirementDate: [null],
       totalFundsRequired: [null],
       fundsRecived: [null],
@@ -105,7 +66,7 @@ export class AppealComponent implements OnInit {
       title: appeal.title,
       description: appeal.description,
       onBehalfName: appeal.onBehalfName,
-      requirementDate: appeal.requirementDate,
+      requirementDate: formatDate(appeal.requirementDate, 'dd-MM-yyyy', 'en-US'),
       fundsRequired: appeal.totalFundsRequired,
       fundsRecived: appeal.fundsReceived,
       fundsPending: appeal.fundsNeeded,
@@ -135,7 +96,6 @@ export class AppealComponent implements OnInit {
 
 
   public saveAppeal() {
-    debugger;
     if (!this.validateAppealDetails()) {
       this.appealsService.saveAppeal(this.appealsForm.value).subscribe({
         next: response => {
