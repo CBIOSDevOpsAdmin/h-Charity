@@ -1,11 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { EntityService } from '../../services/entity.service';
-import { SelectItem } from 'primeng/api';
+import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
 import { IEntity } from '../../models/entity.model';
 import { Router } from '@angular/router';
 import { FileService } from '../../services/file.service';
 import { Observable } from 'rxjs';
 import { DataView } from 'primeng/dataview';
+import { StorageService } from 'src/app/modules/shared/services/storage.service';
 
 @Component({
   selector: 'app-entity',
@@ -13,31 +14,27 @@ import { DataView } from 'primeng/dataview';
   styleUrls: ['./entity.component.scss'],
 })
 export class EntityComponent implements OnInit {
-  entityService = inject(EntityService);
-  fileService = inject(FileService);
-  router = inject(Router);
+  //#region Variables
   viewOptions: SelectItem[] = [];
   sortOrder: number = 0;
   sortField: string = '';
   entities: IEntity[] = [];
   untouchedEntities: IEntity[] = [];
   imageInfos?: Observable<any>;
-  // coverImageSrc: any;
-  entity: any = {
-    name: 'Example Entity',
-    description: 'Description of the entity.',
-    type: 'Entity Type',
-    isVerified: false,
-    id: 1
-  };
+
+  entityService = inject(EntityService);
+  fileService = inject(FileService);
+  storageService = inject(StorageService);
+  router = inject(Router);
+  confirmationService = inject(ConfirmationService);
+  messageService = inject(MessageService);
+
+  showDeleteBtn: boolean = true;
+  showEditBtn: boolean = true;
+  //#endregion
 
   ngOnInit() {
-    this.entityService.getEntities().subscribe({
-      next: entities => {
-        this.entities = entities;
-        this.untouchedEntities = entities;
-      },
-    });
+    this.getEntitiesApiCall();
 
     this.viewOptions = [
       { label: 'Show All', value: 'Show All' },
@@ -48,16 +45,10 @@ export class EntityComponent implements OnInit {
       { label: 'Show Orphanages', value: 'Show Orphanages' },
     ];
 
-    // this.entityService.getEntity().subscribe(entity => {
-    //   if (entity.coverImage) {
-    //     this.coverImageSrc = entity.coverImage;
-    //   } else if (entity.images && entity.images.length > 0) {
-    //     this.coverImageSrc = entity.images[0];
-    //   } else {
-    //     this.coverImageSrc = 'assets/mosque-details/dummy-mosque-image'; // dummy image
-    //   }
-    // });
+    this.accessRights();
   }
+
+  //#region Public methods
 
   onViewChange(event: any) {
     const value = event.value;
@@ -107,4 +98,61 @@ export class EntityComponent implements OnInit {
   viewEntity(id: number) {
     this.router.navigate(['institutions/view', id]);
   }
+
+  deleteEntity(event: Event, id: number) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this Institute?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+
+      accept: () => {
+        this.entityService.deleteEntity(id).subscribe({
+          next: resp => {
+            this.getEntitiesApiCall();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Confirmed',
+              detail: 'Institute deleted successfully',
+            });
+          },
+        });
+      },
+    });
+  }
+  //#endregion
+
+  //#region Private methods
+  private getEntitiesApiCall() {
+    this.entityService.getEntities().subscribe({
+      next: entities => {
+        this.entities = entities;
+        this.untouchedEntities = entities;
+      },
+    });
+  }
+
+  private accessRights() {
+    let roles = this.storageService.getUser().roles;
+    if (
+      roles &&
+      (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'))
+    ) {
+      this.showDeleteBtn = false;
+    }
+
+    if (
+      roles &&
+      (roles.includes('ADMIN') ||
+        roles.includes('ORGANISATION_VOLUNTEER') ||
+        roles.includes('INSTITUTE_OWNER'))
+    ) {
+      this.showEditBtn = false;
+    }
+  }
+  //#endregion
 }

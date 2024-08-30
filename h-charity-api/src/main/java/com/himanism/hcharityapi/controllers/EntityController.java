@@ -1,11 +1,14 @@
 package com.himanism.hcharityapi.controllers;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.himanism.hcharityapi.common.Constants;
 import com.himanism.hcharityapi.dto.request.EntityBankDetailsReqDto;
 import com.himanism.hcharityapi.dto.request.EntityRequestDto;
 import com.himanism.hcharityapi.dto.response.EntityBankDetailsResDto;
@@ -20,6 +24,7 @@ import com.himanism.hcharityapi.dto.response.EntityResponseDto;
 import com.himanism.hcharityapi.entities.Entities;
 import com.himanism.hcharityapi.entities.EntityBankDetails;
 import com.himanism.hcharityapi.entities.EntityPhotos;
+import com.himanism.hcharityapi.exception.AppException;
 import com.himanism.hcharityapi.security.services.UserDetailsImpl;
 
 import jakarta.validation.Valid;
@@ -68,7 +73,7 @@ public class EntityController {
         // Make proper use of Lombok validators
 
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-   
+
         String username = ((UserDetailsImpl) principle).getUsername();
         entityDto.setCreatedBy(username);
 
@@ -87,28 +92,37 @@ public class EntityController {
     }
 
     @DeleteMapping("/{entityId}")
-    public void deleteEntity(@PathVariable Long entityId) {
-        // if (user.getEmail() == null || user.getEmail().isEmpty() ||
-        // user.getPassword() == null || user.getPassword().isEmpty()) {
-        // throw new AppException("All fields are required.", HttpStatus.BAD_REQUEST);
-        // }
+    public void deleteEntity(Authentication authentication, @PathVariable Long entityId) {
+        List<String> rolesFromToken = new ArrayList<>();
 
-        entityService.deleteEntity(entityId);
+        Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Collection<? extends GrantedAuthority> roles = ((UserDetailsImpl) principle).getAuthorities();
+        for (GrantedAuthority role : roles) {
+            rolesFromToken.add(role.getAuthority());
+        }
+
+        if (rolesFromToken.stream().anyMatch(Constants.ROLES_CAN_DELETE_INSTITUTE::contains)) {
+            entityService.deleteEntity(entityId);
+        } else {
+            throw new AppException("You do not have permission to delete this institute.", HttpStatus.FORBIDDEN);
+        }
     }
 
     @PostMapping("/bankDetails")
-    public EntityBankDetailsResDto addEntityBankDetails(Authentication authentication, @Valid @RequestBody EntityBankDetailsReqDto bankDetailsReqDto) {
+    public EntityBankDetailsResDto addEntityBankDetails(Authentication authentication,
+            @Valid @RequestBody EntityBankDetailsReqDto bankDetailsReqDto) {
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-   
+
         String username = ((UserDetailsImpl) principle).getUsername();
 
         return entityService.addEntityBankDetails(bankDetailsReqDto, username);
     }
 
     @PutMapping("/bankDetails")
-    public EntityBankDetailsResDto updateEntityBankDetails(Authentication authentication, @Valid @RequestBody EntityBankDetailsReqDto bankDetailsReqDto) {
+    public EntityBankDetailsResDto updateEntityBankDetails(Authentication authentication,
+            @Valid @RequestBody EntityBankDetailsReqDto bankDetailsReqDto) {
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-   
+
         String username = ((UserDetailsImpl) principle).getUsername();
 
         return entityService.updateEntityBankDetails(bankDetailsReqDto, username);

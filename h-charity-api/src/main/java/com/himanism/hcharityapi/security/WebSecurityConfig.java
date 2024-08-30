@@ -28,7 +28,6 @@ import com.himanism.hcharityapi.security.jwt.AuthEntryPointJwt;
 import com.himanism.hcharityapi.security.jwt.AuthTokenFilter;
 import com.himanism.hcharityapi.security.services.UserDetailsServiceImpl;
 
-
 @Configuration
 @EnableMethodSecurity
 public class WebSecurityConfig {
@@ -42,17 +41,17 @@ public class WebSecurityConfig {
   public AuthTokenFilter authenticationJwtTokenFilter() {
     return new AuthTokenFilter();
   }
-  
+
   @Bean
   public DaoAuthenticationProvider authenticationProvider() {
-      DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-       
-      authProvider.setUserDetailsService(userDetailsService);
-      authProvider.setPasswordEncoder(passwordEncoder());
-   
-      return authProvider;
+    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+    authProvider.setUserDetailsService(userDetailsService);
+    authProvider.setPasswordEncoder(passwordEncoder());
+
+    return authProvider;
   }
-  
+
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
     return authConfig.getAuthenticationManager();
@@ -62,43 +61,48 @@ public class WebSecurityConfig {
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
-  
+
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
         .cors(Customizer.withDefaults())
-        .authorizeHttpRequests(auth -> 
-          auth.requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/auth/**")).permitAll()
-          .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/entity/**")).permitAll()
-          .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/files/**")).permitAll()
-          .anyRequest().authenticated()
-        )
+        .authorizeHttpRequests(
+            auth -> auth.requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/auth/**")).permitAll()
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/entity/**")).permitAll()
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/appeal/**")).permitAll()
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/files/**")).permitAll()
+                .anyRequest().authenticated())
         .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-    
+
     http.authenticationProvider(authenticationProvider());
 
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    
+
     return http.build();
   }
 
   // @Bean
   // CorsConfigurationSource corsConfigurationSource() {
-  //     CorsConfiguration corsConfiguration = new CorsConfiguration();
-  //     corsConfiguration.setAllowCredentials(true);
-  //   corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-  //   corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
-  //           "Accept", "Authorization", "X-Requested-With",
-  //           "Access-Control-Request-Method", "Access-Control-Request-Headers","Access-Control-Allow-Headers"));
-  //   corsConfiguration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept",
-  //           "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Access-Control-Allow-Credentials"));
-  //   corsConfiguration.setAllowedMethods(Arrays.asList("Access-Control-Allow-Methods",
-  //           "GET", "POST", "PUT", "DELETE", "OPTIONS"));
-  //   UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-  //   source.registerCorsConfiguration("/**", corsConfiguration);
+  // CorsConfiguration corsConfiguration = new CorsConfiguration();
+  // corsConfiguration.setAllowCredentials(true);
+  // corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+  // corsConfiguration.setAllowedHeaders(Arrays.asList("Origin",
+  // "Access-Control-Allow-Origin", "Content-Type",
+  // "Accept", "Authorization", "X-Requested-With",
+  // "Access-Control-Request-Method",
+  // "Access-Control-Request-Headers","Access-Control-Allow-Headers"));
+  // corsConfiguration.setExposedHeaders(Arrays.asList("Origin", "Content-Type",
+  // "Accept",
+  // "Access-Control-Allow-Origin", "Access-Control-Allow-Headers",
+  // "Access-Control-Allow-Credentials"));
+  // corsConfiguration.setAllowedMethods(Arrays.asList("Access-Control-Allow-Methods",
+  // "GET", "POST", "PUT", "DELETE", "OPTIONS"));
+  // UrlBasedCorsConfigurationSource source = new
+  // UrlBasedCorsConfigurationSource();
+  // source.registerCorsConfiguration("/**", corsConfiguration);
 
-  //   return source;
+  // return source;
   // }
 }
 

@@ -12,7 +12,7 @@ import { formatDate } from '@angular/common';
 @Component({
   selector: 'app-appeal',
   templateUrl: './appeal.component.html',
-  styleUrl: './appeal.component.scss',
+  styleUrl: './appeal.component.css',
 })
 export class AppealComponent implements OnInit {
   // loading: boolean = true;
@@ -69,11 +69,10 @@ export class AppealComponent implements OnInit {
       title: appeal.title,
       description: appeal.description,
       onBehalfName: appeal.onBehalfName,
-      requirementDate: formatDate(
-        appeal.requirementDate,
-        'dd-MM-yyyy',
-        'en-US'
+      requirementDate: new Date(
+        formatDate(appeal.requirementDate, 'yyyy-MM-dd', 'en-US')
       ),
+      // requirementDate: new Date('2024-08-24'),
       fundsRequired: appeal.totalFundsRequired,
       fundsRecived: appeal.fundsReceived,
       fundsPending: appeal.fundsNeeded,

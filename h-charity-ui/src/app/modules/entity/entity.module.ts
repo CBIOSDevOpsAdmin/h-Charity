@@ -37,6 +37,8 @@ import { ScrollTopModule } from 'primeng/scrolltop';
 import { CarouselModule } from 'primeng/carousel';
 import { ImageModule } from 'primeng/image';
 import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
   imports: [
@@ -71,6 +73,7 @@ import { DialogModule } from 'primeng/dialog';
     ScrollTopModule,
     ImageModule,
     DialogModule,
+    ConfirmDialogModule,
   ],
   declarations: [
     EntityComponent,
@@ -81,6 +84,6 @@ import { DialogModule } from 'primeng/dialog';
     EntityBankDetailsComponent,
     EntityViewComponent,
   ],
-  providers: [EntityService],
+  providers: [EntityService, ConfirmationService],
 })
-export class EntityModule { }
+export class EntityModule {}

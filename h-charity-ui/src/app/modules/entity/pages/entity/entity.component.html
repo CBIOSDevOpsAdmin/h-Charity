@@ -60,19 +60,22 @@
                 <p-button
                   icon="pi pi-trash"
                   styleClass="mb-2 p-button-sm align-self-center md:align-self-end"
-                  (click)="goToEntity(entity.id)"
+                  (click)="deleteEntity($event, entity.id)"
+                  severity="danger"
+                  [disabled]="showDeleteBtn"
                 ></p-button>
                 <p-button
                   icon="pi pi-eye"
                   label="Go To Entity"
                   styleClass="mb-2 p-button-sm"
-                  (click)="goToEntity(entity.id)"
+                  (click)="viewEntity(entity.id)"
                 ></p-button>
                 <p-button
-                  icon="pi pi-arrow-right"
+                  icon="pi pi-pencil"
                   label="Go To Entity"
                   styleClass="mb-2 p-button-sm"
-                  (click)="goToEntity(entity.id)"
+                  (click)="editEntity(entity.id)"
+                  [disabled]="showEditBtn"
                 ></p-button>
                 <span
                   [ngClass]="
@@ -126,15 +129,18 @@
                 <div class="flex align-items-center justify-content-between">
                   <p-button
                     icon="pi pi-trash"
-                    (click)="goToEntity(entity.id)"
+                    (click)="deleteEntity($event, entity.id)"
+                    severity="danger"
+                    [disabled]="showDeleteBtn"
                   ></p-button>
                   <p-button
                     icon="pi pi-eye"
                     (click)="viewEntity(entity.id)"
                   ></p-button>
                   <p-button
-                    icon="pi pi-arrow-right"
-                    (click)="goToEntity(entity.id)"
+                    icon="pi pi-pencil"
+                    (click)="editEntity(entity.id)"
+                    [disabled]="showEditBtn"
                   ></p-button>
                 </div>
               </div>
@@ -145,19 +151,5 @@
     </div>
   </div>
 </div>
-
-<!-- <div class="card">
-  <div class="card-header">List of Images</div>
-  <ul class="list-group list-group-flush">
-    @for (image of imageInfos | async; track image.name) {
-    <li class="list-group-item">
-      <p>
-        <a href="{{ image.url }}">{{ image.name }}</a>
-      </p>
-      <img src="{{ image.url }}" alt="{{ image.name }}" height="80px" />
-    </li>
-    }
-  </ul>
-</div> -->
-
 <p-toast />
+<p-confirmDialog />

@@ -62,6 +62,7 @@ export class AppTopBarComponent implements OnInit {
     this.authService.logout().subscribe({
       next: res => {
         this.storageService.clean();
+        window.location.reload();
         this.router.navigate(['']);
       },
     });

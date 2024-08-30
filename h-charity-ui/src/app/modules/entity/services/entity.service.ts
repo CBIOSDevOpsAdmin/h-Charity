@@ -42,7 +42,7 @@ export class EntityService {
     return this.http.get(`${this.rootURL}/bankDetails/${entityId}`);
   }
 
-  // deleteParty(partyId: number): Observable<any> {
-  //   return this.http.delete(`${this.baseUrl}/${partyId}`);
-  // }
+  deleteEntity(entityId: number): Observable<any> {
+    return this.http.delete(`${this.rootURL}/${entityId}`);
+  }
 }
