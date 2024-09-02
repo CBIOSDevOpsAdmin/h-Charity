@@ -4,8 +4,6 @@ import { IAppeal } from '../../models/appeal.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-// import { TableDemoModule } from 'src/app/demo/components/uikit/table/tabledemo.module';
-// import { TableDemoComponent } from 'src/app/demo/components/uikit/table/tabledemo.component';
 import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
 
@@ -32,10 +30,9 @@ export class AppealComponent implements OnInit {
   constructor(
     private appealsService: AppealService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
     private fb: FormBuilder,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.appealsService.getAppeals().subscribe((data: any[]) => {
@@ -50,13 +47,13 @@ export class AppealComponent implements OnInit {
       onBehalfName: [''],
       requirementDate: [null],
       totalFundsRequired: [null],
-      fundsRecived: [null],
+      fundsReceived: [null],
       fundsNeeded: [null],
       zakatEligible: [''],
       interestEligible: [''],
       isAnonymous: [''],
-      appealer: [''],
-      appealerMobile: [''],
+      appealer: [{ value: '', disabled: true }],
+      appealerMobile: [{ value: '', disabled: true }],
       verifier: [{ value: '', disabled: true }],
       verifierMobile: [{ value: '', disabled: true }],
       verifiedDate: [{ value: '', disabled: true }],
@@ -72,10 +69,9 @@ export class AppealComponent implements OnInit {
       requirementDate: new Date(
         formatDate(appeal.requirementDate, 'yyyy-MM-dd', 'en-US')
       ),
-      // requirementDate: new Date('2024-08-24'),
-      fundsRequired: appeal.totalFundsRequired,
-      fundsRecived: appeal.fundsReceived,
-      fundsPending: appeal.fundsNeeded,
+      totalFundsRequired: appeal.totalFundsRequired,
+      fundsReceived: appeal.fundsReceived,
+      fundsNeeded: appeal.fundsNeeded,
       zakatEligible: appeal.isZakatEligible,
       interestEligible: appeal.isInterestEligible,
       isAnonymous: appeal.isAnonymous,
@@ -118,12 +114,5 @@ export class AppealComponent implements OnInit {
     let isError: boolean = false;
 
     return isError;
-  }
-
-  private generatePayload(data: any): IAppeal {
-    let payload = data;
-    payload.type = payload.type.title;
-    payload.type = payload.type.description;
-    return payload;
   }
 }
