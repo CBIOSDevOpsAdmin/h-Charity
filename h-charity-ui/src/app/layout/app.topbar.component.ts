@@ -17,6 +17,7 @@ export class AppTopBarComponent implements OnInit {
   isLoggedIn = false;
   userDetails?: User;
   username: string = '';
+  showProfileDialog: boolean = false;
 
   @ViewChild('menubutton') menuButton!: ElementRef;
   @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;

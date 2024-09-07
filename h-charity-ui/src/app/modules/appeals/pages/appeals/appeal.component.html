@@ -18,7 +18,7 @@
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
-            <th pSortableColumn="title" style="min-width: 12rem">
+            <th pSortableColumn="title" style="min-width: 25rem">
               Title<p-sortIcon field="title" />
             </th>
 
@@ -56,13 +56,13 @@
         <ng-template pTemplate="body" let-appeal>
           <tr>
             <td>{{ appeal.title }}</td>
-            <td>{{ appeal.requirementDate }}</td>
+            <td>{{ appeal.requirementDate | date : 'dd-MM-yyyy' }}</td>
             <td>{{ appeal.totalFundsRequired }}</td>
             <td>{{ appeal.fundsReceived }}</td>
             <td>{{ appeal.fundsNeeded }}</td>
-            <td>{{ appeal.isZakatEligible }}</td>
-            <td>{{ appeal.isIntrestEligible }}</td>
-            <td>{{ appeal.isAnonymous }}</td>
+            <td>{{ appeal.isZakatEligible ? 'Yes' : 'No' }}</td>
+            <td>{{ appeal.isIntrestEligible ? 'Yes' : 'No' }}</td>
+            <td>{{ appeal.isAnonymous ? 'Yes' : 'No' }}</td>
 
             <td>
               <div class="flex justify-content-center flex-wrap gap-3 mb-4">

@@ -9,11 +9,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "users", 
-    uniqueConstraints = { 
-      @UniqueConstraint(columnNames = "username"),
-      @UniqueConstraint(columnNames = "email") 
-    })
+@Table(name = "users", uniqueConstraints = {
+    @UniqueConstraint(columnNames = "username"),
+    @UniqueConstraint(columnNames = "email")
+})
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,19 +31,22 @@ public class User {
   @Size(max = 120)
   private String password;
 
+  @NotBlank
+  @Size(max = 10)
+  private String mobile;
+
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(  name = "user_roles", 
-        joinColumns = @JoinColumn(name = "user_id"), 
-        inverseJoinColumns = @JoinColumn(name = "role_id"))
+  @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = new HashSet<>();
 
   public User() {
   }
 
-  public User(String username, String email, String password) {
+  public User(String username, String email, String password, String mobile) {
     this.username = username;
     this.email = email;
     this.password = password;
+    this.mobile = mobile;
   }
 
   public Long getId() {
@@ -77,6 +79,14 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getMobile() {
+    return mobile;
+  }
+
+  public void setMobile(String mobile) {
+    this.mobile = mobile;
   }
 
   public Set<Role> getRoles() {

@@ -1,10 +1,16 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AppealService } from '../../services/appeal.service';
 import { IAppeal } from '../../models/appeal.model';
 import { InputSwitchChangeEvent } from 'primeng/inputswitch';
+import { StorageService } from 'src/app/modules/shared/services/storage.service';
 
 @Component({
   selector: 'app-add-update-appeal',
@@ -21,6 +27,7 @@ export class AddUpdateAppealComponent implements OnInit {
   appealService = inject(AppealService);
   route = inject(ActivatedRoute);
   router = inject(Router);
+  storageService = inject(StorageService);
   //#endregion
 
   ngOnInit() {
@@ -67,41 +74,47 @@ export class AddUpdateAppealComponent implements OnInit {
   }
 
   private initFormNew() {
-    this.appealForm = this.formBuilder.group({
-      id: [0],
-      title: ['', [Validators.required]], // Mandatory validation
-      description: ['', Validators.required], // Mandatory validation
-      selfOrBehalf: [false],
-      onBehalfName: [{ value: '', disabled: true }], // Enable validator conditionally
-      totalFundsRequired: ['', [Validators.required]], // Mandatory validation
-      fundsReceived: ['', [Validators.required]], // Adding required validator for completeness
-      fundsNeeded: ['', [Validators.required]], // Adding required validator for completeness
-      isZakatEligible: [false],
-      isInterestEligible: [false],
-      isAnonymous: [false],
-      appealer: [{ value: '', disabled: true }, Validators.required],
-      appealerMobile: [
-        { value: '', disabled: true },
-        [
+    this.appealForm = this.formBuilder.group(
+      {
+        id: [0],
+        title: ['', [Validators.required]], // Mandatory validation
+        description: ['', Validators.required], // Mandatory validation
+        selfOrBehalf: [false],
+        onBehalfName: [{ value: '', disabled: true }], // Enable validator conditionally
+        totalFundsRequired: ['', [Validators.required]], // Mandatory validation
+        fundsReceived: ['', [Validators.required]], // Adding required validator for completeness
+        fundsNeeded: ['', [Validators.required]], // Adding required validator for completeness
+        isZakatEligible: [false],
+        isInterestEligible: [false],
+        isAnonymous: [false],
+        appealer: [
+          { value: this.storageService.getUser().username, disabled: true },
           Validators.required,
-          Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
-        ]
-      ],
-      requirementDate: ['', [Validators.required, this.dateValidator]], // Mandatory validation and custom date validator
-      verifier: [{ value: '', disabled: true }, Validators.required],
-      verifierMobile: [
-        { value: '', disabled: true },
-        [
-          Validators.required,
-          Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
-        ]
-      ],
-      verifiedDate: [{ value: '', disabled: true }, Validators.required],
-    }, {
-      validators: this.totalFundsValidator.bind(this) // Custom group validator for funds validation
-    });
+        ],
+        appealerMobile: [
+          { value: this.storageService.getUser().mobile, disabled: true },
+          [
+            Validators.required,
+            Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$'),
+          ],
+        ],
+        requirementDate: ['', [Validators.required, this.dateValidator]], // Mandatory validation and custom date validator
+        verifier: [{ value: '', disabled: true }, Validators.required],
+        verifierMobile: [
+          { value: '', disabled: true },
+          [
+            Validators.required,
+            Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$'),
+          ],
+        ],
+        verifiedDate: [{ value: '', disabled: true }, Validators.required],
+      },
+      {
+        validators: this.totalFundsValidator.bind(this), // Custom group validator for funds validation
+      }
+    );
 
-    this.appealForm.get('selfOrBehalf')?.valueChanges.subscribe((isOnBehalf) => {
+    this.appealForm.get('selfOrBehalf')?.valueChanges.subscribe(isOnBehalf => {
       this.toggleOnBehalfFields(isOnBehalf);
     });
   }
@@ -118,19 +131,27 @@ export class AddUpdateAppealComponent implements OnInit {
     onBehalfName?.updateValueAndValidity();
   }
 
-  private dateValidator(control: AbstractControl): { [key: string]: boolean } | null {
+  private dateValidator(
+    control: AbstractControl
+  ): { [key: string]: boolean } | null {
     const currentDate = new Date().setHours(0, 0, 0, 0);
     const selectedDate = new Date(control.value).setHours(0, 0, 0, 0);
 
-    return selectedDate && selectedDate < currentDate ? { 'invalidDate': true } : null;
+    return selectedDate && selectedDate < currentDate
+      ? { invalidDate: true }
+      : null;
   }
 
-  private totalFundsValidator(group: FormGroup): { [key: string]: boolean } | null {
+  private totalFundsValidator(
+    group: FormGroup
+  ): { [key: string]: boolean } | null {
     const totalFundsRequired = group.get('totalFundsRequired')?.value;
     const fundsReceived = group.get('fundsReceived')?.value;
     const fundsNeeded = group.get('fundsNeeded')?.value;
 
-    return totalFundsRequired > (fundsReceived + fundsNeeded) ? { 'fundsMismatch': true } : null;
+    return totalFundsRequired > fundsReceived + fundsNeeded
+      ? { fundsMismatch: true }
+      : null;
   }
   //#endregion
 }
