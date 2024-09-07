@@ -44,7 +44,7 @@ export class AppealComponent implements OnInit {
       id: [0],
       title: ['', Validators.required],
       description: ['', Validators.required],
-      onBehalfName: [''],
+      onBehalfName: [{ value: '', disabled: true }],
       requirementDate: [null],
       totalFundsRequired: [null],
       fundsReceived: [null],

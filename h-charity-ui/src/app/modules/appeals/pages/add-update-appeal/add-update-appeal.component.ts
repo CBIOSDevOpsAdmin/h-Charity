@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AppealService } from '../../services/appeal.service';
@@ -16,6 +16,7 @@ export class AddUpdateAppealComponent implements OnInit {
   mode: string = 'Add';
   appealForm!: FormGroup;
   appealId: number = 0;
+  minDate: Date;
   formBuilder = inject(FormBuilder);
   messageService = inject(MessageService);
   appealService = inject(AppealService);
@@ -68,69 +69,40 @@ export class AddUpdateAppealComponent implements OnInit {
 
   private initFormNew() {
     this.appealForm = this.formBuilder.group({
-      id: [0],
-      title: ['', [Validators.required]], // Mandatory validation
-      description: ['', Validators.required], // Mandatory validation
-      selfOrBehalf: [false],
-      onBehalfName: [{ value: '', disabled: true }], // Enable validator conditionally
-      totalFundsRequired: ['', [Validators.required]], // Mandatory validation
-      fundsReceived: ['', [Validators.required]], // Adding required validator for completeness
-      fundsNeeded: ['', [Validators.required]], // Adding required validator for completeness
-      isZakatEligible: [false],
-      isInterestEligible: [false],
-      isAnonymous: [false],
-      appealer: [{ value: '', disabled: true }, Validators.required],
-      appealerMobile: [
-        { value: '', disabled: true },
-        [
-          Validators.required,
-          Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
-        ]
-      ],
-      requirementDate: ['', [Validators.required, this.dateValidator]], // Mandatory validation and custom date validator
-      verifier: [{ value: '', disabled: true }, Validators.required],
-      verifierMobile: [
-        { value: '', disabled: true },
-        [
-          Validators.required,
-          Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
-        ]
-      ],
-      verifiedDate: [{ value: '', disabled: true }, Validators.required],
-    }, {
-      validators: this.totalFundsValidator.bind(this) // Custom group validator for funds validation
+      id: new FormControl(0),
+      title: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+      selfOrBehalf: new FormControl(false),
+      onBehalfName: new FormControl({ value: '', disabled: true }, Validators.required),
+      totalFundsRequired: new FormControl(null, Validators.required),
+      fundsReceived: new FormControl(null, Validators.required),
+      fundsNeeded: new FormControl(null, Validators.required),
+      isZakatEligible: new FormControl(false),
+      isInterestEligible: new FormControl(false),
+      isAnonymous: new FormControl(false),
+      appealer: new FormControl({ value: '', disabled: true }),
+      appealerMobile: new FormControl({ value: '', disabled: true }),
+      requirementDate: new FormControl(null, Validators.required),
+      verifier: new FormControl({ value: '', disabled: true }),
+      verifierMobile: new FormControl({ value: '', disabled: true }),
+      verifiedDate: new FormControl({ value: '', disabled: true }),
     });
 
-    this.appealForm.get('selfOrBehalf')?.valueChanges.subscribe((isOnBehalf) => {
-      this.toggleOnBehalfFields(isOnBehalf);
-    });
+    this.minDate = new Date();
+
+    // this.appealForm.get('selfOrBehalf')?.valueChanges.subscribe((isOnBehalf) => {
+    //   this.toggleOnBehalfFields(isOnBehalf);
+    // });
   }
 
-  private toggleOnBehalfFields(isOnBehalf: boolean) {
-    const onBehalfName = this.appealForm.get('onBehalfName');
-    if (isOnBehalf) {
-      onBehalfName?.enable();
-      onBehalfName?.setValidators(Validators.required); // Conditional validator
-    } else {
-      onBehalfName?.disable();
-      onBehalfName?.clearValidators(); // Clear validators when not on behalf
-    }
-    onBehalfName?.updateValueAndValidity();
-  }
-
-  private dateValidator(control: AbstractControl): { [key: string]: boolean } | null {
-    const currentDate = new Date().setHours(0, 0, 0, 0);
-    const selectedDate = new Date(control.value).setHours(0, 0, 0, 0);
-
-    return selectedDate && selectedDate < currentDate ? { 'invalidDate': true } : null;
-  }
-
-  private totalFundsValidator(group: FormGroup): { [key: string]: boolean } | null {
-    const totalFundsRequired = group.get('totalFundsRequired')?.value;
-    const fundsReceived = group.get('fundsReceived')?.value;
-    const fundsNeeded = group.get('fundsNeeded')?.value;
-
-    return totalFundsRequired > (fundsReceived + fundsNeeded) ? { 'fundsMismatch': true } : null;
-  }
+  // private toggleOnBehalfFields(isOnBehalf: boolean) {
+  //   const onBehalfName = this.appealForm.get('onBehalfName');
+  //   if (isOnBehalf) {
+  //     onBehalfName?.enable();
+  //   } else {
+  //     onBehalfName?.disable();
+  //   }
+  //   onBehalfName?.updateValueAndValidity();
+  // }
   //#endregion
 }
