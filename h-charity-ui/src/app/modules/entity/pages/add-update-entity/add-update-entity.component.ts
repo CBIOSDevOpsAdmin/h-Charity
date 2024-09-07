@@ -228,14 +228,14 @@ export class AddUpdateEntityComponent implements OnInit {
   private initFormNew() {
     this.entityForm = this.formBuilder.group({
       id: [0],
-      name: ['', Validators.required], // Required validator for name
-      type: ['', Validators.required], // Required validator for type
-      president: ['', Validators.required], // Required validator for president
-      poc: [''],
-      description: ['', Validators.required], // Required validator for description
+      name: ['', Validators.required],
+      type: ['', Validators.required],
+      president: ['', Validators.required],
+      poc: ['', Validators.required],
+      description: ['', Validators.required],
       isVerified: [false],
       hasInternet: [false],
-      mobile: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]], // Required validator and pattern for mobile number
+      mobile: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       office: [''],
       address: this.formBuilder.group({
         address1: [''],
@@ -248,7 +248,6 @@ export class AddUpdateEntityComponent implements OnInit {
       }),
     });
   }
-
 
   private initFormEdit() {
     this.entityService.getEntityById(this.entityId).subscribe({

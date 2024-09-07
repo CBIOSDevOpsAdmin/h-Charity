@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { AppealService } from '../../services/appeal.service';
 import { IAppeal } from '../../models/appeal.model';
 import { InputSwitchChangeEvent } from 'primeng/inputswitch';
+import { StorageService } from 'src/app/modules/shared/services/storage.service';
 
 @Component({
   selector: 'app-add-update-appeal',
@@ -22,6 +23,7 @@ export class AddUpdateAppealComponent implements OnInit {
   appealService = inject(AppealService);
   route = inject(ActivatedRoute);
   router = inject(Router);
+  storageService = inject(StorageService);
   //#endregion
 
   ngOnInit() {

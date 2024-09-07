@@ -89,7 +89,7 @@ export class AppMenuComponent implements OnInit {
             x.items.push({
               label: 'Add Institute',
               icon: 'pi pi-fw pi-file-edit',
-              routerLink: ['/appeals/add'],
+              routerLink: ['/institutions/add'],
             });
           }
         });
@@ -101,7 +101,7 @@ export class AppMenuComponent implements OnInit {
             x.items.push({
               label: 'Add Institute',
               icon: 'pi pi-fw pi-file-edit',
-              routerLink: ['/appeals/add'],
+              routerLink: ['/institutions/add'],
             });
           }
         });

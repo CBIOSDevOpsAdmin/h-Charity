@@ -20,6 +20,18 @@ public class SignupRequestDto {
   @Size(min = 6, max = 40)
   private String password;
 
+  @NotBlank
+  @Size(min = 10, max = 10)
+  private String mobile;
+
+  public String getMobile() {
+    return mobile;
+  }
+
+  public void setMobile(String mobile) {
+    this.mobile = mobile;
+  }
+
   public String getUsername() {
     return username;
   }
