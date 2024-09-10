@@ -10,34 +10,16 @@
           <div class="col-12 md:col-6 lg:col-8">
             <div class="grid">
               <div class="col-12 md:col-6 lg:col-12">
-                <input placeholder="Appeal Title" type="text" pInputText formControlName="title" />
-                <!-- <div class="text-danger"
-                  [ngClass]="appealForm.controls['title'].invalid && (appealForm.controls['title'].touched || appealForm.controls['title'].dirty)">
-                  <span [ngClass]="appealForm.controls['title'].errors?.['required']"> This is Required </span>
-                </div> -->
-                <div class="text-danger" [ngClass]="{
-      'd-block': appealForm.controls['title'].invalid && 
-                 appealForm.controls['title'].errors?.['required'] && 
-                 (appealForm.controls['title'].touched || appealForm.controls['title'].dirty),
-      'd-none': !appealForm.controls['title'].errors?.['required'] || 
-                !(appealForm.controls['title'].touched || appealForm.controls['title'].dirty)
-    }">
-                  <span>Required</span>
-                </div>
+                <input placeholder="Appeal Title" type="text" pInputText formControlName="title"
+                  [ngClass]="{'ng-invalid ng-dirty' : appealForm.controls['title'].touched && appealForm.controls['title'].errors?.['required']}" />
+                <small class="ng-dirty ng-invalid" style="color: red;"
+                  *ngIf="appealForm.controls['title'].touched && appealForm.controls['title'].errors?.['required']">Appeals
+                  title is required.</small>
               </div>
 
               <div class="col-12 md:col-6 lg:col-12">
                 <p-editor formControlName="description" [style]="{ height: '200px' }"
                   placeholder="Enter the Description" />
-                <div class="text-danger" [ngClass]="{
-                     'd-block': appealForm.controls['description'].invalid && 
-                                appealForm.controls['description'].errors?.['required'] && 
-                                (appealForm.controls['description'].touched || appealForm.controls['description'].dirty),
-                     'd-none': !appealForm.controls['description'].errors?.['required'] || 
-                               !(appealForm.controls['description'].touched || appealForm.controls['description'].dirty)
-                   }">
-                  <span>This is Required</span>
-                </div>
               </div>
 
               <div class="col-12 md:col-6 lg:col-4">
@@ -48,56 +30,32 @@
               <div class="col-12 md:col-6 lg:col-4">
                 <input placeholder="On Behalf Name" type="text" class="!ng-valid ng-dirty" pInputText
                   formControlName="onBehalfName" />
-                <div class="text-danger" [ngClass]="{
-                    'd-block': appealForm.controls['onBehalfName'].invalid && 
-                               appealForm.controls['onBehalfName'].errors?.['required'] && 
-                               (appealForm.controls['onBehalfName'].touched || appealForm.controls['onBehalfName'].dirty),
-                    'd-none': !appealForm.controls['onBehalfName'].errors?.['required'] || 
-                              !(appealForm.controls['onBehalfName'].touched || appealForm.controls['onBehalfName'].dirty)
-                  }">
-                  <span>Required</span>
-                </div>
               </div>
               <div class="col-12 md:col-6 lg:col-4"></div>
 
               <div class="col-12 md:col-6 lg:col-4">
-                <p-inputNumber inputId="totalFundRequired" placeholder="Total Funds Required"
-                  formControlName="totalFundsRequired" />
-                <div class="text-danger" [ngClass]="{
-                    'd-block': appealForm.controls['totalFundsRequired'].invalid && 
-                               appealForm.controls['totalFundsRequired'].errors?.['required'] && 
-                               (appealForm.controls['totalFundsRequired'].touched || appealForm.controls['totalFundsRequired'].dirty),
-                    'd-none': !appealForm.controls['totalFundsRequired'].errors?.['required'] || 
-                              !(appealForm.controls['totalFundsRequired'].touched || appealForm.controls['totalFundsRequired'].dirty)
-                  }">
-                  <span>Required</span>
-                </div>
+                <p-inputNumber inputId="totalFundsRequired" placeholder="Total Funds Required"
+                  formControlName="totalFundsRequired"
+                  [ngClass]="{'ng-invalid ng-dirty' : appealForm.controls['totalFundsRequired'].touched && appealForm.controls['totalFundsRequired'].errors?.['required']}" />
+                <small class="ng-dirty ng-invalid" style="color: red;"
+                  *ngIf="appealForm.controls['totalFundsRequired'].touched && appealForm.controls['totalFundsRequired'].errors?.['required']">Total
+                  Funds Required.</small>
               </div>
 
               <div class="col-12 md:col-6 lg:col-4">
-                <p-inputNumber inputId="fundsReceived" placeholder="Funds Received" formControlName="fundsReceived" />
-                <div class="text-danger" [ngClass]="{
-                  'd-block': appealForm.controls['fundsReceived'].invalid && 
-                             appealForm.controls['fundsReceived'].errors?.['required'] && 
-                             (appealForm.controls['fundsReceived'].touched || appealForm.controls['fundsReceived'].dirty),
-                  'd-none': !appealForm.controls['fundsReceived'].errors?.['required'] || 
-                            !(appealForm.controls['fundsReceived'].touched || appealForm.controls['fundsReceived'].dirty)
-                }">
-                  <span>Required</span>
-                </div>
+                <p-inputNumber inputId="fundsReceived" placeholder="Funds Received" formControlName="fundsReceived"
+                  [ngClass]="{'ng-invalid ng-dirty' : appealForm.controls['fundsReceived'].touched && appealForm.controls['fundsReceived'].errors?.['required']}" />
+                <small class="ng-dirty ng-invalid" style="color: red;"
+                  *ngIf="appealForm.controls['fundsReceived'].touched && appealForm.controls['fundsReceived'].errors?.['required']">Funds
+                  Received required.</small>
               </div>
 
               <div class="col-12 md:col-6 lg:col-4">
-                <p-inputNumber inputId="fundsNeeded" placeholder="Funds Needed" formControlName="fundsNeeded" />
-                <div class="text-danger" [ngClass]="{
-                  'd-block': appealForm.controls['fundsNeeded'].invalid && 
-                             appealForm.controls['fundsNeeded'].errors?.['required'] && 
-                             (appealForm.controls['fundsNeeded'].touched || appealForm.controls['fundsNeeded'].dirty),
-                  'd-none': !appealForm.controls['fundsNeeded'].errors?.['required'] || 
-                            !(appealForm.controls['fundsNeeded'].touched || appealForm.controls['fundsNeeded'].dirty)
-                }">
-                  <span>Required</span>
-                </div>
+                <p-inputNumber inputId="fundsNeeded" placeholder="Funds Needed" formControlName="fundsNeeded"
+                  [ngClass]="{'ng-invalid ng-dirty' : appealForm.controls['fundsNeeded'].touched && appealForm.controls['fundsNeeded'].errors?.['required']}" />
+                <small class="ng-dirty ng-invalid" style="color: red;"
+                  *ngIf="appealForm.controls['fundsNeeded'].touched && appealForm.controls['fundsNeeded'].errors?.['required']">Funds
+                  Needed required.</small>
               </div>
 
               <div class="flex align-items-center gap-1 col-12 md:col-6 lg:col-4">
@@ -126,8 +84,11 @@
                 <p-inputMask mask="(999) 999-9999" formControlName="appealerMobile" placeholder="Appealer Mobile" />
               </div>
               <div class="col-12 md:col-6 lg:col-12">
-                <p-calendar placeholder="Requirement Date" formControlName="requirementDate" [showIcon]="true"
-                  [showOnFocus]="false" [showButtonBar]="true" [appendTo]="'body'" [minDate]="minDate"></p-calendar>
+                <p-calendar id="requirementDate" formControlName="requirementDate" [showIcon]="true"
+                  [ngClass]="{'ng-invalid ng-dirty' : appealForm.controls['requirementDate'].touched && appealForm.controls['requirementDate'].errors?.['required']}"></p-calendar>
+                <small class="ng-dirty ng-invalid" style="color: red;"
+                  *ngIf="appealForm.controls['requirementDate'].touched && appealForm.controls['requirementDate'].errors?.['required']">
+                  Select Requirement date.</small>
               </div>
               <div class="col-12 md:col-6 lg:col-12">
                 <input placeholder="Verifier" type="text" pInputText formControlName="verifier" />

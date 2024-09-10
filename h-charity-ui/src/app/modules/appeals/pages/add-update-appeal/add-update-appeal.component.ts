@@ -70,41 +70,45 @@ export class AddUpdateAppealComponent implements OnInit {
   }
 
   private initFormNew() {
-    this.appealForm = this.formBuilder.group({
-      id: new FormControl(0),
-      title: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
-      selfOrBehalf: new FormControl(false),
-      onBehalfName: new FormControl({ value: '', disabled: true }, Validators.required),
-      totalFundsRequired: new FormControl(null, Validators.required),
-      fundsReceived: new FormControl(null, Validators.required),
-      fundsNeeded: new FormControl(null, Validators.required),
-      isZakatEligible: new FormControl(false),
-      isInterestEligible: new FormControl(false),
-      isAnonymous: new FormControl(false),
-      appealer: new FormControl({ value: '', disabled: true }),
-      appealerMobile: new FormControl({ value: '', disabled: true }),
-      requirementDate: new FormControl(null, Validators.required),
-      verifier: new FormControl({ value: '', disabled: true }),
-      verifierMobile: new FormControl({ value: '', disabled: true }),
-      verifiedDate: new FormControl({ value: '', disabled: true }),
-    });
-
+    this.appealForm = this.formBuilder.group(
+      {
+        id: [0],
+        title: ['', [Validators.required]], // Mandatory validation
+        description: ['', Validators.required], // Mandatory validation
+        selfOrBehalf: [false],
+        onBehalfName: [{ value: '', disabled: true }], // Enable validator conditionally
+        totalFundsRequired: [null, [Validators.required]], // Mandatory validation
+        fundsReceived: [null, [Validators.required]], // Adding required validator for completeness
+        fundsNeeded: [null, [Validators.required]], // Adding required validator for completeness
+        isZakatEligible: [false],
+        isInterestEligible: [false],
+        isAnonymous: [false],
+        appealer: [
+          { value: this.storageService.getUser().username, disabled: true },
+          Validators.required,
+        ],
+        appealerMobile: [
+          { value: this.storageService.getUser().mobile, disabled: true },
+          [
+            Validators.required,
+            Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$'),
+          ],
+        ],
+        requirementDate: ['', [Validators.required]], // Mandatory validation and custom date validator
+        verifier: [{ value: '', disabled: true }, Validators.required],
+        verifierMobile: [
+          { value: '', disabled: true },
+          [
+            Validators.required,
+            Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$'),
+          ],
+        ],
+        verifiedDate: [{ value: '', disabled: true }, Validators.required],
+      },
+    );
     this.minDate = new Date();
 
-    // this.appealForm.get('selfOrBehalf')?.valueChanges.subscribe((isOnBehalf) => {
-    //   this.toggleOnBehalfFields(isOnBehalf);
-    // });
+    
   }
-
-  // private toggleOnBehalfFields(isOnBehalf: boolean) {
-  //   const onBehalfName = this.appealForm.get('onBehalfName');
-  //   if (isOnBehalf) {
-  //     onBehalfName?.enable();
-  //   } else {
-  //     onBehalfName?.disable();
-  //   }
-  //   onBehalfName?.updateValueAndValidity();
-  // }
   //#endregion
 }

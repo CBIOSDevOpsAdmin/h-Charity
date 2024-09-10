@@ -12,6 +12,7 @@
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
+            <th style="min-width: 18rem"></th>
             <th pSortableColumn="title" style="min-width: 25rem">
               Title<p-sortIcon field="title" />
             </th>
@@ -43,21 +44,10 @@
             <th pSortableColumn="isAnonymous" style="min-width: 12rem">
               Is Anonymous<p-sortIcon field="isAnonymous" />
             </th>
-
-            <th style="min-width: 15rem"></th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-appeal>
           <tr>
-            <td>{{ appeal.title }}</td>
-            <td>{{ appeal.requirementDate | date:'dd-MM-yyyy' }}</td>
-            <td>{{ appeal.totalFundsRequired }}</td>
-            <td>{{ appeal.fundsReceived }}</td>
-            <td>{{ appeal.fundsNeeded }}</td>
-            <td>{{ appeal.isZakatEligible? 'Yes' : 'No' }}</td>
-            <td>{{ appeal.isIntrestEligible? 'Yes' : 'No' }}</td>
-            <td>{{ appeal.isAnonymous? 'Yes' : 'No' }}</td>
-
             <td>
               <div class="flex justify-content-center flex-wrap gap-3 mb-4">
                 <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" severity="success"
@@ -68,6 +58,14 @@
                   (onClick)="viewAppeal(appeal)" />
               </div>
             </td>
+            <td>{{ appeal.title }}</td>
+            <td>{{ appeal.requirementDate | date:'dd-MM-yyyy' }}</td>
+            <td>{{ appeal.totalFundsRequired }}</td>
+            <td>{{ appeal.fundsReceived }}</td>
+            <td>{{ appeal.fundsNeeded }}</td>
+            <td>{{ appeal.isZakatEligible? 'Yes' : 'No' }}</td>
+            <td>{{ appeal.isIntrestEligible? 'Yes' : 'No' }}</td>
+            <td>{{ appeal.isAnonymous? 'Yes' : 'No' }}</td>
           </tr>
         </ng-template>
         <ng-template pTemplate="summary">
@@ -88,12 +86,20 @@
                     <div class="col-12 md:col-6 lg:col-8">
                       <div class="grid">
                         <div class="col-12 md:col-12 lg:col-12">
-                          <input placeholder=" Appeals Title" type="text" pInputText formControlName="title" />
+                          <input placeholder=" Appeals Title" type="text" pInputText formControlName="title"
+                            [ngClass]="{'ng-invalid ng-dirty' : appealsForm.controls['title'].touched && appealsForm.controls['title'].errors?.['required']}" />
+                          <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="appealsForm.controls['title'].touched && appealsForm.controls['title'].errors?.['required']">Appeals
+                            title is required.</small>
                         </div>
-
                         <div class="col-12 md:col-6 lg:col-12">
                           <p-editor formControlName="description" [style]="{ height: '200px' }"
-                            placeholder="Enter the Description" />
+                            placeholder="Enter the Description"
+                            [ngClass]="{'ng-invalid ng-dirty': appealsForm.controls['description'].touched && appealsForm.controls['description'].errors?.['required']}" />
+                          <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="appealsForm.controls['description'].touched && appealsForm.controls['description'].errors?.['required']">
+                            Description is required.
+                          </small>
                         </div>
                         <div class="col-12 md:col-6 lg:col-6">
                           Self <p-inputSwitch /> OnBehalf
@@ -103,17 +109,28 @@
                         </div>
                         <div class="col-12 md:col-6 lg:col-4">
                           <p-inputNumber placeholder="Total Funds Required" inputId="totalFundsRequired"
-                            formControlName="totalFundsRequired" />
+                            formControlName="totalFundsRequired"
+                            [ngClass]="{'ng-invalid ng-dirty' : appealsForm.controls['totalFundsRequired'].touched && appealsForm.controls['totalFundsRequired'].errors?.['required']}" />
+                          <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="appealsForm.controls['totalFundsRequired'].touched && appealsForm.controls['totalFundsRequired'].errors?.['required']">
+                            Total Funds Required.</small>
                         </div>
 
                         <div class="col-12 md:col-6 lg:col-4">
                           <p-inputNumber placeholder="Funds Received" inputId="fundsReceived"
-                            formControlName="fundsReceived" />
+                            formControlName="fundsReceived"
+                            [ngClass]="{'ng-invalid ng-dirty' : appealsForm.controls['fundsReceived'].touched && appealsForm.controls['fundsReceived'].errors?.['required']}" />
+                          <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="appealsForm.controls['fundsReceived'].touched && appealsForm.controls['fundsReceived'].errors?.['required']">
+                            Funds Received Required.</small>
                         </div>
 
                         <div class="col-12 md:col-6 lg:col-4">
-                          <p-inputNumber placeholder="Funds Needed" inputId="fundsNeeded"
-                            formControlName="fundsNeeded" />
+                          <p-inputNumber placeholder="Funds Needed" inputId="fundsNeeded" formControlName="fundsNeeded"
+                            [ngClass]="{'ng-invalid ng-dirty' : appealsForm.controls['fundsNeeded'].touched && appealsForm.controls['fundsNeeded'].errors?.['required']}" />
+                          <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="appealsForm.controls['fundsNeeded'].touched && appealsForm.controls['fundsNeeded'].errors?.['required']">
+                            Funds Needed Required.</small>
                         </div>
                         <div class="col-12 md:col-6 lg:col-4">
                           <p-checkbox formControlName="zakatEligible" [binary]="true" inputId="zakatEligible" />
@@ -129,7 +146,6 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="flex-1 w-full lg:w-3 xl:w-4 flex flex-column row-gap-3">
                       <div class="grid">
                         <div class="col-12 md:col-6 lg:col-12">
@@ -140,8 +156,11 @@
                             formControlName="appealerMobile" />
                         </div>
                         <div class="col-12 md:col-6 lg:col-12">
-                          <p-calendar id="requirementDate" formControlName="requirementDate"
-                            [showIcon]="true"></p-calendar>
+                          <p-calendar id="requirementDate" formControlName="requirementDate" [showIcon]="true"
+                            [ngClass]="{'ng-invalid ng-dirty' : appealsForm.controls['requirementDate'].touched && appealsForm.controls['requirementDate'].errors?.['required']}"></p-calendar>
+                          <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="appealsForm.controls['requirementDate'].touched && appealsForm.controls['requirementDate'].errors?.['required']">
+                            Select Requirement date.</small>
                         </div>
 
                         <div class="col-12 md:col-6 lg:col-12">
@@ -157,11 +176,20 @@
                         <div class="col-12 md:col-6 lg:col-12"></div>
                         <div class="col-12 md:col-6 lg:col-12"></div>
                         <div class="col-12 md:col-6 lg:col-12"></div>
-                        <div class="flex flex-column sm:flex-row justify-content-between align-items-center gap-3 py-2">
+                        <!-- <div class="flex flex-column sm:flex-row justify-content-between align-items-center gap-3 py-2">
                           <button pButton pRipple label="Discard" icon="pi pi-fw pi-trash"
                             class="p-button-danger p-button-outlined flex-1" (click)="hideDialog()"></button>
 
                           <button pButton pRipple label="Save" icon="pi pi-fw pi-check" class="p-button-primary flex-1"
+                            (click)="saveAppeal()"></button>
+                        </div> -->
+                        <div class="flex flex-column sm:flex-row justify-content-between align-items-center gap-3 py-2">
+                          <button pButton pRipple type="button" label="Discard" [disabled]="!appealsForm.dirty"
+                            icon="pi pi-fw pi-trash" class="p-button-danger p-button-outlined flex-1"
+                            (click)="hideDialog()"></button>
+
+                          <button pButton pRipple type="submit" label="Save" icon="pi pi-fw pi-check"
+                            [disabled]="!appealsForm.dirty" class="p-button-primary flex-1"
                             (click)="saveAppeal()"></button>
                         </div>
                       </div>
