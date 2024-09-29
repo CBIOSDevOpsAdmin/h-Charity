@@ -27,6 +27,8 @@ export class AppealComponent implements OnInit {
 
   appealsForm: FormGroup;
 
+  minDate: Date;
+
   constructor(
     private appealsService: AppealService,
     private messageService: MessageService,
@@ -38,6 +40,8 @@ export class AppealComponent implements OnInit {
     this.appealsService.getAppeals().subscribe((data: any[]) => {
       this.appeals = data;
       // console.log(this.appeals);
+      const today = new Date();
+      this.minDate = today;
     });
 
     this.appealsForm = this.fb.group({
@@ -60,28 +64,32 @@ export class AppealComponent implements OnInit {
     });
   }
 
-  editAppeal(appeal: IAppeal) {
-    this.appealsForm.patchValue({
-      id: appeal.id,
-      title: appeal.title,
-      description: appeal.description,
-      onBehalfName: appeal.onBehalfName,
-      requirementDate: new Date(
-        formatDate(appeal.requirementDate, 'yyyy-MM-dd', 'en-US')
-      ),
-      totalFundsRequired: appeal.totalFundsRequired,
-      fundsReceived: appeal.fundsReceived,
-      fundsNeeded: appeal.fundsNeeded,
-      zakatEligible: appeal.isZakatEligible,
-      interestEligible: appeal.isInterestEligible,
-      isAnonymous: appeal.isAnonymous,
-      appealer: appeal.appealer,
-      appealerMobile: appeal.appealerMobile,
-      verifier: appeal.verifier,
-      verifierMobile: appeal.verifierMobile,
-      verifiedDate: appeal.verifiedDate,
-    });
-    this.appealDialog = true;
+  // editAppeal(appeal: IAppeal) {
+  //   this.appealsForm.patchValue({
+  //     id: appeal.id,
+  //     title: appeal.title,
+  //     description: appeal.description,
+  //     onBehalfName: appeal.onBehalfName,
+  //     requirementDate: new Date(
+  //       formatDate(appeal.requirementDate, 'yyyy-MM-dd', 'en-US')
+  //     ),
+  //     totalFundsRequired: appeal.totalFundsRequired,
+  //     fundsReceived: appeal.fundsReceived,
+  //     fundsNeeded: appeal.fundsNeeded,
+  //     zakatEligible: appeal.isZakatEligible,
+  //     interestEligible: appeal.isInterestEligible,
+  //     isAnonymous: appeal.isAnonymous,
+  //     appealer: appeal.appealer,
+  //     appealerMobile: appeal.appealerMobile,
+  //     verifier: appeal.verifier,
+  //     verifierMobile: appeal.verifierMobile,
+  //     verifiedDate: appeal.verifiedDate,
+  //   });
+  //   this.appealDialog = true;
+  // }
+
+  editAppeal(id: number) {
+    this.router.navigate(['appeals/edit', id]);
   }
 
   viewAppeal(appeal: IAppeal) {
@@ -90,12 +98,12 @@ export class AppealComponent implements OnInit {
   }
 
   hideDialog() {
-    this.appealDialog = false;
     this.viewDialog = false;
     this.submitted = false;
   }
 
   public saveAppeal() {
+    debugger
     if (!this.validateAppealDetails()) {
       this.appealsService.saveAppeal(this.appealsForm.value).subscribe({
         next: response => {

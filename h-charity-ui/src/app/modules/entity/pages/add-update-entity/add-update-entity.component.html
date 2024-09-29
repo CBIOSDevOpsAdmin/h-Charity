@@ -106,10 +106,10 @@
 
             <div class="flex flex-column sm:flex-row justify-content-between align-items-center gap-3 py-2">
               <button pButton pRipple label="Discard" icon="pi pi-fw pi-trash"
-                class="p-button-danger p-button-outlined flex-1" [disabled]="!entityForm.dirty"></button>
+                class="p-button-danger p-button-outlined flex-1" [disabled]="!entityForm.valid"></button>
 
               <button pButton pRipple label="Save" icon="pi pi-fw pi-check" class="p-button-primary flex-1"
-                [disabled]="!entityForm.dirty"></button>
+                [disabled]="!entityForm.valid"></button>
             </div>
           </div>
         </div>

@@ -1,11 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AppealService } from '../../services/appeal.service';
 import { IAppeal } from '../../models/appeal.model';
 import { InputSwitchChangeEvent } from 'primeng/inputswitch';
 import { StorageService } from 'src/app/modules/shared/services/storage.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-add-update-appeal',
@@ -18,19 +19,22 @@ export class AddUpdateAppealComponent implements OnInit {
   appealForm!: FormGroup;
   appealId: number = 0;
   minDate: Date;
+  appeal: IAppeal;
   formBuilder = inject(FormBuilder);
   messageService = inject(MessageService);
   appealService = inject(AppealService);
   route = inject(ActivatedRoute);
   router = inject(Router);
   storageService = inject(StorageService);
+
+
   //#endregion
 
   ngOnInit() {
     this.appealId = this.route.snapshot.params['id'];
     if (this.appealId && this.appealId > 0) {
       this.initFormNew();
-      // this.initFormEdit();
+      this.initFormEdit();
     } else {
       this.initFormNew();
     }
@@ -73,10 +77,10 @@ export class AddUpdateAppealComponent implements OnInit {
     this.appealForm = this.formBuilder.group(
       {
         id: [0],
-        title: ['', [Validators.required]], // Mandatory validation
+        title: ['', [Validators.required, Validators.minLength(10)]], // Mandatory validation
         description: ['', Validators.required], // Mandatory validation
         selfOrBehalf: [false],
-        onBehalfName: [{ value: '', disabled: true }], // Enable validator conditionally
+        onBehalfName: [{ value: '', disabled: true }, Validators.required], // Enable validator conditionally
         totalFundsRequired: [null, [Validators.required]], // Mandatory validation
         fundsReceived: [null, [Validators.required]], // Adding required validator for completeness
         fundsNeeded: [null, [Validators.required]], // Adding required validator for completeness
@@ -105,10 +109,58 @@ export class AddUpdateAppealComponent implements OnInit {
         ],
         verifiedDate: [{ value: '', disabled: true }, Validators.required],
       },
+      { validators: this.fundsValidation }
     );
     this.minDate = new Date();
+  }
 
-    
+  fundsValidation(control: AbstractControl) {
+    const totalFundsRequired = control.get('totalFundsRequired')?.value;
+    const fundsReceived = control.get('fundsReceived')?.value;
+    const fundsNeeded = control.get('fundsNeeded')?.value;
+
+    if (totalFundsRequired !== null && fundsReceived !== null && fundsNeeded !== null) {
+      const totalExpected = fundsReceived + fundsNeeded;
+
+      if (totalFundsRequired < totalExpected) {
+        control.get('totalFundsRequired')?.setErrors({ lessThanSum: true });
+      } else {
+        control.get('totalFundsRequired')?.setErrors(null);
+      }
+    }
+
+    return null;
+  }
+
+
+
+  private initFormEdit() {
+    this.appealService.getAppealById(this.appealId).subscribe({
+      next: (appeal: IAppeal) => {
+        this.appeal = appeal;
+        this.appealForm.patchValue({
+          id: appeal.id,
+          title: appeal.title,
+          description: appeal.description,
+          onBehalfName: appeal.onBehalfName,
+          requirementDate: new Date(
+            formatDate(appeal.requirementDate, 'yyyy-MM-dd', 'en-US')
+          ),
+          totalFundsRequired: appeal.totalFundsRequired,
+          fundsReceived: appeal.fundsReceived,
+          fundsNeeded: appeal.fundsNeeded,
+          zakatEligible: appeal.isZakatEligible,
+          interestEligible: appeal.isInterestEligible,
+          isAnonymous: appeal.isAnonymous,
+          appealer: appeal.appealer,
+          appealerMobile: appeal.appealerMobile,
+          verifier: appeal.verifier,
+          verifierMobile: appeal.verifierMobile,
+          verifiedDate: appeal.verifiedDate,
+        });
+
+      },
+    });
   }
   //#endregion
 }
