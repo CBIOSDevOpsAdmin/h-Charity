@@ -14,7 +14,6 @@ import { StorageService } from 'src/app/modules/shared/services/storage.service'
   styleUrl: './appeal.component.css',
 })
 export class AppealComponent implements OnInit {
-  // loading: boolean = true;
   storageService = inject(StorageService);
 
   appealDialog: boolean = false;
@@ -22,6 +21,10 @@ export class AppealComponent implements OnInit {
   viewDialog: boolean = false;
 
   submitted: boolean = false;
+
+  showDeleteBtn: boolean = true;
+
+  showEditBtn: boolean = true;
 
   appeals: IAppeal[] = [];
 
@@ -36,7 +39,9 @@ export class AppealComponent implements OnInit {
     private messageService: MessageService,
     private fb: FormBuilder,
     private router: Router
-  ) { }
+  ) {
+    this.accessRights();
+  }
 
   ngOnInit() {
     this.appealsService.getAppeals().subscribe((data: any[]) => {
@@ -65,30 +70,6 @@ export class AppealComponent implements OnInit {
       verifiedDate: [{ value: '', disabled: true }],
     });
   }
-
-  // editAppeal(appeal: IAppeal) {
-  //   this.appealsForm.patchValue({
-  //     id: appeal.id,
-  //     title: appeal.title,
-  //     description: appeal.description,
-  //     onBehalfName: appeal.onBehalfName,
-  //     requirementDate: new Date(
-  //       formatDate(appeal.requirementDate, 'yyyy-MM-dd', 'en-US')
-  //     ),
-  //     totalFundsRequired: appeal.totalFundsRequired,
-  //     fundsReceived: appeal.fundsReceived,
-  //     fundsNeeded: appeal.fundsNeeded,
-  //     zakatEligible: appeal.isZakatEligible,
-  //     interestEligible: appeal.isInterestEligible,
-  //     isAnonymous: appeal.isAnonymous,
-  //     appealer: appeal.appealer,
-  //     appealerMobile: appeal.appealerMobile,
-  //     verifier: appeal.verifier,
-  //     verifierMobile: appeal.verifierMobile,
-  //     verifiedDate: appeal.verifiedDate,
-  //   });
-  //   this.appealDialog = true;
-  // }
 
   editAppeal(id: number) {
     this.router.navigate(['appeals/edit', id]);
@@ -126,8 +107,12 @@ export class AppealComponent implements OnInit {
     return isError;
   }
 
-  public showEditButton(appeal: IAppeal): boolean {
+  private accessRights() {
     let roles = this.storageService.getUser().roles;
+
+    if (roles && (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'))) {
+      this.showDeleteBtn = false;
+    }
 
     if (
       roles &&
@@ -135,24 +120,8 @@ export class AppealComponent implements OnInit {
         roles.includes('ORGANISATION_VOLUNTEER') ||
         roles.includes('INSTITUTE_OWNER'))
     ) {
-      return true;
+      this.showEditBtn = false;
     }
-
-    return false;
-  }
-
-  public showDeleteButton(appeal: IAppeal) {
-    let roles = this.storageService.getUser().roles;
-
-    if (
-      roles &&
-      (roles.includes('ADMIN') ||
-        roles.includes('ORGANISATION_VOLUNTEER'))
-    ) {
-      return true;
-    }
-
-    return false;
   }
 
 }
