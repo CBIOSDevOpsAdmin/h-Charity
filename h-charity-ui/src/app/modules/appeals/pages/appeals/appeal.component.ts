@@ -3,11 +3,7 @@ import { AppealService } from '../../services/appeal.service';
 import { IAppeal } from '../../models/appeal.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-// import { TableDemoModule } from 'src/app/demo/components/uikit/table/tabledemo.module';
-// import { TableDemoComponent } from 'src/app/demo/components/uikit/table/tabledemo.component';
 import { Router } from '@angular/router';
-import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-appeal',
@@ -26,6 +22,8 @@ export class AppealComponent implements OnInit {
   appealsForm: FormGroup;
   //#endregion
 
+  minDate: Date;
+
   constructor(
     private appealsService: AppealService,
     private messageService: MessageService,
@@ -41,16 +39,16 @@ export class AppealComponent implements OnInit {
       id: [0],
       title: ['', Validators.required],
       description: ['', Validators.required],
-      onBehalfName: [''],
-      requirementDate: [null],
-      totalFundsRequired: [null],
-      fundsRecived: [null],
-      fundsNeeded: [null],
+      onBehalfName: [{ value: '', disabled: true }],
+      requirementDate: [null, Validators.required],
+      totalFundsRequired: [null, Validators.required],
+      fundsReceived: [null, Validators.required],
+      fundsNeeded: [null, Validators.required],
       zakatEligible: [''],
       interestEligible: [''],
       isAnonymous: [''],
-      appealer: [''],
-      appealerMobile: [''],
+      appealer: [{ value: '', disabled: true }],
+      appealerMobile: [{ value: '', disabled: true }],
       verifier: [{ value: '', disabled: true }],
       verifierMobile: [{ value: '', disabled: true }],
       verifiedDate: [{ value: '', disabled: true }],
@@ -58,29 +56,32 @@ export class AppealComponent implements OnInit {
   }
   //#region Public methods
 
-  editAppeal(appeal: IAppeal) {
-    this.appealsForm.patchValue({
-      id: appeal.id,
-      title: appeal.title,
-      description: appeal.description,
-      onBehalfName: appeal.onBehalfName,
-      requirementDate: new Date(
-        formatDate(appeal.requirementDate, 'yyyy-MM-dd', 'en-US')
-      ),
-      // requirementDate: new Date('2024-08-24'),
-      fundsRequired: appeal.totalFundsRequired,
-      fundsRecived: appeal.fundsReceived,
-      fundsPending: appeal.fundsNeeded,
-      zakatEligible: appeal.isZakatEligible,
-      interestEligible: appeal.isInterestEligible,
-      isAnonymous: appeal.isAnonymous,
-      appealer: appeal.appealer,
-      appealerMobile: appeal.appealerMobile,
-      verifier: appeal.verifier,
-      verifierMobile: appeal.verifierMobile,
-      verifiedDate: appeal.verifiedDate,
-    });
-    this.appealDialog = true;
+  // editAppeal(appeal: IAppeal) {
+  //   this.appealsForm.patchValue({
+  //     id: appeal.id,
+  //     title: appeal.title,
+  //     description: appeal.description,
+  //     onBehalfName: appeal.onBehalfName,
+  //     requirementDate: new Date(
+  //       formatDate(appeal.requirementDate, 'yyyy-MM-dd', 'en-US')
+  //     ),
+  //     totalFundsRequired: appeal.totalFundsRequired,
+  //     fundsReceived: appeal.fundsReceived,
+  //     fundsNeeded: appeal.fundsNeeded,
+  //     zakatEligible: appeal.isZakatEligible,
+  //     interestEligible: appeal.isInterestEligible,
+  //     isAnonymous: appeal.isAnonymous,
+  //     appealer: appeal.appealer,
+  //     appealerMobile: appeal.appealerMobile,
+  //     verifier: appeal.verifier,
+  //     verifierMobile: appeal.verifierMobile,
+  //     verifiedDate: appeal.verifiedDate,
+  //   });
+  //   this.appealDialog = true;
+  // }
+
+  editAppeal(id: number) {
+    this.router.navigate(['appeals/edit', id]);
   }
 
   viewAppeal(appeal: IAppeal) {
@@ -124,12 +125,12 @@ export class AppealComponent implements OnInit {
   }
 
   hideDialog() {
-    this.appealDialog = false;
     this.viewDialog = false;
     this.submitted = false;
   }
 
   public saveAppeal() {
+    debugger;
     if (!this.validateAppealDetails()) {
       this.appealsService.saveAppeal(this.appealsForm.value).subscribe({
         next: response => {
@@ -163,6 +164,9 @@ export class AppealComponent implements OnInit {
   private getAppealsApiCall() {
     this.appealsService.getAppeals().subscribe((data: any[]) => {
       this.appeals = data;
+
+      const today = new Date();
+      this.minDate = today;
     });
   }
 

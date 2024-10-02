@@ -9,213 +9,107 @@
           <div class="col-12 md:col-6 lg:col-8">
             <div class="grid">
               <div class="col-12 md:col-6 lg:col-12">
-                <input
-                  placeholder="Institution Name"
-                  type="text"
-                  pInputText
-                  formControlName="name"
-                  [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['name'].touched && entityForm.controls['name'].errors?.['required']}"
-                />
-                <small
-                  class="ng-dirty ng-invalid"
-                  *ngIf="entityForm.controls['name'].touched && entityForm.controls['name'].errors?.['required']"
-                  >Institution Name is required.</small
-                >
+                <input placeholder="Institution Name" type="text" pInputText formControlName="name"
+                  [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['name'].touched && entityForm.controls['name'].errors?.['required']}" />
+                <small class="ng-dirty ng-invalid" style="color: red;"
+                  *ngIf="entityForm.controls['name'].touched && entityForm.controls['name'].errors?.['required']">Institution
+                  Name is required.</small>
               </div>
               <div class="col-12 md:col-6 lg:col-4">
-                <p-dropdown
-                  formControlName="type"
-                  [options]="entityTypes"
-                  optionLabel="name"
-                  optionLabel="value"
-                  placeholder="Select Type"
-                  dataKey="value"
-                  [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['type'].touched && entityForm.controls['type'].errors?.['required']}"
-                />
-                <small
-                  class="ng-dirty ng-invalid"
-                  *ngIf="entityForm.controls['type'].touched && entityForm.controls['type'].errors?.['required']"
-                  >Institution Type is required.</small
-                >
+                <p-dropdown formControlName="type" [options]="entityTypes" optionLabel="name" optionLabel="value"
+                  placeholder="Select Type" dataKey="value"
+                  [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['type'].touched && entityForm.controls['type'].errors?.['required']}" />
+                <small class="ng-dirty ng-invalid" style="color: red;"
+                  *ngIf="entityForm.controls['type'].touched && entityForm.controls['type'].errors?.['required']">Institution
+                  Type is required.</small>
               </div>
               <div class="col-12 md:col-6 lg:col-4">
-                <input
-                  placeholder="President"
-                  type="text"
-                  pInputText
-                  formControlName="president"
-                  [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['president'].touched && entityForm.controls['president'].errors?.['required']}"
-                />
-                <small
-                  class="ng-dirty ng-invalid"
-                  *ngIf="entityForm.controls['president'].touched && entityForm.controls['president'].errors?.['required']"
-                  >President is required.</small
-                >
+                <input placeholder="President" type="text" pInputText formControlName="president"
+                  [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['president'].touched && entityForm.controls['president'].errors?.['required']}" />
+                <small style="color: red;" class="ng-dirty ng-invalid"
+                  *ngIf="entityForm.controls['president'].touched && entityForm.controls['president'].errors?.['required']">President
+                  is required.</small>
               </div>
               <div class="col-12 md:col-6 lg:col-4">
-                <input
-                  placeholder="Point of Contact"
-                  type="text"
-                  pInputText
-                  formControlName="poc"
-                  [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['poc'].touched && entityForm.controls['poc'].errors?.['required']}"
-                />
-                <small
-                  class="ng-dirty ng-invalid"
-                  *ngIf="entityForm.controls['poc'].touched && entityForm.controls['poc'].errors?.['required']"
-                  >Point Of Contact is required.</small
-                >
+                <input placeholder="Point of Contact" type="text" pInputText formControlName="poc"
+                  [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['poc'].touched && entityForm.controls['poc'].errors?.['required']}" />
+                <small class="ng-dirty ng-invalid" style="color: red;"
+                  *ngIf="entityForm.controls['poc'].touched && entityForm.controls['poc'].errors?.['required']">Point Of
+                  Contact is required.</small>
               </div>
 
               <div class="col-12 md:col-6 lg:col-12">
-                <p-editor
-                  formControlName="description"
-                  [style]="{ height: '200px' }"
+                <p-editor formControlName="description" [style]="{ height: '200px' }"
                   placeholder="Enter the Description"
-                  [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['description'].touched && entityForm.controls['description'].errors?.['required']}"
-                />
-                <small
-                  class="ng-dirty ng-invalid"
-                  *ngIf="entityForm.controls['description'].touched && entityForm.controls['description'].errors?.['required']"
-                  >Description is required.</small
-                >
+                  [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['description'].touched && entityForm.controls['description'].errors?.['required']}" />
+                <small class="ng-dirty ng-invalid" style="color: red;"
+                  *ngIf="entityForm.controls['description'].touched && entityForm.controls['description'].errors?.['required']">Description
+                  is required.</small>
               </div>
 
-              <div
-                class="flex align-items-center gap-1 col-12 md:col-6 lg:col-4"
-              >
-                <p-checkbox
-                  formControlName="isVerified"
-                  inputId="isVerified"
-                  [binary]="true"
-                />
+              <div class="flex align-items-center gap-1 col-12 md:col-6 lg:col-4">
+                <p-checkbox formControlName="isVerified" inputId="isVerified" [binary]="true" />
                 <label for="isVerified">Is Verified</label>
               </div>
 
-              <div
-                class="flex align-items-center gap-1 col-12 md:col-6 lg:col-4"
-              >
-                <p-checkbox
-                  formControlName="hasInternet"
-                  [binary]="true"
-                  inputId="hasInternet"
-                />
+              <div class="flex align-items-center gap-1 col-12 md:col-6 lg:col-4">
+                <p-checkbox formControlName="hasInternet" [binary]="true" inputId="hasInternet" />
                 <label for="hasInternet">Has Internet</label>
               </div>
 
               <div class="col-12 md:col-6 lg:col-4"></div>
 
               <div class="col-12 md:col-6 lg:col-4">
-                <p-inputMask
-                  mask="(999) 999-9999"
-                  formControlName="mobile"
-                  placeholder="Mobile"
-                  [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['mobile'].touched && entityForm.controls['mobile'].errors?.['required']}"
-                />
-                <small
-                  class="ng-dirty ng-invalid"
-                  *ngIf="entityForm.controls['mobile'].touched && entityForm.controls['mobile'].errors?.['required']"
-                  >Mobile is required.</small
-                >
+                <p-inputMask mask="(999) 999-9999" formControlName="mobile" placeholder="Mobile"
+                  [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['mobile'].touched && entityForm.controls['mobile'].errors?.['required']}" />
+                <small class="ng-dirty ng-invalid" style="color: red;"
+                  *ngIf="entityForm.controls['mobile'].touched && entityForm.controls['mobile'].errors?.['required']">Mobile
+                  is required.</small>
               </div>
 
               <div class="col-12 md:col-6 lg:col-4">
-                <p-inputMask
-                  mask="(999) 999-99999"
-                  formControlName="office"
-                  placeholder="Office"
-                />
+                <p-inputMask mask="(999) 999-99999" formControlName="office" placeholder="Office" />
               </div>
             </div>
           </div>
 
-          <div
-            formGroupName="address"
-            class="flex-1 w-full lg:w-3 xl:w-4 flex flex-column row-gap-3"
-          >
+          <div formGroupName="address" class="flex-1 w-full lg:w-3 xl:w-4 flex flex-column row-gap-3">
             <p-panel header="Address">
               <div class="grid">
                 <div class="col-12 md:col-6 lg:col-12">
-                  <input
-                    placeholder="Flat, House no., Building, Company, Apartment"
-                    type="text"
-                    pInputText
-                    formControlName="address1"
-                  />
+                  <input placeholder="Flat, House no., Building, Company, Apartment" type="text" pInputText
+                    formControlName="address1" />
                 </div>
                 <div class="col-12 md:col-6 lg:col-12">
-                  <input
-                    placeholder="Area, Street, Sector, Village"
-                    type="text"
-                    pInputText
-                    formControlName="address2"
-                  />
+                  <input placeholder="Area, Street, Sector, Village" type="text" pInputText
+                    formControlName="address2" />
                 </div>
                 <div class="col-12 md:col-6 lg:col-12">
-                  <input
-                    placeholder="Landmark"
-                    type="text"
-                    pInputText
-                    formControlName="landmark"
-                  />
+                  <input placeholder="Landmark" type="text" pInputText formControlName="landmark" />
                 </div>
                 <div class="col-12 md:col-6 lg:col-12">
-                  <input
-                    placeholder="Pincode"
-                    type="text"
-                    pInputText
-                    formControlName="pincode"
-                  />
+                  <input placeholder="Pincode" type="text" pInputText formControlName="pincode" />
                 </div>
                 <div class="col-12 md:col-6 lg:col-12">
-                  <p-dropdown
-                    formControlName="country"
-                    [options]="countries"
-                    optionLabel="name"
-                    placeholder="Select Country"
-                    (onChange)="onCountrySelect($event)"
-                  />
+                  <p-dropdown formControlName="country" [options]="countries" optionLabel="name"
+                    placeholder="Select Country" (onChange)="onCountrySelect($event)" />
                 </div>
                 <div class="col-12 md:col-6 lg:col-12">
-                  <p-dropdown
-                    formControlName="state"
-                    [options]="states"
-                    optionLabel="name"
-                    placeholder="Select State"
-                    (onChange)="onStateSelect($event)"
-                  />
+                  <p-dropdown formControlName="state" [options]="states" optionLabel="name" placeholder="Select State"
+                    (onChange)="onStateSelect($event)" />
                 </div>
                 <div class="col-12 md:col-6 lg:col-12">
-                  <p-dropdown
-                    formControlName="city"
-                    [options]="cities"
-                    optionLabel="name"
-                    placeholder="Select City"
-                  />
+                  <p-dropdown formControlName="city" [options]="cities" optionLabel="name" placeholder="Select City" />
                 </div>
               </div>
             </p-panel>
 
-            <div
-              class="flex flex-column sm:flex-row justify-content-between align-items-center gap-3 py-2"
-            >
-              <button
-                pButton
-                pRipple
-                label="Discard"
-                icon="pi pi-fw pi-trash"
-                class="p-button-danger p-button-outlined flex-1"
-                [disabled]="!entityForm.dirty"
-              ></button>
+            <div class="flex flex-column sm:flex-row justify-content-between align-items-center gap-3 py-2">
+              <button pButton pRipple label="Discard" icon="pi pi-fw pi-trash"
+                class="p-button-danger p-button-outlined flex-1" [disabled]="!entityForm.valid"></button>
 
-              <button
-                pButton
-                pRipple
-                label="Save"
-                icon="pi pi-fw pi-check"
-                class="p-button-primary flex-1"
-                [disabled]="!entityForm.dirty"
-              ></button>
+              <button pButton pRipple label="Save" icon="pi pi-fw pi-check" class="p-button-primary flex-1"
+                [disabled]="!entityForm.valid"></button>
             </div>
           </div>
         </div>
@@ -231,14 +125,8 @@
   <p-tabPanel header="Photos">
     <div class="grid">
       <div class="col-12 md:col-6 lg:col-12">
-        <p-fileUpload
-          name="photos"
-          [customUpload]="true"
-          (uploadHandler)="onUpload($event)"
-          [multiple]="true"
-          accept="image/*"
-          maxFileSize="5000000"
-        >
+        <p-fileUpload name="photos" [customUpload]="true" (uploadHandler)="onUpload($event)" [multiple]="true"
+          accept="image/*" maxFileSize="5000000">
           <ng-template pTemplate="content">
             <ul *ngIf="uploadedFiles.length">
               <li *ngFor="let file of uploadedFiles">
@@ -250,31 +138,13 @@
       </div>
 
       <div class="col-12 md:col-6 lg:col-12">
-        <p-fileUpload
-          mode="basic"
-          chooseLabel="Upload Cover Photo"
-          chooseIcon="pi pi-upload"
-          name="coverPhoto"
-          [customUpload]="true"
-          (uploadHandler)="onUploadCoverPhoto($event)"
-          mode="advanced"
-          [multiple]="false"
-          accept="image/*"
-          maxFileSize="1000000"
-        />
+        <p-fileUpload mode="basic" chooseLabel="Upload Cover Photo" chooseIcon="pi pi-upload" name="coverPhoto"
+          [customUpload]="true" (uploadHandler)="onUploadCoverPhoto($event)" mode="advanced" [multiple]="false"
+          accept="image/*" maxFileSize="1000000" />
         =======
-        <p-fileUpload
-          mode="basic"
-          chooseLabel="Upload Cover Photo"
-          chooseIcon="pi pi-upload"
-          name="coverPhoto"
-          [customUpload]="true"
-          (uploadHandler)="onUploadCoverPhoto($event)"
-          mode="advanced"
-          [multiple]="false"
-          accept="image/*"
-          maxFileSize="10000000"
-        />
+        <p-fileUpload mode="basic" chooseLabel="Upload Cover Photo" chooseIcon="pi pi-upload" name="coverPhoto"
+          [customUpload]="true" (uploadHandler)="onUploadCoverPhoto($event)" mode="advanced" [multiple]="false"
+          accept="image/*" maxFileSize="10000000" />
       </div>
     </div>
   </p-tabPanel>

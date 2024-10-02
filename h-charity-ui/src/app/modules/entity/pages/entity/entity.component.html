@@ -2,33 +2,15 @@
   <div class="col-12">
     <div class="card">
       <h5>DataView</h5>
-      <p-dataView
-        #dv
-        [value]="entities"
-        [paginator]="true"
-        [rows]="9"
-        filterBy="name"
-        [sortField]="sortField"
-        [sortOrder]="sortOrder"
-        layout="grid"
-      >
+      <p-dataView #dv [value]="entities" [paginator]="true" [rows]="9" filterBy="name" [sortField]="sortField"
+        [sortOrder]="sortOrder" layout="grid">
         <ng-template pTemplate="header">
-          <div
-            class="flex flex-column md:flex-row md:justify-content-between gap-2"
-          >
-            <p-dropdown
-              [options]="viewOptions"
-              placeholder="Select Sorting"
-              (onChange)="onViewChange($event)"
-            ></p-dropdown>
+          <div class="flex flex-column md:flex-row md:justify-content-between gap-2">
+            <p-dropdown [options]="viewOptions" placeholder="Select Sorting"
+              (onChange)="onViewChange($event)"></p-dropdown>
             <span class="p-input-icon-left">
               <i class="pi pi-search"></i>
-              <input
-                type="search"
-                pInputText
-                placeholder="Search by Name"
-                (input)="onFilter(dv, $event)"
-              />
+              <input type="search" pInputText placeholder="Search by Name" (input)="onFilter(dv, $event)" />
             </span>
             <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
           </div>
@@ -36,17 +18,10 @@
 
         <ng-template let-entities pTemplate="listItem">
           <div class="col-12" *ngFor="let entity of entities">
-            <div
-              class="flex flex-column md:flex-row align-items-center p-3 w-full"
-            >
-              <img
-                [src]="entity.entityPhotos.coverPhoto"
-                [alt]="entity.name"
-                class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5"
-              />
-              <div
-                class="flex-1 flex flex-column align-items-center text-center md:text-left"
-              >
+            <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
+              <img [src]="entity.entityPhotos.coverPhoto" [alt]="entity.name"
+                class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
+              <div class="flex-1 flex flex-column align-items-center text-center md:text-left">
                 <div class="font-bold text-2xl">{{ entity.name }}</div>
                 <div class="mb-2">{{ entity.description | striphtml }}</div>
                 <div class="flex align-items-center mt-2">
@@ -55,36 +30,18 @@
                 </div>
               </div>
               <div
-                class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0"
-              >
-                <p-button
-                  icon="pi pi-trash"
-                  styleClass="mb-2 p-button-sm align-self-center md:align-self-end"
-                  (click)="deleteEntity($event, entity.id)"
-                  severity="danger"
-                  [disabled]="showDeleteBtn"
-                ></p-button>
-                <p-button
-                  icon="pi pi-eye"
-                  label="Go To Entity"
-                  styleClass="mb-2 p-button-sm"
-                  (click)="viewEntity(entity.id)"
-                ></p-button>
-                <p-button
-                  icon="pi pi-pencil"
-                  label="Go To Entity"
-                  styleClass="mb-2 p-button-sm"
-                  (click)="editEntity(entity.id)"
-                  [disabled]="showEditBtn"
-                ></p-button>
-                <span
-                  [ngClass]="
+                class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
+                <p-button icon="pi pi-trash" styleClass="mb-2 p-button-sm align-self-center md:align-self-end"
+                  (click)="deleteEntity($event, entity.id)" severity="danger" [disabled]="showDeleteBtn"></p-button>
+                <p-button icon="pi pi-eye" label="Go To Entity" styleClass="mb-2 p-button-sm"
+                  (click)="viewEntity(entity.id)"></p-button>
+                <p-button icon="pi pi-pencil" label="Go To Entity" styleClass="mb-2 p-button-sm"
+                  (click)="goToEntity(entity.id)" [disabled]="showEditBtn"></p-button>
+                <span [ngClass]="
                     entity.isVerified
                       ? 'status-verified status-badge'
                       : 'status-unverified status-badge'
-                  "
-                  >{{ entity.isVerified ? 'Verified' : 'Unverified' }}</span
-                >
+                  ">{{ entity.isVerified ? 'Verified' : 'Unverified' }}</span>
               </div>
             </div>
             <div class="cover-image-container">
@@ -97,51 +54,28 @@
           <div class="grid grid-nogutter">
             <div class="col-12 md:col-4" *ngFor="let entity of entities">
               <div class="card m-3 border-1 surface-border">
-                <div
-                  class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2"
-                >
+                <div class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2">
                   <div class="flex align-items-center">
                     <i class="pi pi-warehouse mr-2"></i>
                     <span class="font-semibold">{{ entity.type }}</span>
                   </div>
-                  <span
-                    [ngClass]="
+                  <span [ngClass]="
                       entity.isVerified
                         ? 'status-verified status-badge'
                         : 'status-unverified status-badge'
-                    "
-                    >{{ entity.isVerified ? 'Verified' : 'Unverified' }}</span
-                  >
+                    ">{{ entity.isVerified ? 'Verified' : 'Unverified' }}</span>
                 </div>
-                <div
-                  class="flex flex-column align-items-center text-center mb-3"
-                >
-                  <img
-                    width="300"
-                    height="200"
-                    [src]="entity.entityPhotos.coverPhoto"
-                    [alt]="entity.name"
-                    class="w-9 shadow-2 my-3 mx-0"
-                  />
+                <div class="flex flex-column align-items-center text-center mb-3">
+                  <img width="300" height="200" [src]="entity.entityPhotos.coverPhoto" [alt]="entity.name"
+                    class="w-9 shadow-2 my-3 mx-0" />
                   <div class="text-2xl font-bold">{{ entity.name }}</div>
                   <div class="mb-3">{{ entity.mobile }}</div>
                 </div>
                 <div class="flex align-items-center justify-content-between">
-                  <p-button
-                    icon="pi pi-trash"
-                    (click)="deleteEntity($event, entity.id)"
-                    severity="danger"
-                    [disabled]="showDeleteBtn"
-                  ></p-button>
-                  <p-button
-                    icon="pi pi-eye"
-                    (click)="viewEntity(entity.id)"
-                  ></p-button>
-                  <p-button
-                    icon="pi pi-pencil"
-                    (click)="editEntity(entity.id)"
-                    [disabled]="showEditBtn"
-                  ></p-button>
+                  <p-button icon="pi pi-trash" (click)="deleteEntity($event, entity.id)" severity="danger"
+                    [disabled]="showDeleteBtn"></p-button>
+                  <p-button icon="pi pi-eye" (click)="viewEntity(entity.id)"></p-button>
+                  <p-button icon="pi pi-pencil" (click)="goToEntity(entity.id)" [disabled]="showEditBtn"></p-button>
                 </div>
               </div>
             </div>

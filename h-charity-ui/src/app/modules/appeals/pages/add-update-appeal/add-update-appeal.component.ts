@@ -1,16 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AppealService } from '../../services/appeal.service';
 import { IAppeal } from '../../models/appeal.model';
 import { InputSwitchChangeEvent } from 'primeng/inputswitch';
 import { StorageService } from 'src/app/modules/shared/services/storage.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-add-update-appeal',
@@ -22,19 +18,23 @@ export class AddUpdateAppealComponent implements OnInit {
   mode: string = 'Add';
   appealForm!: FormGroup;
   appealId: number = 0;
+  minDate: Date;
+  appeal: IAppeal;
   formBuilder = inject(FormBuilder);
   messageService = inject(MessageService);
   appealService = inject(AppealService);
   route = inject(ActivatedRoute);
   router = inject(Router);
   storageService = inject(StorageService);
+
+
   //#endregion
 
   ngOnInit() {
     this.appealId = this.route.snapshot.params['id'];
     if (this.appealId && this.appealId > 0) {
       this.initFormNew();
-      // this.initFormEdit();
+      this.initFormEdit();
     } else {
       this.initFormNew();
     }
@@ -77,13 +77,13 @@ export class AddUpdateAppealComponent implements OnInit {
     this.appealForm = this.formBuilder.group(
       {
         id: [0],
-        title: ['', [Validators.required]], // Mandatory validation
+        title: ['', [Validators.required, Validators.minLength(10)]], // Mandatory validation
         description: ['', Validators.required], // Mandatory validation
         selfOrBehalf: [false],
-        onBehalfName: [{ value: '', disabled: true }], // Enable validator conditionally
-        totalFundsRequired: ['', [Validators.required]], // Mandatory validation
-        fundsReceived: ['', [Validators.required]], // Adding required validator for completeness
-        fundsNeeded: ['', [Validators.required]], // Adding required validator for completeness
+        onBehalfName: [{ value: '', disabled: true }, Validators.required], // Enable validator conditionally
+        totalFundsRequired: [null, [Validators.required]], // Mandatory validation
+        fundsReceived: [null, [Validators.required]], // Adding required validator for completeness
+        fundsNeeded: [null, [Validators.required]], // Adding required validator for completeness
         isZakatEligible: [false],
         isInterestEligible: [false],
         isAnonymous: [false],
@@ -98,7 +98,7 @@ export class AddUpdateAppealComponent implements OnInit {
             Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$'),
           ],
         ],
-        requirementDate: ['', [Validators.required, this.dateValidator]], // Mandatory validation and custom date validator
+        requirementDate: ['', [Validators.required]], // Mandatory validation and custom date validator
         verifier: [{ value: '', disabled: true }, Validators.required],
         verifierMobile: [
           { value: '', disabled: true },
@@ -109,49 +109,58 @@ export class AddUpdateAppealComponent implements OnInit {
         ],
         verifiedDate: [{ value: '', disabled: true }, Validators.required],
       },
-      {
-        validators: this.totalFundsValidator.bind(this), // Custom group validator for funds validation
-      }
+      { validators: this.fundsValidation }
     );
-
-    this.appealForm.get('selfOrBehalf')?.valueChanges.subscribe(isOnBehalf => {
-      this.toggleOnBehalfFields(isOnBehalf);
-    });
+    this.minDate = new Date();
   }
 
-  private toggleOnBehalfFields(isOnBehalf: boolean) {
-    const onBehalfName = this.appealForm.get('onBehalfName');
-    if (isOnBehalf) {
-      onBehalfName?.enable();
-      onBehalfName?.setValidators(Validators.required); // Conditional validator
-    } else {
-      onBehalfName?.disable();
-      onBehalfName?.clearValidators(); // Clear validators when not on behalf
+  fundsValidation(control: AbstractControl) {
+    const totalFundsRequired = control.get('totalFundsRequired')?.value;
+    const fundsReceived = control.get('fundsReceived')?.value;
+    const fundsNeeded = control.get('fundsNeeded')?.value;
+
+    if (totalFundsRequired !== null && fundsReceived !== null && fundsNeeded !== null) {
+      const totalExpected = fundsReceived + fundsNeeded;
+
+      if (totalFundsRequired < totalExpected) {
+        control.get('totalFundsRequired')?.setErrors({ lessThanSum: true });
+      } else {
+        control.get('totalFundsRequired')?.setErrors(null);
+      }
     }
-    onBehalfName?.updateValueAndValidity();
+
+    return null;
   }
 
-  private dateValidator(
-    control: AbstractControl
-  ): { [key: string]: boolean } | null {
-    const currentDate = new Date().setHours(0, 0, 0, 0);
-    const selectedDate = new Date(control.value).setHours(0, 0, 0, 0);
 
-    return selectedDate && selectedDate < currentDate
-      ? { invalidDate: true }
-      : null;
-  }
 
-  private totalFundsValidator(
-    group: FormGroup
-  ): { [key: string]: boolean } | null {
-    const totalFundsRequired = group.get('totalFundsRequired')?.value;
-    const fundsReceived = group.get('fundsReceived')?.value;
-    const fundsNeeded = group.get('fundsNeeded')?.value;
+  private initFormEdit() {
+    this.appealService.getAppealById(this.appealId).subscribe({
+      next: (appeal: IAppeal) => {
+        this.appeal = appeal;
+        this.appealForm.patchValue({
+          id: appeal.id,
+          title: appeal.title,
+          description: appeal.description,
+          onBehalfName: appeal.onBehalfName,
+          requirementDate: new Date(
+            formatDate(appeal.requirementDate, 'yyyy-MM-dd', 'en-US')
+          ),
+          totalFundsRequired: appeal.totalFundsRequired,
+          fundsReceived: appeal.fundsReceived,
+          fundsNeeded: appeal.fundsNeeded,
+          zakatEligible: appeal.isZakatEligible,
+          interestEligible: appeal.isInterestEligible,
+          isAnonymous: appeal.isAnonymous,
+          appealer: appeal.appealer,
+          appealerMobile: appeal.appealerMobile,
+          verifier: appeal.verifier,
+          verifierMobile: appeal.verifierMobile,
+          verifiedDate: appeal.verifiedDate,
+        });
 
-    return totalFundsRequired > fundsReceived + fundsNeeded
-      ? { fundsMismatch: true }
-      : null;
+      },
+    });
   }
   //#endregion
 }
