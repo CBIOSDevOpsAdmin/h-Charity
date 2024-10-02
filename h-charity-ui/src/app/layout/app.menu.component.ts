@@ -50,7 +50,6 @@ export class AppMenuComponent implements OnInit {
           },
         ],
       },
-
       {
         label: 'Appeals',
         items: [
@@ -104,6 +103,17 @@ export class AppMenuComponent implements OnInit {
               routerLink: ['/institutions/add'],
             });
           }
+        });
+
+        this.model.push({
+          label: 'Admin',
+          items: [
+            {
+              label: 'Users',
+              icon: 'pi pi-fw pi-users',
+              routerLink: ['/admin/users'],
+            },
+          ],
         });
         break;
     }

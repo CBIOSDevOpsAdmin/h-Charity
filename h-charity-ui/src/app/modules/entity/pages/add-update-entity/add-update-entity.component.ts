@@ -64,9 +64,11 @@ export class AddUpdateEntityComponent implements OnInit {
 
   //#region Public Methods
   public saveEntity() {
+    debugger;
     let payload = this.generatePayload(this.entityForm.value);
     // got error in the below line
     if (!this.validateEntityDetails()) {
+      debugger;
       this.entityService.saveEntity(payload).subscribe({
         next: response => {
           this.messageService.add({

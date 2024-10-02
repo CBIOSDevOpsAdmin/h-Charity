@@ -2,9 +2,15 @@
 <div class="grid">
   <div class="col-12">
     <div class="card">
-      <p-table [value]="appeals" [paginator]="true" [rows]="5" [tableStyle]="{ 'min-width': '50rem' }"
+      <p-table
+        [value]="appeals"
+        [paginator]="true"
+        [rows]="5"
+        [tableStyle]="{ 'min-width': '50rem' }"
         [rowsPerPageOptions]="[5, 10, 20]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true"
+      >
         <ng-template pTemplate="caption">
           <div class="flex align-items-center justify-content-between">
             Appeals
@@ -51,22 +57,37 @@
           <tr>
             <td>
               <div class="flex justify-content-center flex-wrap gap-3 mb-4">
-                <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" severity="success"
-                  (onClick)="editAppeal(appeal.id)" />
-                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                  (onClick)="deleteAppeal(appeal)" />
-                <p-button icon="pi pi-eye" class="mr-1" [rounded]="true" [outlined]="true"
-                  (onClick)="viewAppeal(appeal)" />
+                <p-button
+                  icon="pi pi-pencil"
+                  [rounded]="true"
+                  [outlined]="true"
+                  severity="success"
+                  (onClick)="editAppeal(appeal.id)"
+                />
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [rounded]="true"
+                  [outlined]="true"
+                  (onClick)="deleteAppeal(appeal)"
+                />
+                <p-button
+                  icon="pi pi-eye"
+                  class="mr-1"
+                  [rounded]="true"
+                  [outlined]="true"
+                  (onClick)="viewAppeal(appeal)"
+                />
               </div>
             </td>
             <td>{{ appeal.title }}</td>
-            <td>{{ appeal.requirementDate | date:'dd-MM-yyyy' }}</td>
+            <td>{{ appeal.requirementDate | date : 'dd-MM-yyyy' }}</td>
             <td>{{ appeal.totalFundsRequired }}</td>
             <td>{{ appeal.fundsReceived }}</td>
             <td>{{ appeal.fundsNeeded }}</td>
-            <td>{{ appeal.isZakatEligible? 'Yes' : 'No' }}</td>
-            <td>{{ appeal.isIntrestEligible? 'Yes' : 'No' }}</td>
-            <td>{{ appeal.isAnonymous? 'Yes' : 'No' }}</td>
+            <td>{{ appeal.isZakatEligible ? 'Yes' : 'No' }}</td>
+            <td>{{ appeal.isIntrestEligible ? 'Yes' : 'No' }}</td>
+            <td>{{ appeal.isAnonymous ? 'Yes' : 'No' }}</td>
           </tr>
         </ng-template>
         <ng-template pTemplate="summary">
@@ -206,8 +227,13 @@
         </ng-template>
       </p-dialog> -->
 
-      <p-dialog [(visible)]="viewDialog" [style]="{ width: '1200px' }" header="Appeals Details" [modal]="true"
-        styleClass="p-fluid">
+      <p-dialog
+        [(visible)]="viewDialog"
+        [style]="{ width: '1200px' }"
+        header="Appeals Details"
+        [modal]="true"
+        styleClass="p-fluid"
+      >
         <div class="card">
           <div class="col-12 md:col-12 lg:col-12">
             <h2 style="text-align: center">{{ appeal && appeal.title }}</h2>
@@ -217,16 +243,20 @@
           </div>
           <br /><br />
           <h3 style="text-align: center">Fund Details</h3>
-          <div style="
+          <div
+            style="
               display: flex;
               justify-content: center;
               gap: 100px;
               margin-top: 20px;
               color: blue;
               font-size: 17px;
-            ">
-            <span>Total Funds Required:
-              {{ appeal && appeal.totalFundsRequired }}</span>
+            "
+          >
+            <span
+              >Total Funds Required:
+              {{ appeal && appeal.totalFundsRequired }}</span
+            >
             <span>Funds Received: {{ appeal && appeal.fundsReceived }}</span>
             <span>Funds Remaining: {{ appeal && appeal.fundsNeeded }}</span>
           </div>
@@ -258,7 +288,12 @@
             <p>Mobile: {{ appeal && appeal.verifierMobile }}</p>
             <p>Verified Date: {{ appeal && appeal.verifiedDate }}</p>
           </div>
-          <p-button label="Close" [text]="true" severity="close" (onClick)="hideDialog()" />
+          <p-button
+            label="Close"
+            [text]="true"
+            severity="close"
+            (onClick)="hideDialog()"
+          />
         </div>
       </p-dialog>
     </div>
@@ -266,3 +301,4 @@
 </div>
 
 <p-confirmDialog [style]="{ width: '450px' }" />
+<p-toast />

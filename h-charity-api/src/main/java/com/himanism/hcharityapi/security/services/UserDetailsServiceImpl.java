@@ -24,4 +24,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     return UserDetailsImpl.build(user);
   }
 
+  public String defaultPassword(String username, String mobile) {
+    return username.substring(0, 4).toUpperCase() + mobile.substring(mobile.length() - 4);
+  }
+
 }

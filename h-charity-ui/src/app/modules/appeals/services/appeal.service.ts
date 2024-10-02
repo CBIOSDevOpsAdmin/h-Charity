@@ -33,4 +33,8 @@ export class AppealService {
   getData(): Observable<any[]> {
     return this.http.get<any[]>('assets/appeals.json');
   }
+
+  deleteAppeal(appealId: number): Observable<any> {
+    return this.http.delete(`${this.rootURL}/${appealId}`);
+  }
 }

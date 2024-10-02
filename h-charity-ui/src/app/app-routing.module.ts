@@ -53,6 +53,11 @@ import { NotfoundComponent } from './modules/shared/components/notfound/notfound
                   m => m.HimanismModule
                 ),
             },
+            {
+              path: 'admin',
+              loadChildren: () =>
+                import('./modules/admin/admin.module').then(m => m.AdminModule),
+            },
           ],
         },
         { path: 'notfound', component: NotfoundComponent },
