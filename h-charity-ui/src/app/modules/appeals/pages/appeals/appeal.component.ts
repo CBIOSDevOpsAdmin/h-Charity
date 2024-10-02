@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AppealService } from '../../services/appeal.service';
 import { IAppeal } from '../../models/appeal.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
+import { StorageService } from 'src/app/modules/shared/services/storage.service';
 
 @Component({
   selector: 'app-appeal',
@@ -14,6 +15,7 @@ import { formatDate } from '@angular/common';
 })
 export class AppealComponent implements OnInit {
   // loading: boolean = true;
+  storageService = inject(StorageService);
 
   appealDialog: boolean = false;
 
@@ -123,4 +125,34 @@ export class AppealComponent implements OnInit {
 
     return isError;
   }
+
+  public showEditButton(appeal: IAppeal): boolean {
+    let roles = this.storageService.getUser().roles;
+
+    if (
+      roles &&
+      (roles.includes('ADMIN') ||
+        roles.includes('ORGANISATION_VOLUNTEER') ||
+        roles.includes('INSTITUTE_OWNER'))
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public showDeleteButton(appeal: IAppeal) {
+    let roles = this.storageService.getUser().roles;
+
+    if (
+      roles &&
+      (roles.includes('ADMIN') ||
+        roles.includes('ORGANISATION_VOLUNTEER'))
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
 }

@@ -228,7 +228,7 @@ export class AddUpdateEntityComponent implements OnInit {
   private initFormNew() {
     this.entityForm = this.formBuilder.group({
       id: [0],
-      name: ['', Validators.required],
+      name: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       type: ['', Validators.required],
       president: ['', Validators.required],
       poc: ['', Validators.required],

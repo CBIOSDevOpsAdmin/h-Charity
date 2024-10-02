@@ -52,9 +52,9 @@
             <td>
               <div class="flex justify-content-center flex-wrap gap-3 mb-4">
                 <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" severity="success"
-                  (onClick)="editAppeal(appeal.id)" />
+                  (onClick)="editAppeal(appeal.id)" *ngIf="showEditButton(appeal)" />
                 <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                  (onClick)="deleteAppeal(appeal)" />
+                  (onClick)="deleteAppeal(appeal)" *ngIf="showDeleteButton(appeal)" />
                 <p-button icon="pi pi-eye" class="mr-1" [rounded]="true" [outlined]="true"
                   (onClick)="viewAppeal(appeal)" />
               </div>
