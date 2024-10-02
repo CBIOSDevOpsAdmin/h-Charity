@@ -17,17 +17,14 @@ import { formatDate } from '@angular/common';
 export class AppealComponent implements OnInit {
   // loading: boolean = true;
 
+  //#region Variables
   appealDialog: boolean = false;
-
   viewDialog: boolean = false;
-
   submitted: boolean = false;
-
   appeals: IAppeal[] = [];
-
   appeal: IAppeal;
-
   appealsForm: FormGroup;
+  //#endregion
 
   constructor(
     private appealsService: AppealService,
@@ -38,10 +35,7 @@ export class AppealComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.appealsService.getAppeals().subscribe((data: any[]) => {
-      this.appeals = data;
-      // console.log(this.appeals);
-    });
+    this.getAppealsApiCall();
 
     this.appealsForm = this.fb.group({
       id: [0],
@@ -62,6 +56,7 @@ export class AppealComponent implements OnInit {
       verifiedDate: [{ value: '', disabled: true }],
     });
   }
+  //#region Public methods
 
   editAppeal(appeal: IAppeal) {
     this.appealsForm.patchValue({
@@ -93,6 +88,41 @@ export class AppealComponent implements OnInit {
     this.appeal = appeal;
   }
 
+  deleteAppeal(appeal: IAppeal) {
+    console.log(appeal);
+
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this Appeal?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+
+      accept: () => {
+        this.appealsService.deleteAppeal(appeal.id).subscribe({
+          next: resp => {
+            this.getAppealsApiCall();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Appeal Delete',
+              detail: 'Appeal deleted successfully',
+            });
+          },
+        });
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+        });
+      },
+    });
+  }
+
   hideDialog() {
     this.appealDialog = false;
     this.viewDialog = false;
@@ -114,6 +144,9 @@ export class AppealComponent implements OnInit {
     }
   }
 
+  //#endregion
+
+  //#region Private methods
   private validateAppealDetails() {
     let isError: boolean = false;
 
@@ -126,4 +159,12 @@ export class AppealComponent implements OnInit {
     payload.type = payload.type.description;
     return payload;
   }
+
+  private getAppealsApiCall() {
+    this.appealsService.getAppeals().subscribe((data: any[]) => {
+      this.appeals = data;
+    });
+  }
+
+  //#endregion
 }
