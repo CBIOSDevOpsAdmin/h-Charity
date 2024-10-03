@@ -14,6 +14,7 @@ import { StorageService } from 'src/app/modules/shared/services/storage.service'
   styleUrl: './appeal.component.css',
 })
 export class AppealComponent implements OnInit {
+  // loading: boolean = true;
   storageService = inject(StorageService);
 
   appealDialog: boolean = false;
@@ -21,10 +22,6 @@ export class AppealComponent implements OnInit {
   viewDialog: boolean = false;
 
   submitted: boolean = false;
-
-  showDeleteBtn: boolean = true;
-
-  showEditBtn: boolean = true;
 
   appeals: IAppeal[] = [];
 
@@ -39,9 +36,7 @@ export class AppealComponent implements OnInit {
     private messageService: MessageService,
     private fb: FormBuilder,
     private router: Router
-  ) {
-    this.accessRights();
-  }
+  ) { }
 
   ngOnInit() {
     this.appealsService.getAppeals().subscribe((data: any[]) => {
@@ -107,12 +102,8 @@ export class AppealComponent implements OnInit {
     return isError;
   }
 
-  private accessRights() {
+  public showEditButton(appeal: IAppeal): boolean {
     let roles = this.storageService.getUser().roles;
-
-    if (roles && (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'))) {
-      this.showDeleteBtn = false;
-    }
 
     if (
       roles &&
@@ -120,8 +111,24 @@ export class AppealComponent implements OnInit {
         roles.includes('ORGANISATION_VOLUNTEER') ||
         roles.includes('INSTITUTE_OWNER'))
     ) {
-      this.showEditBtn = false;
+      return true;
     }
+
+    return false;
+  }
+
+  public showDeleteButton(appeal: IAppeal) {
+    let roles = this.storageService.getUser().roles;
+
+    if (
+      roles &&
+      (roles.includes('ADMIN') ||
+        roles.includes('ORGANISATION_VOLUNTEER'))
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
 }
