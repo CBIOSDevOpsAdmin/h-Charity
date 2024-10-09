@@ -1,6 +1,45 @@
 <p-card>
   <div class="grid">
     <div class="col-12 md:col-6 lg:col-12">
+
+      <button pButton label="Give Feedback" icon="pi pi-comment" class="p-button-rounded p-button-help"
+        (click)="showFeedbackDialog()" style="position: fixed; bottom: 20px; right: 20px;"></button>
+      <p-card>
+        <p-dialog [(visible)]="feedbackDialog" header="Feedback" [modal]="true" [style]="{ width: '50vw' }">
+          <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
+            <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
+              <div class="col-12 md:col-12 lg:col-12">
+                <div class="grid">
+                  <div class="col-12 md:col-12 lg:col-12">
+                    <input type="text" pInputText placeholder="Name" formControlName="name" />
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-12">
+                    <input type="text" pInputText placeholder="Contact Number" formControlName="contactNumber" />
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-12">
+                    <input type="text" pInputText placeholder="Title" formControlName="title" />
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-12">
+                    <p-editor formControlName="description" [style]="{ height: '200px' }"
+                      placeholder="Enter the Description">
+                    </p-editor>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-12">
+                    <p-checkbox binary="true" label="Is Anonymous?" formControlName="isAnonymous"></p-checkbox>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-12">
+                    <p-dropdown [options]="statuses" placeholder="Select Status" formControlName="status"></p-dropdown>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 text-center">
+              <button pButton label="Submit" type="submit" [disabled]="!feedbackForm.valid"></button>
+            </div>
+          </form>
+        </p-dialog>
+      </p-card>
+
       <div class="text-center p-3 border-round-sm font-bold">
         <h1>{{ entity && entity.name }}</h1>
         <h4>{{ address }}</h4>
@@ -74,12 +113,8 @@
       </p-card>
     </div>
     <div class="col-12 md:col-6 lg:col-6">
-      <img
-        *ngIf="entity && entity.entityPhotos.qrCode"
-        src="{{ entity && entity.entityPhotos.qrCode }}"
-        alt="qrcode"
-        height="273px"
-      />
+      <img *ngIf="entity && entity.entityPhotos.qrCode" src="{{ entity && entity.entityPhotos.qrCode }}" alt="qrcode"
+        height="273px" />
     </div>
 
     <div class="col-12 md:col-12 lg:col-12">
@@ -108,28 +143,14 @@
     </div>
 
     <div class="col-12 md:col-12 lg:col-12">
-      <p-galleria
-        #galleria
-        [(value)]="images"
-        [(activeIndex)]="activeIndex"
-        [numVisible]="5"
-        [showItemNavigators]="true"
-        [showItemNavigatorsOnHover]="true"
-        [circular]="true"
-        [autoPlay]="true"
-        [transitionInterval]="3000"
-        [containerStyle]="{ 'max-width': '640px' }"
-        [containerClass]="galleriaClass()"
-      >
+      <p-galleria #galleria [(value)]="images" [(activeIndex)]="activeIndex" [numVisible]="5"
+        [showItemNavigators]="true" [showItemNavigatorsOnHover]="true" [circular]="true" [autoPlay]="true"
+        [transitionInterval]="3000" [containerStyle]="{ 'max-width': '640px' }" [containerClass]="galleriaClass()">
         <ng-template pTemplate="item" let-item>
-          <img
-            [src]="item"
-            [ngStyle]="{
+          <img [src]="item" [ngStyle]="{
               width: !fullscreen ? '100%' : '',
               display: !fullscreen ? 'block' : '',
-            }"
-            alt=""
-          />
+            }" alt="" />
         </ng-template>
 
         <ng-template pTemplate="footer" let-item>
@@ -137,13 +158,8 @@
             <span *ngIf="images" class="title-container">
               <span>{{ activeIndex + 1 }}/{{ images.length }}</span>
             </span>
-            <button
-              type="button"
-              pButton
-              [icon]="fullScreenIcon()"
-              (click)="toggleFullScreen()"
-              class="fullscreen-button"
-            ></button>
+            <button type="button" pButton [icon]="fullScreenIcon()" (click)="toggleFullScreen()"
+              class="fullscreen-button"></button>
           </div>
         </ng-template>
       </p-galleria>
