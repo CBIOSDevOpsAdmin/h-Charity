@@ -12,7 +12,7 @@ import jakarta.annotation.Resource;
 public class HCharityApiApplication implements CommandLineRunner {
 
 	@Resource
-  	FilesStorageService storageService;
+	FilesStorageService storageService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(HCharityApiApplication.class, args);
@@ -20,7 +20,6 @@ public class HCharityApiApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... arg) throws Exception {
-  	  //    storageService.deleteAll();
-	  storageService.init();
+		storageService.init();
 	}
 }

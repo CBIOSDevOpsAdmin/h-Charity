@@ -12,20 +12,20 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AppealResDto {
   private Long id;
-    private String title;
-    private String description;
-    private Boolean selfOrBehalf;
-    private String onBehalfName;
-    private Integer totalFundsRequired;
-    private Integer fundsReceived;
-    private Integer fundsNeeded;
-    private Boolean isZakatEligible;
-    private Boolean isInterestEligible;
-    private Boolean isAnonymous;
-    private String appealer;
-    private String appealerMobile;
-    private Date requirementDate;
-    private String verifier;
-    private String verifierMobile;
-    private Date verifiedDate;
+  private String title;
+  private String description;
+  private Boolean selfOrBehalf;
+  private String onBehalfName;
+  private Integer totalFundsRequired;
+  private Integer fundsReceived;
+  private Integer fundsNeeded;
+  private Boolean isZakatEligible;
+  private Boolean isInterestEligible;
+  private Boolean isAnonymous;
+  private String appealer;
+  private String appealerMobile;
+  private Date requirementDate;
+  private String verifier;
+  private String verifierMobile;
+  private Date verifiedDate;
 }
