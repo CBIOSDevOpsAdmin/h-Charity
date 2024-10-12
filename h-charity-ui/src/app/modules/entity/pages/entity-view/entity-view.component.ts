@@ -16,6 +16,8 @@ import {
 } from '../../models/entity.model';
 import { Galleria } from 'primeng/galleria';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IAppeal } from '../../models/appeal.model';
+import { AppealService } from 'src/app/modules/appeals/services/appeal.service';
 
 @Component({
   selector: 'app-entity-view',
@@ -42,13 +44,16 @@ export class EntityViewComponent implements OnInit {
   feedbackDialog: boolean = false;
   feedbackForm: FormGroup;
   statuses: any[] = [{ label: 'Open', value: 'Open' }, { label: 'Closed', value: 'Closed' }];
+  appeals: IAppeal[] = [];
+  feedbacks: any[] = [];
+
 
   @ViewChild('galleria') galleria: Galleria | undefined;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
     private cd: ChangeDetectorRef,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {
 
     this.feedbackForm = this.fb.group({
