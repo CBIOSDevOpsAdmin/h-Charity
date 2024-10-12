@@ -10,11 +10,17 @@
             <div class="grid">
               <div class="col-12 md:col-6 lg:col-12">
                 <input placeholder="Institution Name" type="text" pInputText formControlName="name"
-                  [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['name'].touched && entityForm.controls['name'].errors?.['required']}" />
+                  [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['name'].touched && (entityForm.controls['name'].errors?.['required'] || entityForm.controls['name'].errors?.['pattern'])}" />
                 <small class="ng-dirty ng-invalid" style="color: red;"
-                  *ngIf="entityForm.controls['name'].touched && entityForm.controls['name'].errors?.['required']">Institution
-                  Name is required.</small>
+                  *ngIf="entityForm.controls['name'].touched && entityForm.controls['name'].errors?.['required']">
+                  Institution Name is required.
+                </small>
+                <small class="ng-dirty ng-invalid" style="color: red;"
+                  *ngIf="entityForm.controls['name'].touched && entityForm.controls['name'].errors?.['pattern']">
+                  Only alphabets are allowed.
+                </small>
               </div>
+
               <div class="col-12 md:col-6 lg:col-4">
                 <p-dropdown formControlName="type" [options]="entityTypes" optionLabel="name" optionLabel="value"
                   placeholder="Select Type" dataKey="value"
@@ -34,7 +40,7 @@
                 <input placeholder="Point of Contact" type="text" pInputText formControlName="poc"
                   [ngClass]="{'ng-invalid ng-dirty' : entityForm.controls['poc'].touched && entityForm.controls['poc'].errors?.['required']}" />
                 <small class="ng-dirty ng-invalid" style="color: red;"
-                  *ngIf="entityForm.controls['poc'].touched && entityForm.controls['poc'].errors?.['required']">Point Of
+                  *ngIf="entityForm.controls['poc'].touched && entityForm.controls['poc'].errors?.['required']">Point of
                   Contact is required.</small>
               </div>
 

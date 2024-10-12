@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AppealService } from '../../services/appeal.service';
 import { IAppeal } from '../../models/appeal.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Router } from '@angular/router';
+import { formatDate } from '@angular/common';
+import { StorageService } from 'src/app/modules/shared/services/storage.service';
 
 @Component({
   selector: 'app-appeal',
@@ -12,28 +15,36 @@ import { Router } from '@angular/router';
 })
 export class AppealComponent implements OnInit {
   // loading: boolean = true;
+  storageService = inject(StorageService);
 
-  //#region Variables
   appealDialog: boolean = false;
+
   viewDialog: boolean = false;
+
   submitted: boolean = false;
+
   appeals: IAppeal[] = [];
+
   appeal: IAppeal;
+
   appealsForm: FormGroup;
-  //#endregion
 
   minDate: Date;
 
   constructor(
     private appealsService: AppealService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
     private fb: FormBuilder,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.getAppealsApiCall();
+    this.appealsService.getAppeals().subscribe((data: any[]) => {
+      this.appeals = data;
+      // console.log(this.appeals);
+      const today = new Date();
+      this.minDate = today;
+    });
 
     this.appealsForm = this.fb.group({
       id: [0],
@@ -54,31 +65,6 @@ export class AppealComponent implements OnInit {
       verifiedDate: [{ value: '', disabled: true }],
     });
   }
-  //#region Public methods
-
-  // editAppeal(appeal: IAppeal) {
-  //   this.appealsForm.patchValue({
-  //     id: appeal.id,
-  //     title: appeal.title,
-  //     description: appeal.description,
-  //     onBehalfName: appeal.onBehalfName,
-  //     requirementDate: new Date(
-  //       formatDate(appeal.requirementDate, 'yyyy-MM-dd', 'en-US')
-  //     ),
-  //     totalFundsRequired: appeal.totalFundsRequired,
-  //     fundsReceived: appeal.fundsReceived,
-  //     fundsNeeded: appeal.fundsNeeded,
-  //     zakatEligible: appeal.isZakatEligible,
-  //     interestEligible: appeal.isInterestEligible,
-  //     isAnonymous: appeal.isAnonymous,
-  //     appealer: appeal.appealer,
-  //     appealerMobile: appeal.appealerMobile,
-  //     verifier: appeal.verifier,
-  //     verifierMobile: appeal.verifierMobile,
-  //     verifiedDate: appeal.verifiedDate,
-  //   });
-  //   this.appealDialog = true;
-  // }
 
   editAppeal(id: number) {
     this.router.navigate(['appeals/edit', id]);
@@ -89,48 +75,13 @@ export class AppealComponent implements OnInit {
     this.appeal = appeal;
   }
 
-  deleteAppeal(appeal: IAppeal) {
-    console.log(appeal);
-
-    this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      message: 'Do you want to delete this Appeal?',
-      header: 'Delete Confirmation',
-      icon: 'pi pi-info-circle',
-      acceptButtonStyleClass: 'p-button-danger p-button-text',
-      rejectButtonStyleClass: 'p-button-text p-button-text',
-      acceptIcon: 'none',
-      rejectIcon: 'none',
-
-      accept: () => {
-        this.appealsService.deleteAppeal(appeal.id).subscribe({
-          next: resp => {
-            this.getAppealsApiCall();
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Appeal Delete',
-              detail: 'Appeal deleted successfully',
-            });
-          },
-        });
-      },
-      reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
-        });
-      },
-    });
-  }
-
   hideDialog() {
     this.viewDialog = false;
     this.submitted = false;
   }
 
   public saveAppeal() {
-    debugger;
+    debugger
     if (!this.validateAppealDetails()) {
       this.appealsService.saveAppeal(this.appealsForm.value).subscribe({
         next: response => {
@@ -145,30 +96,39 @@ export class AppealComponent implements OnInit {
     }
   }
 
-  //#endregion
-
-  //#region Private methods
   private validateAppealDetails() {
     let isError: boolean = false;
 
     return isError;
   }
 
-  private generatePayload(data: any): IAppeal {
-    let payload = data;
-    payload.type = payload.type.title;
-    payload.type = payload.type.description;
-    return payload;
+  public showEditButton(appeal: IAppeal): boolean {
+    let roles = this.storageService.getUser().roles;
+
+    if (
+      roles &&
+      (roles.includes('ADMIN') ||
+        roles.includes('ORGANISATION_VOLUNTEER') ||
+        roles.includes('INSTITUTE_OWNER'))
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
-  private getAppealsApiCall() {
-    this.appealsService.getAppeals().subscribe((data: any[]) => {
-      this.appeals = data;
+  public showDeleteButton(appeal: IAppeal) {
+    let roles = this.storageService.getUser().roles;
 
-      const today = new Date();
-      this.minDate = today;
-    });
+    if (
+      roles &&
+      (roles.includes('ADMIN') ||
+        roles.includes('ORGANISATION_VOLUNTEER'))
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
-  //#endregion
 }

@@ -27,6 +27,11 @@ export class AddUpdateAppealComponent implements OnInit {
   router = inject(Router);
   storageService = inject(StorageService);
 
+  isVerifiedOptions: { name: string; value: string }[] = [
+    { name: 'Verified', value: 'VERIFIED' },
+    { name: 'Unverified', value: 'UNVERIFIED' }
+  ];
+
 
   //#endregion
 
@@ -77,13 +82,14 @@ export class AddUpdateAppealComponent implements OnInit {
     this.appealForm = this.formBuilder.group(
       {
         id: [0],
-        title: ['', [Validators.required, Validators.minLength(10)]], // Mandatory validation
-        description: ['', Validators.required], // Mandatory validation
+        title: ['', [Validators.required, Validators.minLength(10)]],
+        description: ['', Validators.required],
         selfOrBehalf: [false],
-        onBehalfName: [{ value: '', disabled: true }, Validators.required], // Enable validator conditionally
-        totalFundsRequired: [null, [Validators.required]], // Mandatory validation
-        fundsReceived: [null, [Validators.required]], // Adding required validator for completeness
-        fundsNeeded: [null, [Validators.required]], // Adding required validator for completeness
+        onBehalfName: [{ value: '', disabled: true }, Validators.required],
+        isVerified: [{ value: 'UnVerified', disabled: true }],
+        totalFundsRequired: [null, [Validators.required]],
+        fundsReceived: [null, [Validators.required]],
+        fundsNeeded: [null, [Validators.required]],
         isZakatEligible: [false],
         isInterestEligible: [false],
         isAnonymous: [false],
@@ -98,7 +104,7 @@ export class AddUpdateAppealComponent implements OnInit {
             Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$'),
           ],
         ],
-        requirementDate: ['', [Validators.required]], // Mandatory validation and custom date validator
+        requirementDate: ['', [Validators.required]],
         verifier: [{ value: '', disabled: true }, Validators.required],
         verifierMobile: [
           { value: '', disabled: true },
@@ -159,8 +165,13 @@ export class AddUpdateAppealComponent implements OnInit {
           verifiedDate: appeal.verifiedDate,
         });
 
+        this.appealForm.get('isVerified')?.enable();
       },
+      error: (error) => {
+        console.error('Error fetching appeal:', error);
+      }
     });
   }
+
   //#endregion
 }

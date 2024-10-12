@@ -45,7 +45,10 @@
                   *ngIf="appealForm.controls['onBehalfName'].touched && appealForm.controls['onBehalfName'].errors?.['required']">
                   On Behalf Name Required.</small>
               </div>
-              <div class="col-12 md:col-6 lg:col-4"></div>
+              <div class="col-12 md:col-6 lg:col-4">
+                <p-dropdown formControlName="isVerified" [options]="isVerifiedOptions" optionLabel="name"
+                  placeholder="Is Verified" dataKey="value"></p-dropdown>
+              </div>
 
               <div class="col-12 md:col-6 lg:col-4">
                 <p-inputNumber inputId="totalFundsRequired" placeholder="Total Funds Required"

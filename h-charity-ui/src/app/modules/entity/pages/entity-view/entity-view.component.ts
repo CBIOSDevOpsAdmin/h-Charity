@@ -15,6 +15,9 @@ import {
   IEntityBankDetails,
 } from '../../models/entity.model';
 import { Galleria } from 'primeng/galleria';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IAppeal } from '../../models/appeal.model';
+import { AppealService } from 'src/app/modules/appeals/services/appeal.service';
 
 @Component({
   selector: 'app-entity-view',
@@ -34,16 +37,34 @@ export class EntityViewComponent implements OnInit {
   entityService = inject(EntityService);
 
   arrImages: any[] | undefined;
+
   fullscreen: boolean = false;
   activeIndex: number = 0;
   onFullScreenListener: any;
+  feedbackDialog: boolean = false;
+  feedbackForm: FormGroup;
+  statuses: any[] = [{ label: 'Open', value: 'Open' }, { label: 'Closed', value: 'Closed' }];
+  appeals: IAppeal[] = [];
+  feedbacks: any[] = [];
+
 
   @ViewChild('galleria') galleria: Galleria | undefined;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
-    private cd: ChangeDetectorRef
-  ) {}
+    private cd: ChangeDetectorRef,
+    private fb: FormBuilder,
+  ) {
+
+    this.feedbackForm = this.fb.group({
+      name: ['', Validators.required],
+      contactNumber: ['', Validators.required],
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      isAnonymous: [false],
+      status: ['', Validators.required],
+    });
+  }
 
   responsiveOptions: any[] = [
     {
@@ -181,9 +202,21 @@ export class EntityViewComponent implements OnInit {
   }
 
   fullScreenIcon() {
-    return `pi ${
-      this.fullscreen ? 'pi-window-minimize' : 'pi-window-maximize'
-    }`;
+    return `pi ${this.fullscreen ? 'pi-window-minimize' : 'pi-window-maximize'}`;
+  }
+  //#endregion
+
+  //#region Feedback Form
+  showFeedbackDialog() {
+    this.feedbackDialog = true;
+  }
+
+  submitFeedback() {
+    if (this.feedbackForm.valid) {
+      // Handle form submission logic here
+      console.log(this.feedbackForm.value);
+      this.feedbackDialog = false;
+    }
   }
   //#endregion
 }
