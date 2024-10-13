@@ -1,5 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AppealService } from '../../services/appeal.service';
@@ -29,9 +36,8 @@ export class AddUpdateAppealComponent implements OnInit {
 
   isVerifiedOptions: { name: string; value: string }[] = [
     { name: 'Verified', value: 'VERIFIED' },
-    { name: 'Unverified', value: 'UNVERIFIED' }
+    { name: 'Unverified', value: 'UNVERIFIED' },
   ];
-
 
   //#endregion
 
@@ -47,7 +53,7 @@ export class AddUpdateAppealComponent implements OnInit {
 
   //#region Public Methods
   public saveAppeal() {
-    let payload = this.appealForm.value;
+    let payload = this.appealForm.getRawValue();
     if (!this.validateAppealDetails()) {
       this.appealService.saveAppeal(payload).subscribe({
         next: (response: IAppeal) => {
@@ -55,6 +61,7 @@ export class AddUpdateAppealComponent implements OnInit {
             severity: 'success',
             summary: 'Save',
             detail: 'Appeal saved successfully',
+            key: 'toast1',
           });
           this.router.navigate(['appeals/edit', response.id]);
         },
@@ -125,7 +132,11 @@ export class AddUpdateAppealComponent implements OnInit {
     const fundsReceived = control.get('fundsReceived')?.value;
     const fundsNeeded = control.get('fundsNeeded')?.value;
 
-    if (totalFundsRequired !== null && fundsReceived !== null && fundsNeeded !== null) {
+    if (
+      totalFundsRequired !== null &&
+      fundsReceived !== null &&
+      fundsNeeded !== null
+    ) {
       const totalExpected = fundsReceived + fundsNeeded;
 
       if (totalFundsRequired < totalExpected) {
@@ -137,8 +148,6 @@ export class AddUpdateAppealComponent implements OnInit {
 
     return null;
   }
-
-
 
   private initFormEdit() {
     this.appealService.getAppealById(this.appealId).subscribe({
@@ -167,9 +176,9 @@ export class AddUpdateAppealComponent implements OnInit {
 
         this.appealForm.get('isVerified')?.enable();
       },
-      error: (error) => {
+      error: error => {
         console.error('Error fetching appeal:', error);
-      }
+      },
     });
   }
 
