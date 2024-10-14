@@ -25,4 +25,5 @@ public class AppealRequestDto {
     private String verifier;
     private String verifierMobile;
     private Date verifiedDate;
+    private String isVerified;
 }

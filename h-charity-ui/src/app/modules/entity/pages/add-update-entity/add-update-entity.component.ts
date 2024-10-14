@@ -14,7 +14,7 @@ import { IState } from 'src/app/modules/shared/models/state.model';
 import { ICountry } from 'src/app/modules/shared/models/country.model';
 import { ICity } from 'src/app/modules/shared/models/city.model';
 import { IEntity } from '../../models/entity.model';
-import { MessageService, PrimeNGConfig } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { UploadEvent } from 'primeng/fileupload';
 import { FileService } from '../../services/file.service';
 import { HttpResponse } from '@angular/common/http';

@@ -1,5 +1,6 @@
 package com.himanism.hcharityapi.services.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,6 +15,7 @@ import com.himanism.hcharityapi.dto.response.AppealResDto;
 import com.himanism.hcharityapi.entities.Appeal;
 import com.himanism.hcharityapi.mappers.AppealMapper;
 import com.himanism.hcharityapi.repo.AppealRepository;
+import com.himanism.hcharityapi.repo.UserRepository;
 import com.himanism.hcharityapi.services.AppealService;
 
 @Service
@@ -22,6 +24,7 @@ import com.himanism.hcharityapi.services.AppealService;
 public class AppealServiceImpl implements AppealService {
 
     private final AppealRepository appealRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<AppealResDto> getAppeals(Authentication authentication) {
@@ -30,8 +33,11 @@ public class AppealServiceImpl implements AppealService {
     }
 
     @Override
-    public Appeal addAppeal(AppealRequestDto appealDto) {
+    public Appeal addAppeal(AppealRequestDto appealDto, String username, Long userId) {
         Appeal appeal = AppealMapper.INSTANCE.appealRequestDTOtoAppeal(appealDto);
+        appeal.setCreatedBy(username);
+        appeal.setCreatedDate(new Date());
+        appeal.setUser(userRepository.findById(userId).get());
         return appealRepository.save(appeal);
     }
 

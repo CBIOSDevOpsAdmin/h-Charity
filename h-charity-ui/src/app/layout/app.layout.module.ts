@@ -23,6 +23,7 @@ import { AppConfigModule } from './config/config.module';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { MenuModule } from 'primeng/menu';
 import { DialogModule } from 'primeng/dialog';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { DialogModule } from 'primeng/dialog';
     SplitButtonModule,
     MenuModule,
     DialogModule,
+    ToastModule,
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
 })

@@ -14,6 +14,8 @@ import { IAppeal } from '../../models/appeal.model';
 import { InputSwitchChangeEvent } from 'primeng/inputswitch';
 import { StorageService } from 'src/app/modules/shared/services/storage.service';
 import { formatDate } from '@angular/common';
+import { IDropdown } from 'src/app/modules/shared/models/dropdown.model';
+import { convertArrStringToArrDDObject } from 'src/app/modules/shared/utilities/common.utils';
 
 @Component({
   selector: 'app-add-update-appeal',
@@ -34,10 +36,7 @@ export class AddUpdateAppealComponent implements OnInit {
   router = inject(Router);
   storageService = inject(StorageService);
 
-  isVerifiedOptions: { name: string; value: string }[] = [
-    { name: 'Verified', value: 'VERIFIED' },
-    { name: 'Unverified', value: 'UNVERIFIED' },
-  ];
+  isVerifiedOptions: IDropdown[] = [];
 
   //#endregion
 
@@ -86,6 +85,10 @@ export class AddUpdateAppealComponent implements OnInit {
   }
 
   private initFormNew() {
+    this.isVerifiedOptions = convertArrStringToArrDDObject([
+      'Verified',
+      'Unverified',
+    ]);
     this.appealForm = this.formBuilder.group(
       {
         id: [0],
@@ -93,7 +96,7 @@ export class AddUpdateAppealComponent implements OnInit {
         description: ['', Validators.required],
         selfOrBehalf: [false],
         onBehalfName: [{ value: '', disabled: true }, Validators.required],
-        isVerified: [{ value: 'UnVerified', disabled: true }],
+        isVerified: [{ value: 'Unverified', disabled: true }],
         totalFundsRequired: [null, [Validators.required]],
         fundsReceived: [null, [Validators.required]],
         fundsNeeded: [null, [Validators.required]],

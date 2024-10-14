@@ -1,6 +1,5 @@
 package com.himanism.hcharityapi.controllers;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -17,11 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.himanism.hcharityapi.dto.request.AppealRequestDto;
-import com.himanism.hcharityapi.dto.request.EntityRequestDto;
 import com.himanism.hcharityapi.dto.response.AppealResDto;
-import com.himanism.hcharityapi.dto.response.EntityResponseDto;
 import com.himanism.hcharityapi.entities.Appeal;
-import com.himanism.hcharityapi.entities.Entities;
 import com.himanism.hcharityapi.security.services.UserDetailsImpl;
 import com.himanism.hcharityapi.services.AppealService;
 
@@ -65,10 +61,11 @@ public class AppealController {
         // Make proper use of Lombok validators
 
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-   
-        String username = ((UserDetailsImpl) principle).getUsername();
 
-        return appealService.addAppeal(appealRequestDto);
+        String username = ((UserDetailsImpl) principle).getUsername();
+        Long userId = ((UserDetailsImpl) principle).getId();
+
+        return appealService.addAppeal(appealRequestDto, username, userId);
     }
 
     @PutMapping("")
@@ -91,6 +88,5 @@ public class AppealController {
 
         appealService.deleteAppeal(appealId);
     }
-
 
 }

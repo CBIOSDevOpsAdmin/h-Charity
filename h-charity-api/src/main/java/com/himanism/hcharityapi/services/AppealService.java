@@ -12,7 +12,7 @@ public interface AppealService {
 
     List<AppealResDto> getAppeals(Authentication authentication);
 
-    Appeal addAppeal(AppealRequestDto appealDto);
+    Appeal addAppeal(AppealRequestDto appealDto, String username, Long userId);
 
     Appeal updateAppeal(AppealRequestDto appealDto);
 

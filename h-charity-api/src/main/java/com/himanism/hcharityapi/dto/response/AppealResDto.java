@@ -1,6 +1,9 @@
 package com.himanism.hcharityapi.dto.response;
 
 import java.util.Date;
+
+import com.himanism.hcharityapi.entities.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,4 +31,6 @@ public class AppealResDto {
   private String verifier;
   private String verifierMobile;
   private Date verifiedDate;
+  private String isVerified;
+  private User user;
 }

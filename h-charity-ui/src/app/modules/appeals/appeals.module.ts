@@ -73,9 +73,11 @@ import { StepperModule } from 'primeng/stepper';
     StepperModule,
   ],
 
-  providers: [AppealService, ConfirmationService, MessageService, DialogService],
-
+  providers: [
+    AppealService,
+    ConfirmationService,
+    MessageService,
+    DialogService,
+  ],
 })
-
-
-export class AppealsModule { }
+export class AppealsModule {}

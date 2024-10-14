@@ -16,4 +16,6 @@ export interface IAppeal {
   verifier?: string;
   verifierMobile?: string;
   verifiedDate?: string;
+  isVerified?: string;
+  user?: any;
 }
