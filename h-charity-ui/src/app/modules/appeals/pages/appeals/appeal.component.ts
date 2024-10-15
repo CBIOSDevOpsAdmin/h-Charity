@@ -36,7 +36,7 @@ export class AppealComponent implements OnInit {
     private messageService: MessageService,
     private fb: FormBuilder,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.appealsService.getAppeals().subscribe((data: any[]) => {
@@ -105,7 +105,7 @@ export class AppealComponent implements OnInit {
   public showEditButton(appeal: IAppeal): boolean {
     let roles = this.storageService.getUser().roles;
 
-    if (appeal['user'].id === this.storageService.getUser().id) {
+    if (appeal['user'] && appeal['user'].id === this.storageService.getUser().id) {
       return true;
     } else if (
       roles &&
@@ -120,7 +120,7 @@ export class AppealComponent implements OnInit {
   public showDeleteButton(appeal: IAppeal) {
     let roles = this.storageService.getUser().roles;
 
-    if (appeal['user'].id === this.storageService.getUser().id) {
+    if (appeal['user'] && appeal['user'].id === this.storageService.getUser().id) {
       return true;
     } else if (
       roles &&

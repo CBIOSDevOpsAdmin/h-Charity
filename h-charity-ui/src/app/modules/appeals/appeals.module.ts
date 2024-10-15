@@ -28,7 +28,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
 import { StepperModule } from 'primeng/stepper';
-
+import { FloatLabelModule } from 'primeng/floatlabel';
 @NgModule({
   declarations: [
     AddUpdateAppealComponent,
@@ -71,6 +71,7 @@ import { StepperModule } from 'primeng/stepper';
     CalendarModule,
     ButtonModule,
     StepperModule,
+    FloatLabelModule,
   ],
 
   providers: [
@@ -80,4 +81,4 @@ import { StepperModule } from 'primeng/stepper';
     DialogService,
   ],
 })
-export class AppealsModule {}
+export class AppealsModule { }
