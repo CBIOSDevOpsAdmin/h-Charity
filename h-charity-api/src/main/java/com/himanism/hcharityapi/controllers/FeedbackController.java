@@ -43,8 +43,7 @@ public class FeedbackController {
 
     @GetMapping("/{feedbackId}")
     public FeedbackResDto getFeedbackById(@PathVariable Long feedbackId) {
-        FeedbackResDto feedbackResDto = feedbackService.getFeedbackById(feedbackId);
-        return feedbackResDto;
+        return feedbackService.getFeedbackById(feedbackId);
     }
 
     @PostMapping("")

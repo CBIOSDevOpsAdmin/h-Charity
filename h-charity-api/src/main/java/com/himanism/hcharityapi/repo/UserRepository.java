@@ -1,12 +1,13 @@
 package com.himanism.hcharityapi.repo;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.himanism.hcharityapi.entities.Role;
 import com.himanism.hcharityapi.entities.User;
-
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -15,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   Boolean existsByUsername(String username);
 
   Boolean existsByEmail(String email);
+
+  List<User> findByRolesNotContaining(Role adminRole);
 }

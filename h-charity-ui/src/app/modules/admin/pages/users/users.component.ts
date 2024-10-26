@@ -19,7 +19,6 @@ export class UsersComponent implements OnInit {
   user: IUser = {};
   selectedUsers: IUser[] = [];
   submitted: boolean = false;
-  cols: any[] = [];
   roles: IDropdown[] = [];
   rowsPerPageOptions = [5, 10, 20];
 
@@ -28,15 +27,11 @@ export class UsersComponent implements OnInit {
   //#endregion
 
   ngOnInit() {
-    // this.userService.getUsers().then(data => (this.users = data));
-
-    this.cols = [
-      { field: 'user', header: 'user' },
-      { field: 'price', header: 'Price' },
-      { field: 'category', header: 'Category' },
-      { field: 'rating', header: 'Reviews' },
-      { field: 'inventoryStatus', header: 'Status' },
-    ];
+    this.userService.getUsers().subscribe({
+      next: res => {
+        this.users = res;
+      },
+    });
 
     this.roles = [
       { name: 'Normal User', value: 'NORMAL_USER' },
@@ -84,8 +79,8 @@ export class UsersComponent implements OnInit {
     this.users = this.users.filter(val => val.id !== this.user.id);
     this.messageService.add({
       severity: 'success',
-      summary: 'Successful',
-      detail: 'User Deleted',
+      summary: 'User Deleted',
+      detail: 'User deleted successfully',
       life: 3000,
     });
     this.user = {};
@@ -98,13 +93,13 @@ export class UsersComponent implements OnInit {
 
   saveUser() {
     this.submitted = true;
-
+    debugger;
     if (this.user.fullName?.trim()) {
       if (this.user.id) {
         // Update mode
         this.messageService.add({
           severity: 'success',
-          summary: 'Successful',
+          summary: 'User updated successfully',
           detail: 'User Updated',
           life: 3000,
         });
@@ -115,8 +110,8 @@ export class UsersComponent implements OnInit {
           next: (res: any) => {
             this.messageService.add({
               severity: 'success',
-              summary: 'Successful',
-              detail: 'User Created',
+              summary: 'User Created',
+              detail: 'User created successfully',
               life: 3000,
             });
           },
