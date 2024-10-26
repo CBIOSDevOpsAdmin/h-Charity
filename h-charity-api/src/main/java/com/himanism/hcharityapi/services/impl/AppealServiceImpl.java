@@ -15,6 +15,7 @@ import com.himanism.hcharityapi.dto.response.AppealResDto;
 import com.himanism.hcharityapi.entities.Appeal;
 import com.himanism.hcharityapi.mappers.AppealMapper;
 import com.himanism.hcharityapi.repo.AppealRepository;
+import com.himanism.hcharityapi.repo.EntityRepository;
 import com.himanism.hcharityapi.repo.UserRepository;
 import com.himanism.hcharityapi.services.AppealService;
 
@@ -25,6 +26,7 @@ public class AppealServiceImpl implements AppealService {
 
     private final AppealRepository appealRepository;
     private final UserRepository userRepository;
+    private final EntityRepository entityRepository;
 
     @Override
     public List<AppealResDto> getAppeals(Authentication authentication) {
@@ -37,7 +39,12 @@ public class AppealServiceImpl implements AppealService {
         Appeal appeal = AppealMapper.INSTANCE.appealRequestDTOtoAppeal(appealDto);
         appeal.setCreatedBy(username);
         appeal.setCreatedDate(new Date());
-        appeal.setUser(userRepository.findById(userId).get());
+        if (userRepository.findById(userId).isPresent()) {
+            appeal.setUser(userRepository.findById(userId).get());
+        } else {
+            appeal.setEntity(entityRepository.findById(userId).get());
+        }
+
         return appealRepository.save(appeal);
     }
 

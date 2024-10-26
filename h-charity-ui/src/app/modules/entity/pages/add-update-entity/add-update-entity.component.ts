@@ -237,7 +237,10 @@ export class AddUpdateEntityComponent implements OnInit {
       description: ['', Validators.required],
       isVerified: [false],
       hasInternet: [false],
-      mobile: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      mobile: [
+        '',
+        [Validators.required, Validators.pattern(/\(\d{3}\) \d{3}-\d{4}/)],
+      ],
       office: [''],
       address: this.formBuilder.group({
         address1: [''],
@@ -275,6 +278,7 @@ export class AddUpdateEntityComponent implements OnInit {
           },
         });
         this.updateLocationFields();
+        this.entityForm.markAllAsTouched();
       },
     });
   }
