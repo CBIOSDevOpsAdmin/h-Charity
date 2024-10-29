@@ -39,6 +39,7 @@ import { ImageModule } from 'primeng/image';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @NgModule({
   imports: [
@@ -74,6 +75,7 @@ import { ConfirmationService } from 'primeng/api';
     ImageModule,
     DialogModule,
     ConfirmDialogModule,
+    FloatLabelModule,
   ],
   declarations: [
     EntityComponent,
@@ -86,4 +88,4 @@ import { ConfirmationService } from 'primeng/api';
   ],
   providers: [EntityService, ConfirmationService],
 })
-export class EntityModule {}
+export class EntityModule { }
