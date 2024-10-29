@@ -1,25 +1,32 @@
 package com.himanism.hcharityapi.controllers;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.himanism.hcharityapi.dto.request.UserReqDto;
+import com.himanism.hcharityapi.dto.response.EntityResponseDto;
 import com.himanism.hcharityapi.dto.response.MessageResponseDto;
+import com.himanism.hcharityapi.dto.response.UserResDto;
 import com.himanism.hcharityapi.entities.Role;
 import com.himanism.hcharityapi.entities.User;
 import com.himanism.hcharityapi.models.Erole;
 import com.himanism.hcharityapi.repo.RoleRepository;
 import com.himanism.hcharityapi.repo.UserRepository;
 import com.himanism.hcharityapi.security.services.UserDetailsServiceImpl;
+import com.himanism.hcharityapi.services.AdminService;
+import com.himanism.hcharityapi.services.FeedbackService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +49,8 @@ public class AdminController {
 
         @Autowired
         UserDetailsServiceImpl userDetailsService;
+
+        private final AdminService adminService;
 
         @PostMapping("")
         public ResponseEntity<?> registerUser(@Valid @RequestBody UserReqDto userReqDto) {
@@ -95,6 +104,13 @@ public class AdminController {
                 user.setRoles(roles);
                 userRepository.save(user);
 
-                return ResponseEntity.ok(new MessageResponseDto("User registered successfully!"));
+                return ResponseEntity.ok(new MessageResponseDto("User created successfully!"));
+        }
+
+        @GetMapping("")
+        public ResponseEntity<?> getUsers(Authentication authentication) {
+                log.info("Admin Controller: List Users");
+                List<UserResDto> users = adminService.getUsers(authentication);
+                return ResponseEntity.ok().body(users);
         }
 }

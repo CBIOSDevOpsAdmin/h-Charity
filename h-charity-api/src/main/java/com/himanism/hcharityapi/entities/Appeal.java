@@ -52,13 +52,9 @@ public class Appeal {
     // @JoinColumn(name = "entity_id", referencedColumnName = "id")
     // private Entities entity;
 
-    // @OneToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "user_id", referencedColumnName = "id")
-    // private User user;
-
-    // @ManyToOne
-    // @JoinColumn(name = "entity_id", referencedColumnName = "id")
-    // private Entities entity;
+    @ManyToOne
+    @JoinColumn(name = "entity_id", referencedColumnName = "id")
+    private Entities entity;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
