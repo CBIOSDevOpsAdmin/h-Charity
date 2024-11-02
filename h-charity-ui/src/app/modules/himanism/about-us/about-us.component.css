@@ -1,0 +1,95 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.about-us-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+h2,
+h3 {
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+h2.underline,
+h3.underline {
+    position: relative;
+}
+
+h2:hover,
+h3:hover {
+    color: #6464f3;
+    /* Change text color on hover */
+}
+
+
+p {
+    font-size: 1.3em;
+    line-height: 1.6;
+    margin: 25px 0;
+    transition: color 0.3s;
+}
+
+p:hover {
+    color: #6464f3;
+}
+
+.footer-bar {
+    background-color: #e7e7f1;
+    color: #333;
+    padding: 20px;
+    text-align: center;
+    margin-top: 40px;
+    border-top: 2px solid #6464f3;
+}
+
+.footer-bar h3 {
+    margin: 0 0 15px;
+    font-size: 1.5em;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.icon {
+    font-size: 24px;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.icon.facebook {
+    color: #3b5998;
+}
+
+.icon.twitter {
+    color: #1da1f2;
+}
+
+.icon.instagram {
+    color: #e1306c;
+}
+
+.icon.whatsapp {
+    color: #25d366;
+}
+
+.icon.mail {
+    color: #bb001b;
+}
+
+.icon:hover {
+    transform: scale(1.2);
+    color: inherit;
+}
