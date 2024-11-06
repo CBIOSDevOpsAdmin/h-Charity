@@ -8,3 +8,65 @@
 .error-color {
   color: #e24c4c;
 }
+
+/* Styling for the dialog box */
+.ui-dialog {
+  border-radius: 10px;
+  background-color: #f4f4f9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.ui-dialog-titlebar {
+  background-color: #6464f3;
+  /* Heading color */
+  color: #fff;
+  font-weight: bold;
+}
+
+.terms-content {
+  padding: 20px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+}
+
+.terms-content ol {
+  padding-left: 20px;
+}
+
+.terms-content li {
+  margin-bottom: 15px;
+}
+
+/* Close button styling */
+.close-button {
+  display: block;
+  width: 100px;
+  margin: 20px auto;
+  background-color: #6464f3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 10px;
+  transition: background-color 0.3s;
+}
+
+.close-button:hover {
+  background-color: #5050d4;
+}
+
+/* Responsive dialog box */
+@media (max-width: 768px) {
+  .ui-dialog {
+    width: 90vw;
+  }
+
+  .terms-content {
+    font-size: 14px;
+  }
+
+  .close-button {
+    width: 80px;
+  }
+}

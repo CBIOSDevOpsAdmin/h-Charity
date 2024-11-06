@@ -18,6 +18,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthRoutingModule } from './auth-routing.module';
 import { PasswordModule } from 'primeng/password';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   imports: [
@@ -39,8 +40,9 @@ import { PasswordModule } from 'primeng/password';
     InputMaskModule,
     PanelModule,
     PasswordModule,
+    DialogModule,
   ],
   declarations: [LoginComponent, RegisterComponent],
   providers: [],
 })
-export class AuthModule {}
+export class AuthModule { }
