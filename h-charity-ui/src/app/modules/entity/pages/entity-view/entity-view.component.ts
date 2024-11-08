@@ -32,7 +32,6 @@ export class EntityViewComponent implements OnInit {
   //#region Variables
   @Input() appeal: any;
   @Input() appealForm: any;
-  storageService = inject(StorageService);
   router = inject(Router);
   currentTime: string = '';
   dateString: string = '';
@@ -271,41 +270,6 @@ export class EntityViewComponent implements OnInit {
   //#endregion
 
   //#region Buttons
-  public showEditButton(appeal: IAppeal): boolean {
-    let roles = this.storageService.getUser().roles;
-
-    if (
-      appeal['user'] &&
-      appeal['user'].id === this.storageService.getUser().id
-    ) {
-      return true;
-    } else if (
-      roles &&
-      (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'))
-    ) {
-      return true;
-    }
-
-    return false;
-  }
-
-  public showDeleteButton(appeal: IAppeal) {
-    let roles = this.storageService.getUser().roles;
-
-    if (
-      appeal['user'] &&
-      appeal['user'].id === this.storageService.getUser().id
-    ) {
-      return true;
-    } else if (
-      roles &&
-      (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'))
-    ) {
-      return true;
-    }
-
-    return false;
-  }
 
   //#endregion
 }
