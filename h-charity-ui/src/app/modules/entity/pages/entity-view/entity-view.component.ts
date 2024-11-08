@@ -2,12 +2,13 @@ import {
   ChangeDetectorRef,
   Component,
   Inject,
+  Input,
   OnInit,
   PLATFORM_ID,
   ViewChild,
   inject,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EntityService } from '../../services/entity.service';
 import {
   IAddress,
@@ -18,6 +19,9 @@ import { Galleria } from 'primeng/galleria';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IAppeal } from '../../models/appeal.model';
 import { AppealService } from 'src/app/modules/appeals/services/appeal.service';
+import { FeedbackService } from '../../services/feedback.service';
+import { StorageService } from 'src/app/modules/shared/services/storage.service';
+import { AppealsService } from '../../services/appeals.service';
 
 @Component({
   selector: 'app-entity-view',
@@ -26,6 +30,10 @@ import { AppealService } from 'src/app/modules/appeals/services/appeal.service';
 })
 export class EntityViewComponent implements OnInit {
   //#region Variables
+  @Input() appeal: any;
+  @Input() appealForm: any;
+  storageService = inject(StorageService);
+  router = inject(Router);
   currentTime: string = '';
   dateString: string = '';
   entity: IEntity;
@@ -55,7 +63,9 @@ export class EntityViewComponent implements OnInit {
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
     private cd: ChangeDetectorRef,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private feedbackService: FeedbackService,
+    private appealsService: AppealsService
   ) {
     this.feedbackForm = this.fb.group({
       name: ['', Validators.required],
@@ -86,6 +96,8 @@ export class EntityViewComponent implements OnInit {
   ngOnInit() {
     this.getEntity();
     this.bindDocumentListeners();
+    this.loadFeedbacks();
+    this.loadAppeals();
   }
 
   //#region Private Methods
@@ -220,5 +232,59 @@ export class EntityViewComponent implements OnInit {
       this.feedbackDialog = false;
     }
   }
+
+  loadFeedbacks(): void {
+    this.feedbackService.getFeedbacks().subscribe(data => {
+      this.feedbacks = data;
+    });
+  }
+
+  loadAppeals(): void {
+    this.appealsService.getAppeals().subscribe(data => {
+      this.appeals = data;
+    });
+  }
+  navigateToAddAppeal() {
+    this.router.navigate(['appeals/add']);
+  }
+  //#endregion
+
+  //#region Buttons
+  public showEditButton(appeal: IAppeal): boolean {
+    let roles = this.storageService.getUser().roles;
+
+    if (
+      appeal['user'] &&
+      appeal['user'].id === this.storageService.getUser().id
+    ) {
+      return true;
+    } else if (
+      roles &&
+      (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'))
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public showDeleteButton(appeal: IAppeal) {
+    let roles = this.storageService.getUser().roles;
+
+    if (
+      appeal['user'] &&
+      appeal['user'].id === this.storageService.getUser().id
+    ) {
+      return true;
+    } else if (
+      roles &&
+      (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'))
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
   //#endregion
 }

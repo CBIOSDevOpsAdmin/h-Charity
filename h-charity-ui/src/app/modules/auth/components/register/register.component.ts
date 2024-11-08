@@ -27,6 +27,9 @@ export class RegisterComponent implements OnInit {
   formBuilder = inject(FormBuilder);
   registrationForm!: FormGroup;
 
+  // Add displayTerms property to control the visibility of terms and conditions
+  displayTerms = false;
+
   ngOnInit(): void {
     this.initFormNew();
   }
@@ -51,6 +54,9 @@ export class RegisterComponent implements OnInit {
         },
       });
     } else {
+      console.log(this.username?.invalid);
+      console.log(this.username?.dirty);
+      console.log(this.username?.touched);
       console.log('Form is not valid');
     }
   }
@@ -92,6 +98,24 @@ export class RegisterComponent implements OnInit {
         validators: this.matchPasswords('password', 'confirmPassword'),
       }
     );
+  }
+
+  // Method to format the username input
+  transformUsername(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const transformed = input.value.toLowerCase();
+    this.registrationForm
+      .get('username')
+      ?.setValue(transformed, { emitEvent: false });
+  }
+
+  // Method to show terms and conditions
+  showTermsAndConditions() {
+    this.displayTerms = true; // Show the terms and conditions when this method is called
+  }
+
+  closeDialog() {
+    this.displayTerms = false;
   }
 
   private matchPasswords(

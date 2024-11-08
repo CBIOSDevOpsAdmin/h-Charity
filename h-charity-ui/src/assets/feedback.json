@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "name": "Sameer",
+        "contactNumber": "9876543210",
+        "title": "Great Initiative",
+        "description": "I really appreciate the efforts being made for the community. This initiative will surely help many.",
+        "status": "Resolved",
+        "anonymous": false
+    },
+    {
+        "id": 2,
+        "name": "Ali",
+        "contactNumber": "8765432109",
+        "title": "Suggestion for Improvement",
+        "description": "I suggest adding more events for community engagement to raise awareness about these initiatives.",
+        "status": "Pending",
+        "anonymous": false
+    },
+    {
+        "id": 3,
+        "name": "Akbar",
+        "contactNumber": "789456157",
+        "title": "Support for Wudu Area Renovation",
+        "description": "I support the renovation of the wudu area and hope to contribute soon.",
+        "status": "Pending",
+        "anonymous": true
+    },
+    {
+        "id": 4,
+        "name": "Majeed",
+        "contactNumber": "1234567890",
+        "title": "Thank You",
+        "description": "Thank you for all the hard work! It makes a real difference.",
+        "status": "Resolved",
+        "anonymous": false
+    }
+]

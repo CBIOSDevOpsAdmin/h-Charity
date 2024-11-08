@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AppealService } from '../../services/appeal.service';
 import { IAppeal } from '../../models/appeal.model';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Router } from '@angular/router';
@@ -16,20 +16,17 @@ import { StorageService } from 'src/app/modules/shared/services/storage.service'
 export class AppealComponent implements OnInit {
   // loading: boolean = true;
   storageService = inject(StorageService);
-
   appealDialog: boolean = false;
-
   viewDialog: boolean = false;
-
   submitted: boolean = false;
-
   appeals: IAppeal[] = [];
-
   appeal: IAppeal;
-
   appealsForm: FormGroup;
-
   minDate: Date;
+  yesNoOptions = [
+    { label: 'Yes', value: true },
+    { label: 'No', value: false }
+  ];
 
   constructor(
     private appealsService: AppealService,
