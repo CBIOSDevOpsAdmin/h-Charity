@@ -1,0 +1,66 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <p-table
+        [value]="reviews"
+        [paginator]="true"
+        [rows]="10"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [rowsPerPageOptions]="[10, 20]"
+        [showCurrentPageReport]="true"
+        [styleClass]="
+          'p-datatable-sm p-datatable-gridlines p-datatable-striped'
+        "
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th
+              id="th_reviewStatus"
+              pSortableColumn="reviewStatus"
+              style="min-width: 25rem"
+            >
+              Review Status<p-sortIcon field="reviewStatus" />
+            </th>
+
+            <th
+              id="th_comment"
+              pSortableColumn="comment"
+              style="min-width: 15rem"
+            >
+              Comment<p-sortIcon field="comment" />
+            </th>
+
+            <th
+              id="th_reviewedBy"
+              pSortableColumn="reviewedBy"
+              style="min-width: 15rem"
+            >
+              Reviewed By<p-sortIcon field="reviewedBy" />
+            </th>
+
+            <th
+              id="th_reviewedDate"
+              pSortableColumn="reviewedDate"
+              style="min-width: 12rem"
+            >
+              Reviewed Date<p-sortIcon field="reviewedDate" />
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-review>
+          <tr>
+            <td>{{ review.reviewStatus }}</td>
+            <td>{{ review.comment }}</td>
+            <td>{{ review.reviewedBy }}</td>
+            <td>{{ review.reviewDate | date : 'dd-MM-yyyy' }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="flex align-items-center justify-content-between">
+            In total there are {{ reviews ? reviews.length : 0 }} reviews.
+          </div>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

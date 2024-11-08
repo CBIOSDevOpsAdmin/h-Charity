@@ -40,6 +40,9 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { EntityReviewComponent } from './components/entity-review/entity-review.component';
+import { EntityReviewTableComponent } from './components/entity-review-table/entity-review-table.component';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @NgModule({
   imports: [
@@ -76,6 +79,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     DialogModule,
     ConfirmDialogModule,
     FloatLabelModule,
+    InputTextareaModule,
   ],
   declarations: [
     EntityComponent,
@@ -85,7 +89,9 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     EntityPaymentAddComponent,
     EntityBankDetailsComponent,
     EntityViewComponent,
+    EntityReviewComponent,
+    EntityReviewTableComponent,
   ],
   providers: [EntityService, ConfirmationService],
 })
-export class EntityModule { }
+export class EntityModule {}

@@ -17,6 +17,7 @@ public class EntityRequestDto {
     private String president;
     private String poc;
     private String description;
+    private Long entityOwner;
     private Boolean isVerified;
     private Boolean hasInternet;
     private List<String> photos;

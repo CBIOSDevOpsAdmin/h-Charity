@@ -51,12 +51,12 @@ export class EntityViewComponent implements OnInit {
   onFullScreenListener: any;
   feedbackDialog: boolean = false;
   feedbackForm: FormGroup;
-  statuses: any[] = [{ label: 'Open', value: 'Open' }, { label: 'Closed', value: 'Closed' }];
+  statuses: any[] = [
+    { label: 'Open', value: 'Open' },
+    { label: 'Closed', value: 'Closed' },
+  ];
   appeals: IAppeal[] = [];
   feedbacks: any[] = [];
-
-
-
 
   @ViewChild('galleria') galleria: Galleria | undefined;
 
@@ -65,9 +65,8 @@ export class EntityViewComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private fb: FormBuilder,
     private feedbackService: FeedbackService,
-    private appealsService: AppealsService,
+    private appealsService: AppealsService
   ) {
-
     this.feedbackForm = this.fb.group({
       name: ['', Validators.required],
       contactNumber: ['', Validators.required],
@@ -216,7 +215,9 @@ export class EntityViewComponent implements OnInit {
   }
 
   fullScreenIcon() {
-    return `pi ${this.fullscreen ? 'pi-window-minimize' : 'pi-window-maximize'}`;
+    return `pi ${
+      this.fullscreen ? 'pi-window-minimize' : 'pi-window-maximize'
+    }`;
   }
   //#endregion
 
@@ -228,7 +229,6 @@ export class EntityViewComponent implements OnInit {
   submitFeedback() {
     if (this.feedbackForm.valid) {
       // Handle form submission logic here
-      console.log(this.feedbackForm.value);
       this.feedbackDialog = false;
     }
   }
@@ -253,7 +253,10 @@ export class EntityViewComponent implements OnInit {
   public showEditButton(appeal: IAppeal): boolean {
     let roles = this.storageService.getUser().roles;
 
-    if (appeal['user'] && appeal['user'].id === this.storageService.getUser().id) {
+    if (
+      appeal['user'] &&
+      appeal['user'].id === this.storageService.getUser().id
+    ) {
       return true;
     } else if (
       roles &&
@@ -268,7 +271,10 @@ export class EntityViewComponent implements OnInit {
   public showDeleteButton(appeal: IAppeal) {
     let roles = this.storageService.getUser().roles;
 
-    if (appeal['user'] && appeal['user'].id === this.storageService.getUser().id) {
+    if (
+      appeal['user'] &&
+      appeal['user'].id === this.storageService.getUser().id
+    ) {
       return true;
     } else if (
       roles &&
@@ -280,7 +286,5 @@ export class EntityViewComponent implements OnInit {
     return false;
   }
 
-
   //#endregion
-
 }

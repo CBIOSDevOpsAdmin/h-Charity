@@ -2,8 +2,16 @@ import { Component, OnInit, inject } from '@angular/core';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { catchError, map, Observable, of } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +22,8 @@ export class RegisterComponent implements OnInit {
   layoutService = inject(LayoutService);
   authService = inject(AuthService);
   router = inject(Router);
+  messageService = inject(MessageService);
+
   formBuilder = inject(FormBuilder);
   registrationForm!: FormGroup;
 
@@ -28,10 +38,19 @@ export class RegisterComponent implements OnInit {
     if (this.registrationForm.valid) {
       this.authService.register(this.registrationForm.value).subscribe({
         next: (data: any) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'User Registered',
+            detail: 'User Registered successfully',
+          });
           this.router.navigate(['/auth/login']);
         },
         error: error => {
-          console.error(error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'User Registeration Error',
+            detail: error,
+          });
         },
       });
     } else {
@@ -45,8 +64,23 @@ export class RegisterComponent implements OnInit {
   private initFormNew() {
     this.registrationForm = this.formBuilder.group(
       {
-        fullName: ['', [Validators.required, Validators.minLength(3), Validators.pattern('^[A-Za-z ]+$')]],
-        username: ['', [Validators.required, Validators.minLength(3), Validators.pattern('^[a-z0-9_]+$')], this.usernameValidator.bind(this)],
+        fullname: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern('^[A-Za-z ]+$'),
+          ],
+        ],
+        username: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern('^[A-Za-z]+$'),
+          ],
+          this.usernameValidator.bind(this),
+        ],
         email: ['', [Validators.required, Validators.email]],
         password: [
           '',
@@ -57,15 +91,7 @@ export class RegisterComponent implements OnInit {
           ],
         ],
         confirmPassword: ['', Validators.required],
-        number: [
-          '',
-          [
-            Validators.required,
-            Validators.pattern('^[0-9]*$'),
-            Validators.min(1000000000),
-            Validators.max(9999999999)
-          ]
-        ],
+        mobile: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
         rememberme: [false],
       },
       {
@@ -78,7 +104,9 @@ export class RegisterComponent implements OnInit {
   transformUsername(event: Event) {
     const input = event.target as HTMLInputElement;
     const transformed = input.value.toLowerCase();
-    this.registrationForm.get('username')?.setValue(transformed, { emitEvent: false });
+    this.registrationForm
+      .get('username')
+      ?.setValue(transformed, { emitEvent: false });
   }
 
   // Method to show terms and conditions
@@ -90,7 +118,10 @@ export class RegisterComponent implements OnInit {
     this.displayTerms = false;
   }
 
-  private matchPasswords(passwordKey: string, confirmPasswordKey: string): ValidatorFn {
+  private matchPasswords(
+    passwordKey: string,
+    confirmPasswordKey: string
+  ): ValidatorFn {
     return (form: AbstractControl): ValidationErrors | null => {
       const password = form.get(passwordKey);
       const confirmPassword = form.get(confirmPasswordKey);
@@ -99,13 +130,17 @@ export class RegisterComponent implements OnInit {
         return null;
       }
 
-      return password.value !== confirmPassword.value ? { passwordMismatch: true } : null;
+      return password.value !== confirmPassword.value
+        ? { passwordMismatch: true }
+        : null;
     };
   }
 
-  private usernameValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+  private usernameValidator(
+    control: AbstractControl
+  ): Observable<ValidationErrors | null> {
     return this.checkUsername(control.value).pipe(
-      map((isTaken) => (isTaken ? { usernameTaken: true } : null)),
+      map(isTaken => (isTaken ? { usernameTaken: true } : null)),
       catchError(() => of(null))
     );
   }

@@ -23,6 +23,10 @@ public class User {
   private String username;
 
   @NotBlank
+  @Size(max = 30)
+  private String fullname;
+
+  @NotBlank
   @Size(max = 50)
   @Email
   private String email;
@@ -42,8 +46,9 @@ public class User {
   public User() {
   }
 
-  public User(String username, String email, String password, String mobile) {
+  public User(String username, String fullname, String email, String password, String mobile) {
     this.username = username;
+    this.fullname = fullname;
     this.email = email;
     this.password = password;
     this.mobile = mobile;
@@ -63,6 +68,14 @@ public class User {
 
   public void setUsername(String username) {
     this.username = username;
+  }
+
+  public String getFullname() {
+    return fullname;
+  }
+
+  public void setFullname(String fullname) {
+    this.fullname = fullname;
   }
 
   public String getEmail() {

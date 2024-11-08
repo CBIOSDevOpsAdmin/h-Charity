@@ -72,6 +72,7 @@ public class WebSecurityConfig {
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/appeal/**")).permitAll()
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/files/**")).permitAll()
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/admin/**")).permitAll()
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/user/**")).permitAll()
                 .anyRequest().authenticated())
         .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

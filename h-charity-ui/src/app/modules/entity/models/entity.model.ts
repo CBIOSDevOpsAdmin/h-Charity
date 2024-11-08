@@ -6,6 +6,7 @@ export interface IEntity {
   poc?: string;
   description?: string;
   isVerified?: boolean;
+  entityOwner?: string;
   hasInternet?: boolean;
   address?: IAddress;
   entityPhotos?: IPhotos;

@@ -18,11 +18,20 @@ import { MessageService } from 'primeng/api';
 import { httpInterceptorProviders } from './modules/shared/utilities/http.interceptor';
 import { ToastModule } from 'primeng/toast';
 import { NotfoundComponent } from './modules/shared/components/notfound/notfound.component';
-
+import { MyProfileComponent } from './modules/shared/components/my-profile/my-profile.component';
+import { DialogService } from 'primeng/dynamicdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent, NotfoundComponent],
-  imports: [AppRoutingModule, AppLayoutModule, ToastModule],
+  declarations: [AppComponent, NotfoundComponent, MyProfileComponent],
+  imports: [
+    FormsModule,
+    AppRoutingModule,
+    AppLayoutModule,
+    ToastModule,
+    InputTextModule,
+  ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     CountryService,
@@ -33,8 +42,9 @@ import { NotfoundComponent } from './modules/shared/components/notfound/notfound
     PhotoService,
     ProductService,
     MessageService,
+    DialogService,
     httpInterceptorProviders,
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

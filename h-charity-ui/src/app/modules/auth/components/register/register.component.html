@@ -1,9 +1,16 @@
-<div class="surface-ground flex align-items-center justify-content-center overflow-hidden">
+<div
+  class="surface-ground flex align-items-center justify-content-center overflow-hidden"
+>
   <div class="flex flex-column align-items-center justify-content-center">
-    <img src="assets/{{
+    <img
+      src="assets/{{
         layoutService.config().colorScheme === 'light' ? 'logo' : 'logo-white'
-      }}.png" alt="h-charity-ui logo" class="mb-5 w-6rem flex-shrink-0" />
-    <div style="
+      }}.png"
+      alt="h-charity-ui logo"
+      class="mb-5 w-6rem flex-shrink-0"
+    />
+    <div
+      style="
         border-radius: 56px;
         padding: 0.3rem;
         background: linear-gradient(
@@ -11,8 +18,12 @@
           var(--primary-color) 10%,
           rgba(33, 150, 243, 0) 30%
         );
-      ">
-      <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 53px">
+      "
+    >
+      <div
+        class="w-full surface-card py-8 px-5 sm:px-8"
+        style="border-radius: 53px"
+      >
         <div class="text-center mb-5">
           <div class="text-900 text-3xl font-medium mb-3">Register!</div>
           <span class="text-600 font-medium">Let's get started</span>
@@ -20,121 +31,250 @@
 
         <form [formGroup]="registrationForm" (ngSubmit)="register()">
           <div class="flex flex-column gap-2">
+            <label for="fullname" class="block text-900 text-xl font-medium"
+              >Full Name</label
+            >
+            <input
+              id="fullname"
+              type="text"
+              formControlName="fullname"
+              placeholder="Full Name"
+              pInputText
+              class="w-full md:w-30rem"
+              style="padding: 1rem"
+              [ngClass]="{'ng-invalid ng-dirty' : registrationForm.controls['fullname'].touched && (registrationForm.controls['fullname'].errors?.['required'] || registrationForm.controls['fullname'].errors?.['pattern'])}"
+            />
 
-            <label for="fullname" class="block text-900 text-xl font-medium">Full Name</label>
-            <input id="fullname" type="text" formControlName="fullName" placeholder="Full Name" pInputText
-              class="w-full md:w-30rem" style="padding: 1rem"
-              [ngClass]="{'ng-invalid ng-dirty' : registrationForm.controls['fullName'].touched && (registrationForm.controls['fullName'].errors?.['required'] || registrationForm.controls['fullName'].errors?.['pattern'])}" />
-
-            <small class="ng-dirty ng-invalid" style="color: red;"
-              *ngIf="registrationForm.controls['fullName'].touched && registrationForm.controls['fullName'].errors?.['required']">
+            <small
+              class="ng-dirty ng-invalid"
+              style="color: red"
+              *ngIf="registrationForm.controls['fullname'].touched && registrationForm.controls['fullname'].errors?.['required']"
+            >
               Full Name is required.
             </small>
-            <small class="ng-dirty ng-invalid" style="color: red;"
-              *ngIf="registrationForm.controls['fullName'].touched && registrationForm.controls['fullName'].errors?.['pattern']">
+            <small
+              class="ng-dirty ng-invalid"
+              style="color: red"
+              *ngIf="registrationForm.controls['fullname'].touched && registrationForm.controls['fullname'].errors?.['pattern']"
+            >
               Only alphabets are allowed.
             </small>
-            <small class="ng-dirty ng-invalid" style="color: red;"
-              *ngIf="registrationForm.controls['fullName'].touched && registrationForm.controls['fullName'].errors?.['minlength']">
+            <small
+              class="ng-dirty ng-invalid"
+              style="color: red"
+              *ngIf="registrationForm.controls['fullname'].touched && registrationForm.controls['fullname'].errors?.['minlength']"
+            >
               Full Name must be at least 3 characters long.
             </small>
 
-            <label for="username" class="block text-900 text-xl font-medium">User Name</label>
-            <input id="username" type="text" formControlName="username" placeholder="Username" pInputText
-              class="w-full md:w-30rem" style="padding: 1rem" (input)="transformUsername($event)"
-              [ngClass]="{'ng-invalid ng-dirty' : registrationForm.controls['username'].touched && (registrationForm.controls['username'].errors?.['required'] || registrationForm.controls['username'].errors?.['pattern'])}" />
+            <label for="username" class="block text-900 text-xl font-medium"
+              >User Name</label
+            >
+            <input
+              id="username"
+              type="text"
+              formControlName="username"
+              placeholder="Username"
+              pInputText
+              class="w-full md:w-30rem"
+              style="padding: 1rem"
+              (input)="transformUsername($event)"
+              [ngClass]="{'ng-invalid ng-dirty' : registrationForm.controls['username'].touched && (registrationForm.controls['username'].errors?.['required'] || registrationForm.controls['username'].errors?.['pattern'])}"
+            />
 
-            <small class="ng-dirty ng-invalid" style="color: red;"
-              *ngIf="registrationForm.controls['username'].touched && registrationForm.controls['username'].errors?.['required']">
+            <small
+              class="ng-dirty ng-invalid"
+              style="color: red"
+              *ngIf="registrationForm.controls['username'].touched && registrationForm.controls['username'].errors?.['required']"
+            >
               Username is required.
             </small>
-            <small class="ng-dirty ng-invalid" style="color: red;"
-              *ngIf="registrationForm.controls['username'].touched && registrationForm.controls['username'].errors?.['pattern']">
+            <small
+              class="ng-dirty ng-invalid"
+              style="color: red"
+              *ngIf="registrationForm.controls['username'].touched && registrationForm.controls['username'].errors?.['pattern']"
+            >
               Only letters, numbers, and underscores are allowed.
             </small>
-            <small class="ng-dirty ng-invalid" style="color: red;"
-              *ngIf="registrationForm.controls['username'].touched && registrationForm.controls['username'].errors?.['usernameTaken']">
+            <small
+              class="ng-dirty ng-invalid"
+              style="color: red"
+              *ngIf="registrationForm.controls['username'].touched && registrationForm.controls['username'].errors?.['usernameTaken']"
+            >
               Username is already taken.
             </small>
 
-            <label for="password" class="block text-900 font-medium text-xl">Password</label>
-            <p-password id="password" formControlName="password" placeholder="Password" [toggleMask]="true"
+            <label for="password" class="block text-900 font-medium text-xl"
+              >Password</label
+            >
+            <p-password
+              id="password"
+              formControlName="password"
+              placeholder="Password"
+              [toggleMask]="true"
               inputStyleClass="w-full p-3 md:w-30rem"
-              [ngClass]="{'ng-invalid ng-dirty' : registrationForm.controls['password'].touched && (registrationForm.controls['password'].errors?.['required'] || registrationForm.controls['password'].errors?.['pattern'] || registrationForm.controls['password'].errors?.['minlength'])}">
+              [ngClass]="{'ng-invalid ng-dirty' : registrationForm.controls['password'].touched && (registrationForm.controls['password'].errors?.['required'] || registrationForm.controls['password'].errors?.['pattern'] || registrationForm.controls['password'].errors?.['minlength'])}"
+            >
             </p-password>
 
-            <small class="ng-dirty ng-invalid" style="color: red;"
-              *ngIf="registrationForm.controls['password'].touched && registrationForm.controls['password'].errors?.['required']">
+            <small
+              class="ng-dirty ng-invalid"
+              style="color: red"
+              *ngIf="registrationForm.controls['password'].touched && registrationForm.controls['password'].errors?.['required']"
+            >
               Password is required.
             </small>
-            <small class="ng-dirty ng-invalid" style="color: red;"
-              *ngIf="registrationForm.controls['password'].touched && registrationForm.controls['password'].errors?.['minlength']">
+            <small
+              class="ng-dirty ng-invalid"
+              style="color: red"
+              *ngIf="registrationForm.controls['password'].touched && registrationForm.controls['password'].errors?.['minlength']"
+            >
               Password must be at least 6 characters long.
             </small>
-            <small class="ng-dirty ng-invalid" style="color: red;"
-              *ngIf="registrationForm.controls['password'].touched && registrationForm.controls['password'].errors?.['pattern']">
+            <small
+              class="ng-dirty ng-invalid"
+              style="color: red"
+              *ngIf="registrationForm.controls['password'].touched && registrationForm.controls['password'].errors?.['pattern']"
+            >
               Password must contain alphabets, numbers, and special characters.
             </small>
 
-            <label for="confirmPassword" class="block text-900 font-medium text-xl">Confirm Password</label>
-            <p-password id="confirmPassword" formControlName="confirmPassword" placeholder="Confirm Password"
-              [toggleMask]="true" inputStyleClass="w-full p-3 md:w-30rem"
-              [ngClass]="{'ng-invalid ng-dirty' : registrationForm.controls['confirmPassword'].touched && registrationForm.hasError('passwordMismatch')}">
+            <label
+              for="confirmPassword"
+              class="block text-900 font-medium text-xl"
+              >Confirm Password</label
+            >
+            <p-password
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              placeholder="Confirm Password"
+              [toggleMask]="true"
+              inputStyleClass="w-full p-3 md:w-30rem"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  registrationForm.controls['confirmPassword'].touched &&
+                  registrationForm.hasError('passwordMismatch')
+              }"
+            >
             </p-password>
 
-            <small class="ng-dirty ng-invalid" style="color: red;"
-              *ngIf="registrationForm.controls['confirmPassword'].touched && registrationForm.hasError('passwordMismatch')">
+            <small
+              class="ng-dirty ng-invalid"
+              style="color: red"
+              *ngIf="
+                registrationForm.controls['confirmPassword'].touched &&
+                registrationForm.hasError('passwordMismatch')
+              "
+            >
               Passwords do not match.
             </small>
 
-            <label for="email" class="block text-900 text-xl font-medium">Email</label>
-            <input id="email" type="text" formControlName="email" placeholder="Email" pInputText
-              class="w-full md:w-30rem" style="padding: 1rem"
-              [ngClass]="{'ng-invalid ng-dirty' : registrationForm.controls['email'].touched && (registrationForm.controls['email'].errors?.['required'] || registrationForm.controls['email'].errors?.['email'])}">
+            <label for="email" class="block text-900 text-xl font-medium"
+              >Email</label
+            >
+            <input
+              id="email"
+              type="text"
+              formControlName="email"
+              placeholder="Email"
+              pInputText
+              class="w-full md:w-30rem"
+              style="padding: 1rem"
+              [ngClass]="{'ng-invalid ng-dirty' : registrationForm.controls['email'].touched && (registrationForm.controls['email'].errors?.['required'] || registrationForm.controls['email'].errors?.['email'])}"
+            />
 
-            <small class="ng-dirty ng-invalid" style="color: red;"
-              *ngIf="registrationForm.controls['email'].touched && registrationForm.controls['email'].errors?.['required']">
+            <small
+              class="ng-dirty ng-invalid"
+              style="color: red"
+              *ngIf="registrationForm.controls['email'].touched && registrationForm.controls['email'].errors?.['required']"
+            >
               Email is required.
             </small>
 
-            <small class="ng-dirty ng-invalid" style="color: red;"
-              *ngIf="registrationForm.controls['email'].touched && registrationForm.controls['email'].errors?.['email']">
+            <small
+              class="ng-dirty ng-invalid"
+              style="color: red"
+              *ngIf="registrationForm.controls['email'].touched && registrationForm.controls['email'].errors?.['email']"
+            >
               Enter a valid email address.
             </small>
 
-            <label for="number" class="block text-900 text-xl font-medium">Contact Number</label>
-            <p-inputMask id="number" formControlName="number" mask="9999999999" placeholder="Contact Number"
-              styleClass="w-full p-3 md:w-30rem" [ngClass]="{'ng-invalid ng-dirty' : registrationForm.controls['number'].touched &&
-              registrationForm.controls['number'].errors}"></p-inputMask>
+            <label for="mobile" class="block text-900 text-xl font-medium"
+              >Contact Number</label
+            >
+            <p-inputMask
+              id="mobile"
+              formControlName="mobile"
+              mask="9999999999"
+              placeholder="Contact Number"
+              styleClass="w-full p-3 md:w-30rem"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  registrationForm.controls['mobile'].touched &&
+                  registrationForm.controls['mobile'].errors
+              }"
+            ></p-inputMask>
 
-            <small class="ng-dirty ng-invalid" style="color: red;"
-              *ngIf="registrationForm.controls['number'].touched && registrationForm.controls['number'].errors?.['required']">
+            <small
+              class="ng-dirty ng-invalid"
+              style="color: red"
+              *ngIf="registrationForm.controls['mobile'].touched && registrationForm.controls['mobile'].errors?.['required']"
+            >
               Contact Number is required.
             </small>
-            <small class="ng-dirty ng-invalid" style="color: red;"
-              *ngIf="registrationForm.controls['number'].touched && registrationForm.controls['number'].errors?.['pattern']">
+            <small
+              class="ng-dirty ng-invalid"
+              style="color: red"
+              *ngIf="registrationForm.controls['mobile'].touched && registrationForm.controls['mobile'].errors?.['pattern']"
+            >
               Contact Number must be 10 digits.
             </small>
 
-
-
-            <div class="flex align-items-center justify-content-between mb-5 gap-5">
+            <div
+              class="flex align-items-center justify-content-between mb-5 gap-5"
+            >
               <div class="flex align-items-center">
-                <p-checkbox id="rememberme" [binary]="true" styleClass="mr-2" formControlName="rememberme"></p-checkbox>
-                <label for="termsAndConditions">I have read the
-                  <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)"
-                    (click)="showTermsAndConditions()">Terms and Conditions</a></label>
+                <p-checkbox
+                  id="rememberme"
+                  [binary]="true"
+                  styleClass="mr-2"
+                  formControlName="rememberme"
+                ></p-checkbox>
+                <label for="termsAndConditions"
+                  >I have read the
+                  <a
+                    class="font-medium no-underline ml-2 text-right cursor-pointer"
+                    style="color: var(--primary-color)"
+                    (click)="showTermsAndConditions()"
+                    >Terms and Conditions</a
+                  ></label
+                >
               </div>
 
-              <a class="font-medium no-underline ml-2 text-right cursor-pointer"
-                style="color: var(--primary-color)">Forgot password?</a>
+              <a
+                class="font-medium no-underline ml-2 text-right cursor-pointer"
+                style="color: var(--primary-color)"
+                >Forgot password?</a
+              >
             </div>
 
-            <a routerLink="/auth/login" class="font-medium no-underline ml-2 text-right cursor-pointer"
-              style="color: var(--primary-color)">Login?</a>
+            <a
+              routerLink="/auth/login"
+              class="font-medium no-underline ml-2 text-right cursor-pointer"
+              style="color: var(--primary-color)"
+              >Login?</a
+            >
 
-            <button pButton pRipple label="Sign Up" class="w-full p-3 text-xl"
-              [disabled]="!registrationForm.valid || !registrationForm.controls['rememberme'].value"></button>
+            <button
+              pButton
+              pRipple
+              label="Sign Up"
+              class="w-full p-3 text-xl"
+              [disabled]="
+                !registrationForm.valid ||
+                !registrationForm.controls['rememberme'].value
+              "
+            ></button>
           </div>
         </form>
       </div>
@@ -142,72 +282,155 @@
   </div>
 </div>
 
-<p-dialog header="Terms and Conditions" [(visible)]="displayTerms" [modal]="true" [closable]="false"
-  [style]="{width: '60vw'}">
+<p-dialog
+  header="Terms and Conditions"
+  [(visible)]="displayTerms"
+  [modal]="true"
+  [closable]="false"
+  [style]="{ width: '60vw' }"
+>
   <div class="terms-content">
     <ol>
-      <li><strong>Acceptance of Terms:</strong> By logging into the Hcharity platform, you agree to abide by these Terms
-        and Conditions and any other applicable laws or regulations. If you do not agree with these terms, please do not
-        access or use the platform.</li>
-      <li><strong>Account Registration and Security:</strong> To access the platform, you must create an account by
-        providing accurate and up-to-date information. You are solely responsible for maintaining the confidentiality of
-        your account credentials, including your username and password. You agree to notify Hcharity immediately if you
-        suspect any unauthorized use of your account.</li>
-      <li><strong>Use of Platform:</strong> The Hcharity platform is designed to facilitate charitable donations and
-        contributions. You agree to use the platform exclusively for lawful charitable purposes and refrain from using
-        it for any illegal or malicious activities. All donations made through the platform are voluntary.</li>
-      <li><strong>User Responsibilities:</strong> You agree to ensure the accuracy of any information you provide on the
-        platform, including but not limited to donation amounts, personal details, and payment information. Hcharity is
-        not responsible for any errors or inaccuracies provided by users.</li>
-      <li><strong>Data Privacy and Security:</strong> By logging into the platform, you consent to the collection,
-        storage, and processing of your personal data in accordance with Hcharity’s Privacy Policy. You also agree to
-        take appropriate measures to protect your login credentials and any other sensitive information.</li>
-      <li><strong>Unauthorized Access:</strong> You are responsible for ensuring that no one other than yourself gains
-        unauthorized access to your account. In case of any suspicious activity or unauthorized use of your account, you
-        must immediately report it to Hcharity.</li>
-      <li><strong>Platform Modifications:</strong> Hcharity reserves the right to modify, update, or discontinue any
-        aspect of the platform at any time, including its features, services, and user interface. You agree that
-        Hcharity will not be liable for any interruption or discontinuation of the platform.</li>
-      <li><strong>Donation Policies:</strong> All donations made through Hcharity are final and non-refundable, except
-        as otherwise required by applicable law. Hcharity does not guarantee the tax-deductible status of any donations;
-        it is your responsibility to verify the tax implications with a tax professional.</li>
-      <li><strong>Use of Donations:</strong> Donations made through the platform are used to support the causes and
-        projects listed on the site. You acknowledge that Hcharity may use the funds in accordance with its mission and
-        vision to maximize impact and transparency.</li>
-      <li><strong>Content Submission:</strong> Any content you submit to the platform, including comments, reviews, or
-        feedback, must be truthful, accurate, and not infringe on the intellectual property rights of third parties.
-        Hcharity reserves the right to remove any content that violates these terms.</li>
-      <li><strong>Intellectual Property:</strong> The content, design, logos, trademarks, and intellectual property
-        associated with Hcharity are owned by Hcharity or its licensors. You are not permitted to use or reproduce any
-        such content without the explicit written consent of Hcharity.</li>
-      <li><strong>Respect for Other Users:</strong> You agree to treat all users of the platform with respect, dignity,
-        and empathy. Harassment, abuse, or discriminatory actions are strictly prohibited, and any user found engaging
-        in such behavior may have their account suspended or terminated.</li>
-      <li><strong>Limitation of Liability:</strong> Hcharity disclaims any liability for direct, indirect, incidental,
-        or consequential damages arising from the use of the platform. Hcharity is not liable for any errors or
-        interruptions in service, loss of data, or other issues that may occur while using the platform.</li>
-      <li><strong>Notifications and Updates:</strong> By logging into your account, you agree to receive communications
-        from Hcharity, including but not limited to updates about your donations, changes to the platform, and important
-        announcements. You can manage your notification preferences through your account settings.</li>
-      <li><strong>Account Termination:</strong> Hcharity reserves the right to suspend, disable, or terminate your
-        account at any time for violating these terms or engaging in fraudulent, abusive, or unlawful activities. You
-        may also request to delete your account at any time through the platform’s account settings.</li>
-      <li><strong>Dispute Resolution:</strong> In the event of any disputes arising from the use of the platform, you
-        agree to resolve the matter through mediation or arbitration, in accordance with the laws of the jurisdiction
-        where Hcharity operates.</li>
-      <li><strong>Governing Law:</strong> These Terms and Conditions are governed by the laws of the jurisdiction in
-        which Hcharity is based. Any legal action related to these terms must be brought in the appropriate courts of
-        that jurisdiction.</li>
-      <li><strong>Amendments to Terms:</strong> Hcharity may revise and update these Terms and Conditions at any time.
-        You are encouraged to periodically review this document to stay informed about any changes. Continued use of the
-        platform constitutes acceptance of the updated terms.</li>
-      <li><strong>User Feedback:</strong> Hcharity values user feedback and encourages you to share your thoughts,
-        suggestions, and concerns. While we may not respond to every submission, we appreciate your input in helping
-        improve the platform.</li>
-      <li><strong>Platform Accessibility:</strong> Hcharity strives to ensure that its platform is accessible to all
-        users, including those with disabilities. If you encounter any accessibility issues while using the platform,
-        please contact Hcharity support for assistance.</li>
+      <li>
+        <strong>Acceptance of Terms:</strong> By logging into the Hcharity
+        platform, you agree to abide by these Terms and Conditions and any other
+        applicable laws or regulations. If you do not agree with these terms,
+        please do not access or use the platform.
+      </li>
+      <li>
+        <strong>Account Registration and Security:</strong> To access the
+        platform, you must create an account by providing accurate and
+        up-to-date information. You are solely responsible for maintaining the
+        confidentiality of your account credentials, including your username and
+        password. You agree to notify Hcharity immediately if you suspect any
+        unauthorized use of your account.
+      </li>
+      <li>
+        <strong>Use of Platform:</strong> The Hcharity platform is designed to
+        facilitate charitable donations and contributions. You agree to use the
+        platform exclusively for lawful charitable purposes and refrain from
+        using it for any illegal or malicious activities. All donations made
+        through the platform are voluntary.
+      </li>
+      <li>
+        <strong>User Responsibilities:</strong> You agree to ensure the accuracy
+        of any information you provide on the platform, including but not
+        limited to donation amounts, personal details, and payment information.
+        Hcharity is not responsible for any errors or inaccuracies provided by
+        users.
+      </li>
+      <li>
+        <strong>Data Privacy and Security:</strong> By logging into the
+        platform, you consent to the collection, storage, and processing of your
+        personal data in accordance with Hcharity’s Privacy Policy. You also
+        agree to take appropriate measures to protect your login credentials and
+        any other sensitive information.
+      </li>
+      <li>
+        <strong>Unauthorized Access:</strong> You are responsible for ensuring
+        that no one other than yourself gains unauthorized access to your
+        account. In case of any suspicious activity or unauthorized use of your
+        account, you must immediately report it to Hcharity.
+      </li>
+      <li>
+        <strong>Platform Modifications:</strong> Hcharity reserves the right to
+        modify, update, or discontinue any aspect of the platform at any time,
+        including its features, services, and user interface. You agree that
+        Hcharity will not be liable for any interruption or discontinuation of
+        the platform.
+      </li>
+      <li>
+        <strong>Donation Policies:</strong> All donations made through Hcharity
+        are final and non-refundable, except as otherwise required by applicable
+        law. Hcharity does not guarantee the tax-deductible status of any
+        donations; it is your responsibility to verify the tax implications with
+        a tax professional.
+      </li>
+      <li>
+        <strong>Use of Donations:</strong> Donations made through the platform
+        are used to support the causes and projects listed on the site. You
+        acknowledge that Hcharity may use the funds in accordance with its
+        mission and vision to maximize impact and transparency.
+      </li>
+      <li>
+        <strong>Content Submission:</strong> Any content you submit to the
+        platform, including comments, reviews, or feedback, must be truthful,
+        accurate, and not infringe on the intellectual property rights of third
+        parties. Hcharity reserves the right to remove any content that violates
+        these terms.
+      </li>
+      <li>
+        <strong>Intellectual Property:</strong> The content, design, logos,
+        trademarks, and intellectual property associated with Hcharity are owned
+        by Hcharity or its licensors. You are not permitted to use or reproduce
+        any such content without the explicit written consent of Hcharity.
+      </li>
+      <li>
+        <strong>Respect for Other Users:</strong> You agree to treat all users
+        of the platform with respect, dignity, and empathy. Harassment, abuse,
+        or discriminatory actions are strictly prohibited, and any user found
+        engaging in such behavior may have their account suspended or
+        terminated.
+      </li>
+      <li>
+        <strong>Limitation of Liability:</strong> Hcharity disclaims any
+        liability for direct, indirect, incidental, or consequential damages
+        arising from the use of the platform. Hcharity is not liable for any
+        errors or interruptions in service, loss of data, or other issues that
+        may occur while using the platform.
+      </li>
+      <li>
+        <strong>Notifications and Updates:</strong> By logging into your
+        account, you agree to receive communications from Hcharity, including
+        but not limited to updates about your donations, changes to the
+        platform, and important announcements. You can manage your notification
+        preferences through your account settings.
+      </li>
+      <li>
+        <strong>Account Termination:</strong> Hcharity reserves the right to
+        suspend, disable, or terminate your account at any time for violating
+        these terms or engaging in fraudulent, abusive, or unlawful activities.
+        You may also request to delete your account at any time through the
+        platform’s account settings.
+      </li>
+      <li>
+        <strong>Dispute Resolution:</strong> In the event of any disputes
+        arising from the use of the platform, you agree to resolve the matter
+        through mediation or arbitration, in accordance with the laws of the
+        jurisdiction where Hcharity operates.
+      </li>
+      <li>
+        <strong>Governing Law:</strong> These Terms and Conditions are governed
+        by the laws of the jurisdiction in which Hcharity is based. Any legal
+        action related to these terms must be brought in the appropriate courts
+        of that jurisdiction.
+      </li>
+      <li>
+        <strong>Amendments to Terms:</strong> Hcharity may revise and update
+        these Terms and Conditions at any time. You are encouraged to
+        periodically review this document to stay informed about any changes.
+        Continued use of the platform constitutes acceptance of the updated
+        terms.
+      </li>
+      <li>
+        <strong>User Feedback:</strong> Hcharity values user feedback and
+        encourages you to share your thoughts, suggestions, and concerns. While
+        we may not respond to every submission, we appreciate your input in
+        helping improve the platform.
+      </li>
+      <li>
+        <strong>Platform Accessibility:</strong> Hcharity strives to ensure that
+        its platform is accessible to all users, including those with
+        disabilities. If you encounter any accessibility issues while using the
+        platform, please contact Hcharity support for assistance.
+      </li>
     </ol>
   </div>
-  <button pButton icon="pi pi-times" label="Close" (click)="closeDialog()" class="close-button"></button>
+  <button
+    pButton
+    icon="pi pi-times"
+    label="Close"
+    (click)="closeDialog()"
+    class="close-button"
+  ></button>
 </p-dialog>

@@ -8,6 +8,7 @@ import {
   convertCitiesObjectToDDObject,
   convertArrStringToArrDDObject,
   convertStringToDDObject,
+  convertArrObjectToArrDDObject,
 } from 'src/app/modules/shared/utilities/common.utils';
 import { DropdownChangeEvent } from 'primeng/dropdown';
 import { IState } from 'src/app/modules/shared/models/state.model';
@@ -20,6 +21,8 @@ import { FileService } from '../../services/file.service';
 import { HttpResponse } from '@angular/common/http';
 import { Observable, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { StorageService } from 'src/app/modules/shared/services/storage.service';
+import { UserService } from 'src/app/modules/shared/services/user.service';
 
 @Component({
   selector: 'app-add-update-entity',
@@ -34,12 +37,15 @@ export class AddUpdateEntityComponent implements OnInit {
   states: IDropdown[];
   cities: IDropdown[];
   entityTypes: IDropdown[] = [];
+  entityOwnerOptions: IDropdown[] = [];
   uploadedFiles: any[] = [];
   message = '';
   fileInfos?: Observable<any>;
   entityId: number = 0;
 
   entity: IEntity;
+  showReviewTab: boolean = false;
+  showReviewForm: boolean = false;
 
   entityService = inject(EntityService);
   worldService = inject(WorldService);
@@ -48,7 +54,8 @@ export class AddUpdateEntityComponent implements OnInit {
   fileService = inject(FileService);
   route = inject(ActivatedRoute);
   router = inject(Router);
-
+  storageService = inject(StorageService);
+  userService = inject(UserService);
   //#endregion
 
   ngOnInit() {
@@ -60,23 +67,26 @@ export class AddUpdateEntityComponent implements OnInit {
     } else {
       this.initFormNew();
     }
+
+    this.entityService.refreshER$.subscribe(() => {
+      this.initFormEdit();
+    });
   }
 
   //#region Public Methods
   public saveEntity() {
-    debugger;
     let payload = this.generatePayload(this.entityForm.value);
     // got error in the below line
     if (!this.validateEntityDetails()) {
-      debugger;
       this.entityService.saveEntity(payload).subscribe({
-        next: response => {
+        next: (response: IEntity) => {
           this.messageService.add({
             severity: 'success',
             summary: 'Save',
             detail: 'Entity saved successfully',
           });
-          this.router.navigateByUrl('/institutions');
+          // this.router.navigateByUrl('/institutions');
+          this.router.navigate(['institutions/edit', response]);
         },
       });
     }
@@ -154,6 +164,24 @@ export class AddUpdateEntityComponent implements OnInit {
       'School',
       'Orphanage',
     ]);
+
+    if (
+      this.storageService.getUser()?.roles[0] === 'ORGANISATION_VOLUNTEER' ||
+      this.storageService.getUser()?.roles[0] === 'ADMIN'
+    ) {
+      this.userService.getUsersByRole('INSTITUTE_OWNER').subscribe({
+        next: (res: any[]) => {
+          this.entityOwnerOptions = convertArrObjectToArrDDObject(
+            res,
+            'id',
+            'username'
+          );
+        },
+        error: error => {
+          console.error(error);
+        },
+      });
+    }
   }
   private updateLocationFields() {
     let country;
@@ -203,30 +231,6 @@ export class AddUpdateEntityComponent implements OnInit {
       });
   }
 
-  // private initFormNew() {
-  //   this.entityForm = this.formBuilder.group({
-  //     id: [0],
-  //     name: [''],
-  //     type: [''],
-  //     president: [''],
-  //     poc: [''],
-  //     description: [''],
-  //     isVerified: [false],
-  //     hasInternet: [false],
-  //     mobile: [''],
-  //     office: [''],
-  //     address: this.formBuilder.group({
-  //       address1: [''],
-  //       address2: [''],
-  //       landmark: [''],
-  //       pincode: [''],
-  //       city: [''],
-  //       state: [''],
-  //       country: [''],
-  //     }),
-  //   });
-  // }
-
   private initFormNew() {
     this.entityForm = this.formBuilder.group({
       id: [0],
@@ -236,6 +240,7 @@ export class AddUpdateEntityComponent implements OnInit {
       poc: ['', Validators.required],
       description: ['', Validators.required],
       isVerified: [false],
+      entityOwner: [0],
       hasInternet: [false],
       mobile: [
         '',
@@ -252,6 +257,8 @@ export class AddUpdateEntityComponent implements OnInit {
         country: [''],
       }),
     });
+
+    this.entityForm.get('isVerified').disable();
   }
 
   private initFormEdit() {
@@ -267,6 +274,7 @@ export class AddUpdateEntityComponent implements OnInit {
           poc: entity.poc,
           description: entity.description,
           isVerified: entity.isVerified,
+          entityOwner: entity.entityOwner['id'],
           hasInternet: entity.hasInternet,
           mobile: entity.mobile,
           office: entity.office,
@@ -279,6 +287,8 @@ export class AddUpdateEntityComponent implements OnInit {
         });
         this.updateLocationFields();
         this.entityForm.markAllAsTouched();
+
+        this.initialiseShowReviewTab();
       },
     });
   }
@@ -317,6 +327,19 @@ export class AddUpdateEntityComponent implements OnInit {
         this.uploadedFiles = [];
       },
     });
+  }
+
+  private initialiseShowReviewTab() {
+    const user = this.storageService.getUser();
+    const role = user.roles[0];
+    const isAdminOrOrganisationVolunteer = [
+      'ADMIN',
+      'ORGANISATION_VOLUNTEER',
+    ].includes(role);
+    const isEntityOwner = user.id === this.entity.entityOwner['id'];
+
+    this.showReviewTab = isAdminOrOrganisationVolunteer || isEntityOwner;
+    this.showReviewForm = isAdminOrOrganisationVolunteer;
   }
   //#endregion
 }

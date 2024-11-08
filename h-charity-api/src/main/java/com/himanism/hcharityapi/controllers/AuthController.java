@@ -108,6 +108,7 @@ public class AuthController {
 
     // Create new user's account
     User user = new User(signUpRequest.getUsername(),
+        signUpRequest.getFullname(),
         signUpRequest.getEmail(),
         encoder.encode(signUpRequest.getPassword()), signUpRequest.getMobile());
 
@@ -148,7 +149,7 @@ public class AuthController {
   }
 
   @PostMapping("/signout")
-  public ResponseEntity<?> logoutUser() {
+  public ResponseEntity<?> logoutUser(HttpServletRequest request) {
     Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     if (principle.toString() != "anonymousUser") {
       Long userId = ((UserDetailsImpl) principle).getId();

@@ -7,6 +7,7 @@ import { FileService } from '../../services/file.service';
 import { Observable } from 'rxjs';
 import { DataView } from 'primeng/dataview';
 import { StorageService } from 'src/app/modules/shared/services/storage.service';
+import { CommonService } from 'src/app/modules/shared/services/common.service';
 
 @Component({
   selector: 'app-entity',
@@ -23,6 +24,7 @@ export class EntityComponent implements OnInit {
   imageInfos?: Observable<any>;
 
   entityService = inject(EntityService);
+  commonService = inject(CommonService);
   fileService = inject(FileService);
   storageService = inject(StorageService);
   router = inject(Router);
@@ -31,6 +33,8 @@ export class EntityComponent implements OnInit {
 
   showDeleteBtn: boolean = true;
   showEditBtn: boolean = true;
+  userId: number = 0;
+  roles: string;
   //#endregion
 
   ngOnInit() {
@@ -44,6 +48,10 @@ export class EntityComponent implements OnInit {
       { label: 'Show Schools', value: 'Show Schools' },
       { label: 'Show Orphanages', value: 'Show Orphanages' },
     ];
+    this.commonService.resetAccessRights$.subscribe(() => {
+      this.accessRights();
+      this.isEditButtonDisabled(0);
+    });
 
     this.accessRights();
   }
@@ -137,22 +145,32 @@ export class EntityComponent implements OnInit {
   }
 
   private accessRights() {
-    let roles = this.storageService.getUser().roles;
-    if (
-      roles &&
-      (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'))
-    ) {
-      this.showDeleteBtn = false;
+    const user = this.storageService.getUser();
+    this.roles = user?.roles || [];
+    this.userId = user?.id || 0;
+  }
+
+  public isEditButtonDisabled(entityOwnerId: number): boolean {
+    // Check if roles or userId are not available (indicating the user is not logged in)
+    if (!this.roles || !this.userId) {
+      return true; // Disable button if user is not logged in
     }
 
+    // Allow if role is ADMIN or ORGANISATION_VOLUNTEER
     if (
-      roles &&
-      (roles.includes('ADMIN') ||
-        roles.includes('ORGANISATION_VOLUNTEER') ||
-        roles.includes('INSTITUTE_OWNER'))
+      this.roles.includes('ADMIN') ||
+      this.roles.includes('ORGANISATION_VOLUNTEER')
     ) {
-      this.showEditBtn = false;
+      return false; // Don't disable button
     }
+
+    // Allow if role is INSTITUTE_OWNER or NORMAL_USER and user ID matches entityOwnerId
+    if (this.userId === entityOwnerId) {
+      return false; // Don't disable button
+    }
+
+    // Disable button for all other cases
+    return true;
   }
   //#endregion
 }

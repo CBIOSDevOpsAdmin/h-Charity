@@ -35,7 +35,7 @@ public class AppealServiceImpl implements AppealService {
     }
 
     @Override
-    public Appeal addAppeal(AppealRequestDto appealDto, String username, Long userId) {
+    public Appeal addAppeal(AppealRequestDto appealDto, String username, Long userId, String userGroup) {
         Appeal appeal = AppealMapper.INSTANCE.appealRequestDTOtoAppeal(appealDto);
         appeal.setCreatedBy(username);
         appeal.setCreatedDate(new Date());

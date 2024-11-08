@@ -25,24 +25,7 @@
           </div>
         </ng-template>
 
-        <ng-template pTemplate="right">
-          <p-fileUpload
-            mode="basic"
-            accept="image/*"
-            [maxFileSize]="1000000"
-            label="Import"
-            chooseLabel="Import"
-            class="mr-2 inline-block"
-          ></p-fileUpload>
-          <button
-            pButton
-            pRipple
-            label="Export"
-            icon="pi pi-upload"
-            class="p-button-help"
-            (click)="dt.exportCSV()"
-          ></button>
-        </ng-template>
+        <ng-template pTemplate="right"> </ng-template>
       </p-toolbar>
 
       <p-table
@@ -114,7 +97,7 @@
             </td>
             <td style="width: 14%; min-width: 8rem">
               <span class="p-column-title">Role</span>
-              {{ user.roles[0].name }}
+              {{ user.role }}
             </td>
             <td>
               <div class="flex">
@@ -152,14 +135,14 @@
           <input
             type="text"
             pInputText
-            id="fullName"
+            id="fullname"
             placeholder="Full Name"
-            [(ngModel)]="user.fullName"
+            [(ngModel)]="user.fullname"
             required
             autofocus
-            [ngClass]="{ 'ng-invalid ng-dirty': submitted && !user.fullName }"
+            [ngClass]="{ 'ng-invalid ng-dirty': submitted && !user.fullname }"
           />
-          <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.fullName"
+          <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.fullname"
             >Full name is required.</small
           >
         </div>

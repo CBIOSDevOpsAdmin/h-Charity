@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
 import { StorageService } from '../modules/shared/services/storage.service';
 import { Subscription } from 'rxjs';
+import { EntityService } from '../modules/entity/services/entity.service';
 
 @Component({
   selector: 'app-menu',
@@ -17,15 +18,20 @@ export class AppMenuComponent implements OnInit {
 
   layoutService = inject(LayoutService);
   storageService = inject(StorageService);
+  entityService = inject(EntityService);
+
   //#endregion
 
   ngOnInit() {
     this.initSubscription = this.storageService.initCalled$.subscribe(() => {
       this.loadMenuOptions();
+      this.checkIfInstituteOwnerExists();
     });
 
     this.model = [];
     this.loadMenuOptions();
+
+    this.checkIfInstituteOwnerExists();
   }
 
   //#region Private methods
@@ -83,27 +89,27 @@ export class AppMenuComponent implements OnInit {
         break;
 
       case 'ORGANISATION_VOLUNTEER':
-        this.model.find(x => {
-          if (x.label === 'Institutions') {
-            x.items.push({
-              label: 'Add Institute',
-              icon: 'pi pi-fw pi-file-edit',
-              routerLink: ['/institutions/add'],
-            });
-          }
-        });
+        // this.model.find(x => {
+        //   if (x.label === 'Institutions') {
+        //     x.items.push({
+        //       label: 'Add Institute',
+        //       icon: 'pi pi-fw pi-file-edit',
+        //       routerLink: ['/institutions/add'],
+        //     });
+        //   }
+        // });
         break;
 
       case 'ADMIN':
-        this.model.find(x => {
-          if (x.label === 'Institutions') {
-            x.items.push({
-              label: 'Add Institute',
-              icon: 'pi pi-fw pi-file-edit',
-              routerLink: ['/institutions/add'],
-            });
-          }
-        });
+        // this.model.find(x => {
+        //   if (x.label === 'Institutions') {
+        //     x.items.push({
+        //       label: 'Add Institute',
+        //       icon: 'pi pi-fw pi-file-edit',
+        //       routerLink: ['/institutions/add'],
+        //     });
+        //   }
+        // });
 
         this.model.push({
           label: 'Admin',
@@ -130,5 +136,36 @@ export class AppMenuComponent implements OnInit {
       }
     });
   }
+
+  private checkIfInstituteOwnerExists() {
+    if (this.storageService.getUser().id) {
+      this.entityService
+        .checkIfInstituteOwnerExists(this.storageService.getUser().id)
+        .subscribe({
+          next: (response: any) => {
+            if (response) {
+              this.model.find(x => {
+                if (x.label === 'Institutions') {
+                  x.items = x.items.filter(
+                    (item: { label: string }) => item.label !== 'Add Institute'
+                  );
+                }
+              });
+            } else {
+              this.model.find(x => {
+                if (x.label === 'Institutions') {
+                  x.items.push({
+                    label: 'Add Institute',
+                    icon: 'pi pi-fw pi-file-edit',
+                    routerLink: ['/institutions/add'],
+                  });
+                }
+              });
+            }
+          },
+        });
+    }
+  }
+
   //#endregion
 }
