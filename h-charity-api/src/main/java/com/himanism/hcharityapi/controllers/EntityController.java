@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.himanism.hcharityapi.common.Constants;
 import com.himanism.hcharityapi.dto.request.EntityBankDetailsReqDto;
 import com.himanism.hcharityapi.dto.request.EntityRequestDto;
+import com.himanism.hcharityapi.dto.request.EntityReviewReqDto;
 import com.himanism.hcharityapi.dto.response.EntityBankDetailsResDto;
 import com.himanism.hcharityapi.dto.response.EntityResponseDto;
-import com.himanism.hcharityapi.entities.Entities;
+import com.himanism.hcharityapi.dto.response.EntityReviewResDto;
 import com.himanism.hcharityapi.entities.EntityBankDetails;
 import com.himanism.hcharityapi.entities.EntityPhotos;
 import com.himanism.hcharityapi.exception.AppException;
@@ -55,16 +56,11 @@ public class EntityController {
 
     @GetMapping("/{entityId}")
     public EntityResponseDto getEntityById(@PathVariable Long entityId) {
-        // if (user.getEmail() == null || user.getEmail().isEmpty() ||
-        // user.getPassword() == null || user.getPassword().isEmpty()) {
-        // throw new AppException("All fields are required.", HttpStatus.BAD_REQUEST);
-        // }
-        EntityResponseDto entityResponseDto = entityService.getEntityById(entityId);
-        return entityResponseDto;
+        return entityService.getEntityById(entityId);
     }
 
     @PostMapping("")
-    public Entities addEntity(Authentication authentication, @Valid @RequestBody EntityRequestDto entityDto) {
+    public ResponseEntity<?> addEntity(Authentication authentication, @Valid @RequestBody EntityRequestDto entityDto) {
         // if (user.getEmail() == null || user.getEmail().isEmpty() ||
         // user.getPassword() == null || user.getPassword().isEmpty()) {
         // throw new AppException("All fields are required.", HttpStatus.BAD_REQUEST);
@@ -72,23 +68,21 @@ public class EntityController {
 
         // Make proper use of Lombok validators
 
-        Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        String username = ((UserDetailsImpl) principle).getUsername();
-        entityDto.setCreatedBy(username);
-
-        return entityService.addEntity(entityDto);
+        UserDetailsImpl principle = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        return ResponseEntity.ok().body(entityService.addEntity(entityDto, principle));
     }
 
     @PutMapping("")
-    public Entities updateEntity(Authentication authentication, @Valid @RequestBody EntityRequestDto entityDto) {
+    public ResponseEntity<?> updateEntity(Authentication authentication,
+            @Valid @RequestBody EntityRequestDto entityDto) {
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         String username = ((UserDetailsImpl) principle).getUsername();
         entityDto.setUpdatedBy(username);
         entityDto.setUpdatedDate(new Date());
 
-        return entityService.updateEntity(entityDto);
+        return ResponseEntity.ok().body(entityService.updateEntity(entityDto));
     }
 
     @DeleteMapping("/{entityId}")
@@ -135,15 +129,31 @@ public class EntityController {
         // throw new AppException("All fields are required.", HttpStatus.BAD_REQUEST);
         // }
 
-        Optional<EntityBankDetails> obj = entityService.getBankDetailsByEntityId(entityId);
-
-        return obj;
+        return entityService.getBankDetailsByEntityId(entityId);
     }
 
     @GetMapping("/photos/{entityId}")
     public Optional<List<EntityPhotos>> getPhotosByEntityId(@PathVariable Long entityId) {
-        Optional<List<EntityPhotos>> obj = entityService.getPhotosByEntityId(entityId);
-        return obj;
+        return entityService.getPhotosByEntityId(entityId);
     }
 
+    @GetMapping("/entityOwner/{entityOwnerId}")
+    public ResponseEntity<?> checkIfInstituteOwnerExists(@PathVariable Long entityOwnerId) {
+        Boolean response = entityService.checkIfInstituteOwnerExists(entityOwnerId);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/entityReview")
+    public ResponseEntity<?> saveEntityReview(@Valid @RequestBody EntityReviewReqDto entityReviewReqDto) {
+        Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String username = ((UserDetailsImpl) principle).getUsername();
+        return ResponseEntity.ok().body(entityService.saveEntityReview(entityReviewReqDto, username));
+    }
+
+    @GetMapping("/entityReview/{entityId}")
+    public ResponseEntity<?> getEntityReviews(@PathVariable Long entityId) {
+        List<EntityReviewResDto> reviews = entityService.getEntityReviews(entityId);
+        return ResponseEntity.ok().body(reviews);
+    }
 }

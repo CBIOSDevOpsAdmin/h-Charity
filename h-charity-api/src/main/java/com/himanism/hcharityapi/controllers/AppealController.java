@@ -1,6 +1,7 @@
 package com.himanism.hcharityapi.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -60,12 +61,16 @@ public class AppealController {
 
         // Make proper use of Lombok validators
 
-        Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetailsImpl principle = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
 
-        String username = ((UserDetailsImpl) principle).getUsername();
-        Long userId = ((UserDetailsImpl) principle).getId();
+        String username = principle.getUsername();
+        Long userId = principle.getId();
+        List<String> roles = principle.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
 
-        return appealService.addAppeal(appealRequestDto, username, userId);
+        return appealService.addAppeal(appealRequestDto, username, userId, roles.get(0));
     }
 
     @PutMapping("")

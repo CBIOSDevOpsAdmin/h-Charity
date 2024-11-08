@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.himanism.hcharityapi.entities.Role;
 import com.himanism.hcharityapi.entities.User;
+import com.himanism.hcharityapi.models.Erole;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -18,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
   Boolean existsByEmail(String email);
 
   List<User> findByRolesNotContaining(Role adminRole);
+
+  @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = :roleName")
+  List<User> findAllByRoleName(@Param("roleName") Erole roleName);
 }

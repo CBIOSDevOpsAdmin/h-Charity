@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { LayoutService } from './service/app.layout.service';
 import { Router } from '@angular/router';
@@ -6,12 +12,18 @@ import { User } from '../modules/auth/models/user.model';
 import { AuthService } from '../modules/auth/services/auth.service';
 import { EntityService } from '../modules/entity/services/entity.service';
 import { StorageService } from '../modules/shared/services/storage.service';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { MyProfileComponent } from '../modules/shared/components/my-profile/my-profile.component';
+import { UserService } from '../modules/shared/services/user.service';
+import { IUser } from '../modules/admin/models/user.model';
+import { CommonService } from '../modules/shared/services/common.service';
 
 @Component({
   selector: 'app-topbar',
   templateUrl: './app.topbar.component.html',
 })
 export class AppTopBarComponent implements OnInit {
+  //#region Variables
   items!: MenuItem[];
   profileMenuItems!: MenuItem[];
   isLoggedIn = false;
@@ -23,12 +35,20 @@ export class AppTopBarComponent implements OnInit {
   @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
   @ViewChild('topbarmenu') menu!: ElementRef;
 
+  ref: DynamicDialogRef | undefined;
+
+  userService = inject(UserService);
+  user: IUser;
+  //#endregion
+
   constructor(
     public layoutService: LayoutService,
     private messageService: MessageService,
     private router: Router,
     public storageService: StorageService,
-    private authService: AuthService
+    private authService: AuthService,
+    public dialogService: DialogService,
+    private commonService: CommonService
   ) {
     this.items = [
       {
@@ -46,10 +66,9 @@ export class AppTopBarComponent implements OnInit {
       {
         label: 'Profile',
         command: () => {
-          // this.getCallTest();
+          this.getUserDetails();
         },
       },
-      { label: 'Settings' },
       {
         label: 'Logout',
         command: () => {
@@ -63,7 +82,7 @@ export class AppTopBarComponent implements OnInit {
     this.authService.logout().subscribe({
       next: res => {
         this.storageService.clean();
-        window.location.reload();
+        this.commonService.resetAccessRightsAcrossApp();
         this.router.navigate(['']);
       },
     });
@@ -95,5 +114,27 @@ export class AppTopBarComponent implements OnInit {
 
   login() {
     this.router.navigate(['/auth/login']);
+  }
+
+  private getUserDetails() {
+    this.userService.getUserById().subscribe({
+      next: (user: IUser) => {
+        this.ref = this.dialogService.open(MyProfileComponent, {
+          header: 'My Profile',
+          width: '30vw',
+          modal: true,
+          breakpoints: {
+            '960px': '75vw',
+            '640px': '90vw',
+          },
+          data: {
+            user: user,
+          },
+        });
+      },
+      error: error => {
+        console.error('Error fetching user:', error);
+      },
+    });
   }
 }

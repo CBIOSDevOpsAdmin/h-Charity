@@ -8,22 +8,20 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-entity-view',
   templateUrl: './entity-view.component.html',
-  styleUrl: './entity-view.component.css'
+  styleUrl: './entity-view.component.css',
 })
 export class EntityViewComponent implements OnInit {
-
   // currentDateAndTime: Date;
   // private timer: any;
 
   currentTime: string = '';
   dateString: string = '';
 
-
   constructor(
     private route: ActivatedRoute,
     private entityService: EntityService,
-    private fb: FormBuilder,
-  ) { }
+    private fb: FormBuilder
+  ) {}
   displayDialog: boolean = false;
   feedbackForm: FormGroup;
   entity: IEntity;
@@ -34,38 +32,34 @@ export class EntityViewComponent implements OnInit {
       image: 'assets/mosque-details/madina-masjid1.png',
       title: 'Appeal 1',
       description: 'Namaz Carpet',
-      status: 'Pending'
+      status: 'Pending',
     },
     {
       image: 'assets/mosque-details/madina-masjid2.png',
       title: 'Appeal 2',
       description: 'Lights',
-      status: 'Approved'
+      status: 'Approved',
     },
     {
       image: 'assets/mosque-details/madina-masjid3.png',
       title: 'Appeal 3',
       description: 'Loud Speaker',
-      status: 'Rejected'
-    }
+      status: 'Rejected',
+    },
   ];
 
   images: string[] = [
     'assets/mosque-details/madina-masjid.png',
     'assets/mosque-details/madina-masjid2.png',
-    'assets/mosque-details/madina-masjid1.png'
+    'assets/mosque-details/madina-masjid1.png',
   ];
-
 
   committeeMembers = [
     { name: 'Abc', position: 'President' },
     { name: 'XYZ', position: 'Point Of Contact' },
   ];
 
-
-
   ngOnInit() {
-
     // this.updateDateTime();
     // // Update the time every second
     // this.timer = setInterval(() => {
@@ -77,25 +71,36 @@ export class EntityViewComponent implements OnInit {
       this.updateTime();
     }, 1000);
 
-
-
-    this.entityService.getEntityById(this.route.snapshot.params['id']).subscribe({
-      next: (entity: IEntity) => {
-        this.entity = entity;
-        let eAddress = entity.address;
-        this.address = eAddress.address1 + ", " + eAddress.address2 + "," + eAddress.landmark + "," + eAddress.city + "," + eAddress.state + "," + eAddress.country + "," + eAddress.pincode;
-      }
-    })
+    this.entityService
+      .getEntityById(this.route.snapshot.params['id'])
+      .subscribe({
+        next: (entity: IEntity) => {
+          this.entity = entity;
+          let eAddress = entity.address;
+          this.address =
+            eAddress.address1 +
+            ', ' +
+            eAddress.address2 +
+            ',' +
+            eAddress.landmark +
+            ',' +
+            eAddress.city +
+            ',' +
+            eAddress.state +
+            ',' +
+            eAddress.country +
+            ',' +
+            eAddress.pincode;
+        },
+      });
 
     this.feedbackForm = this.fb.group({
       feedbackTitle: ['', Validators.required],
       description: ['', Validators.required],
       userName: ['', Validators.required],
-      mobileNumber: ['', Validators.required]
+      mobileNumber: ['', Validators.required],
     });
   }
-
-
 
   // ngOnDestroy(): void {
   //   // Clear the interval when the component is destroyed
@@ -103,7 +108,6 @@ export class EntityViewComponent implements OnInit {
   //     clearInterval(this.timer);
   //   }
   // }
-
 
   // private updateDateTime(): void {
   //   this.currentDateAndTime = new Date();
@@ -131,7 +135,6 @@ export class EntityViewComponent implements OnInit {
   }
 
   submitFeedback() {
-    console.log(this.feedbackForm.value);
     this.feedbackForm.reset();
     this.hideDialog();
   }
@@ -139,5 +142,4 @@ export class EntityViewComponent implements OnInit {
   clearForm() {
     this.feedbackForm.reset();
   }
-
 }

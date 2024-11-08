@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { IEntity, IEntityBankDetails } from '../models/entity.model';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { IEntityReview } from '../models/entity-review.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,9 @@ export class EntityService {
   rootURL = 'http://localhost:8080/api/v1/entity';
 
   http = inject(HttpClient);
+
+  private refreshER = new Subject<void>();
+  refreshER$ = this.refreshER.asObservable();
 
   saveEntity(entity: IEntity) {
     return entity.id > 0
@@ -44,5 +48,21 @@ export class EntityService {
 
   deleteEntity(entityId: number): Observable<any> {
     return this.http.delete(`${this.rootURL}/${entityId}`);
+  }
+
+  checkIfInstituteOwnerExists(entityOwnerId: number) {
+    return this.http.get(`${this.rootURL}/entityOwner/${entityOwnerId}`);
+  }
+
+  saveReview(entityReview: IEntityReview) {
+    return this.http.post(`${this.rootURL}/entityReview`, entityReview);
+  }
+
+  getReviewsByEntityId(entityId: number) {
+    return this.http.get(`${this.rootURL}/entityReview/${entityId}`);
+  }
+
+  triggerERRefresh() {
+    this.refreshER.next();
   }
 }

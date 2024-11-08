@@ -39,6 +39,9 @@ import { ImageModule } from 'primeng/image';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { EntityReviewComponent } from './components/entity-review/entity-review.component';
+import { EntityReviewTableComponent } from './components/entity-review-table/entity-review-table.component';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @NgModule({
   imports: [
@@ -74,6 +77,7 @@ import { ConfirmationService } from 'primeng/api';
     ImageModule,
     DialogModule,
     ConfirmDialogModule,
+    InputTextareaModule,
   ],
   declarations: [
     EntityComponent,
@@ -83,6 +87,8 @@ import { ConfirmationService } from 'primeng/api';
     EntityPaymentAddComponent,
     EntityBankDetailsComponent,
     EntityViewComponent,
+    EntityReviewComponent,
+    EntityReviewTableComponent,
   ],
   providers: [EntityService, ConfirmationService],
 })

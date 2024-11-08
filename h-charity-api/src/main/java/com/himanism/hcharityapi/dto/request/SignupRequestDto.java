@@ -10,6 +10,10 @@ public class SignupRequestDto {
   private String username;
 
   @NotBlank
+  @Size(min = 3, max = 30)
+  private String fullname;
+
+  @NotBlank
   @Size(max = 50)
   @Email
   private String email;
@@ -63,4 +67,13 @@ public class SignupRequestDto {
   public void setRole(Set<String> role) {
     this.role = role;
   }
+
+  public String getFullname() {
+    return fullname;
+  }
+
+  public void setFullname(String fullname) {
+    this.fullname = fullname;
+  }
+
 }

@@ -27,11 +27,7 @@ export class UsersComponent implements OnInit {
   //#endregion
 
   ngOnInit() {
-    this.userService.getUsers().subscribe({
-      next: res => {
-        this.users = res;
-      },
-    });
+    this.getUsers();
 
     this.roles = [
       { name: 'Normal User', value: 'NORMAL_USER' },
@@ -93,15 +89,26 @@ export class UsersComponent implements OnInit {
 
   saveUser() {
     this.submitted = true;
-    debugger;
-    if (this.user.fullName?.trim()) {
+    if (this.user.fullname?.trim()) {
       if (this.user.id) {
-        // Update mode
-        this.messageService.add({
-          severity: 'success',
-          summary: 'User updated successfully',
-          detail: 'User Updated',
-          life: 3000,
+        this.userService.saveUser(this.user).subscribe({
+          next: res => {
+            this.getUsers();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'User updated successfully',
+              detail: 'User Updated',
+              life: 3000,
+            });
+          },
+          error: err => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'User update error',
+              detail: err,
+              life: 3000,
+            });
+          },
         });
       } else {
         // Add mode
@@ -140,6 +147,14 @@ export class UsersComponent implements OnInit {
 
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
+
+  private getUsers() {
+    this.userService.getUsers().subscribe({
+      next: res => {
+        this.users = res;
+      },
+    });
   }
   //#endregion
 }

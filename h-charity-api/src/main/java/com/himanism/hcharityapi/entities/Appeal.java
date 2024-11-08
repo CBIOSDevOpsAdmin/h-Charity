@@ -48,10 +48,6 @@ public class Appeal {
     private Date deletedDate;
     private String isVerified;
 
-    // @ManyToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "entity_id", referencedColumnName = "id")
-    // private Entities entity;
-
     @ManyToOne
     @JoinColumn(name = "entity_id", referencedColumnName = "id")
     private Entities entity;

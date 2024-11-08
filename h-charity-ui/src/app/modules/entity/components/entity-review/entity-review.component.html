@@ -1,0 +1,31 @@
+<div class="grid">
+  <div class="col-12 md:col-8 lg:col-8">
+    <div class="grid">
+      <div class="col-12 md:col-5 lg:col-5">
+        <p-dropdown
+          optionLabel="name"
+          styleClass="w-full"
+          placeholder="Select Status"
+          optionValue="name"
+          [options]="reviewOptions"
+          [(ngModel)]="selectedReviewOption"
+        />
+      </div>
+
+      <div class="col-12 md:col-5 lg:col-5">
+        <textarea
+          rows="5"
+          cols="30"
+          pInputTextarea
+          placeholder="Enter Comment"
+          styleClass="w-full"
+          [(ngModel)]="comment"
+        ></textarea>
+      </div>
+
+      <div class="col-12 md:col-2 lg:col-2">
+        <p-button label="Submit" icon="pi pi-check" (onClick)="saveReview()" />
+      </div>
+    </div>
+  </div>
+</div>

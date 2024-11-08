@@ -43,19 +43,20 @@ export class EntityViewComponent implements OnInit {
   onFullScreenListener: any;
   feedbackDialog: boolean = false;
   feedbackForm: FormGroup;
-  statuses: any[] = [{ label: 'Open', value: 'Open' }, { label: 'Closed', value: 'Closed' }];
+  statuses: any[] = [
+    { label: 'Open', value: 'Open' },
+    { label: 'Closed', value: 'Closed' },
+  ];
   appeals: IAppeal[] = [];
   feedbacks: any[] = [];
-
 
   @ViewChild('galleria') galleria: Galleria | undefined;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
     private cd: ChangeDetectorRef,
-    private fb: FormBuilder,
+    private fb: FormBuilder
   ) {
-
     this.feedbackForm = this.fb.group({
       name: ['', Validators.required],
       contactNumber: ['', Validators.required],
@@ -202,7 +203,9 @@ export class EntityViewComponent implements OnInit {
   }
 
   fullScreenIcon() {
-    return `pi ${this.fullscreen ? 'pi-window-minimize' : 'pi-window-maximize'}`;
+    return `pi ${
+      this.fullscreen ? 'pi-window-minimize' : 'pi-window-maximize'
+    }`;
   }
   //#endregion
 
@@ -214,7 +217,6 @@ export class EntityViewComponent implements OnInit {
   submitFeedback() {
     if (this.feedbackForm.valid) {
       // Handle form submission logic here
-      console.log(this.feedbackForm.value);
       this.feedbackDialog = false;
     }
   }
