@@ -43,6 +43,7 @@ export class EntityViewComponent implements OnInit {
 
   route = inject(ActivatedRoute);
   entityService = inject(EntityService);
+  storageService = inject(StorageService);
 
   arrImages: any[] | undefined;
 
@@ -110,6 +111,7 @@ export class EntityViewComponent implements OnInit {
           this.images = entity.entityPhotos.photos;
           this.prepareAddress(entity.address);
           this.bankDetails = entity.entityBankDetails;
+          this.appeals = entity.appeals;
         },
       });
   }
@@ -129,6 +131,25 @@ export class EntityViewComponent implements OnInit {
       entityAddress.country +
       '-' +
       entityAddress.pincode;
+  }
+
+  public canEditOrDelete(appeal: IAppeal): boolean {
+    const user = this.storageService.getUser();
+    const roles = user.roles;
+    const isOwner = appeal['user'] && appeal['user'].id === user.id;
+    const isAdminOrVolunteer =
+      roles &&
+      (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'));
+
+    return isOwner || isAdminOrVolunteer;
+  }
+
+  public showEditButton(appeal: IAppeal): boolean {
+    return this.canEditOrDelete(appeal);
+  }
+
+  public showDeleteButton(appeal: IAppeal): boolean {
+    return this.canEditOrDelete(appeal);
   }
   //#endregion
 

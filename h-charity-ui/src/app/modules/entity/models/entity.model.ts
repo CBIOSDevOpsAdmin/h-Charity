@@ -1,3 +1,5 @@
+import { IAppeal } from './appeal.model';
+
 export interface IEntity {
   id?: number;
   name?: string;
@@ -13,6 +15,7 @@ export interface IEntity {
   mobile?: string;
   office?: string;
   entityBankDetails?: IEntityBankDetails;
+  appeals?: IAppeal[];
 }
 
 export interface IAddress {
