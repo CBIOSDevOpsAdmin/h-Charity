@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { IUser } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
@@ -24,6 +24,7 @@ export class UsersComponent implements OnInit {
 
   private readonly userService = inject(UserService);
   private readonly messageService = inject(MessageService);
+  private readonly confirmationService = inject(ConfirmationService);
   //#endregion
 
   ngOnInit() {
@@ -59,27 +60,40 @@ export class UsersComponent implements OnInit {
   }
 
   confirmDeleteSelected() {
-    this.deleteUsersDialog = false;
-    this.users = this.users.filter(val => !this.selectedUsers.includes(val));
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Successful',
-      detail: 'Users Deleted',
-      life: 3000,
+    let userIds = this.selectedUsers.map(user => user.id);
+    this.userService.deleteUsers(userIds).subscribe({
+      next: () => {
+        this.users = this.users.filter(
+          val => !this.selectedUsers?.includes(val)
+        );
+
+        this.deleteUsersDialog = false;
+        this.selectedUsers = [];
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Successful',
+          detail: 'Users Deleted successfully',
+          life: 3000,
+        });
+      },
     });
-    this.selectedUsers = [];
   }
 
   confirmDelete() {
     this.deleteUserDialog = false;
-    this.users = this.users.filter(val => val.id !== this.user.id);
-    this.messageService.add({
-      severity: 'success',
-      summary: 'User Deleted',
-      detail: 'User deleted successfully',
-      life: 3000,
+
+    this.userService.deleteUser(this.user.id).subscribe({
+      next: () => {
+        this.users = this.users.filter(val => val.id !== this.user.id);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'User Deleted',
+          detail: 'User deleted successfully',
+          life: 3000,
+        });
+        this.user = {};
+      },
     });
-    this.user = {};
   }
 
   hideDialog() {

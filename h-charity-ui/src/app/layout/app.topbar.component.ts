@@ -10,7 +10,6 @@ import { LayoutService } from './service/app.layout.service';
 import { Router } from '@angular/router';
 import { User } from '../modules/auth/models/user.model';
 import { AuthService } from '../modules/auth/services/auth.service';
-import { EntityService } from '../modules/entity/services/entity.service';
 import { StorageService } from '../modules/shared/services/storage.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MyProfileComponent } from '../modules/shared/components/my-profile/my-profile.component';

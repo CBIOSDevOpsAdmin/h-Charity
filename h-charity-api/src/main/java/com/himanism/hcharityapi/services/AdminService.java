@@ -15,11 +15,7 @@ public interface AdminService {
 
     UserResDto updateUser(@Valid UserReqDto userReqDto, UserDetailsImpl principle);
 
-    // Appeal addAppeal(AppealRequestDto appealDto, String username, Long userId);
+    void deleteUser(Long userId);
 
-    // Appeal updateAppeal(AppealRequestDto appealDto);
-
-    // void deleteAppeal(Long appealId);
-
-    // AppealResDto getAppealById(Long appealId);
+    void deleteUsersByIds(List<Long> userIds);
 }
