@@ -1,25 +1,21 @@
 package com.himanism.hcharityapi.services.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import com.himanism.hcharityapi.dto.request.UserReqDto;
 import com.himanism.hcharityapi.dto.response.UserResDto;
-import com.himanism.hcharityapi.entities.Appeal;
 import com.himanism.hcharityapi.entities.Role;
 import com.himanism.hcharityapi.entities.User;
-import com.himanism.hcharityapi.mappers.AppealMapper;
 import com.himanism.hcharityapi.mappers.UserMapper;
 import com.himanism.hcharityapi.models.Erole;
 import com.himanism.hcharityapi.repo.RoleRepository;
@@ -27,6 +23,7 @@ import com.himanism.hcharityapi.repo.UserRepository;
 import com.himanism.hcharityapi.security.services.UserDetailsImpl;
 import com.himanism.hcharityapi.services.AdminService;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -70,6 +67,20 @@ public class AdminServiceImpl implements AdminService {
         } finally {
 
         }
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        try {
+            userRepository.deleteById(userId);
+        } catch (Exception e) {
+            log.error("Error while deleting user ", e);
+        }
+    }
+
+    @Override
+    public void deleteUsersByIds(List<Long> userIds) {
+        userRepository.deleteUsersByIds(userIds);
     }
 
 }

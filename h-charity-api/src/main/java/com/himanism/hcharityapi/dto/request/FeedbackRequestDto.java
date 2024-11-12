@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FeedbackRequestDto {
     private Long id;
-    private String name;
-    private String contactNumber;
+    private Long entityId;
+    private String advisedBy;
+    private String advisedByContact;
     private String title;
     private String description;
     private Boolean isAnonymous;

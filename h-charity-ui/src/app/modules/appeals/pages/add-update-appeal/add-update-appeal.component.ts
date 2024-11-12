@@ -2,9 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
-  FormControl,
   FormGroup,
-  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,15 +27,14 @@ export class AddUpdateAppealComponent implements OnInit {
   appealId: number = 0;
   minDate: Date;
   appeal: IAppeal;
+  isVerifiedOptions: IDropdown[] = [];
+
   formBuilder = inject(FormBuilder);
   messageService = inject(MessageService);
   appealService = inject(AppealService);
   route = inject(ActivatedRoute);
   router = inject(Router);
   storageService = inject(StorageService);
-
-  isVerifiedOptions: IDropdown[] = [];
-
   //#endregion
 
   ngOnInit() {
@@ -60,7 +57,6 @@ export class AddUpdateAppealComponent implements OnInit {
             severity: 'success',
             summary: 'Save',
             detail: 'Appeal saved successfully',
-            key: 'toast1',
           });
           this.router.navigate(['appeals/edit', response.id]);
         },
@@ -73,7 +69,6 @@ export class AddUpdateAppealComponent implements OnInit {
       this.appealForm.get('onBehalfName')?.enable();
     }
   }
-
   //#endregion
 
   //#region Private Methods

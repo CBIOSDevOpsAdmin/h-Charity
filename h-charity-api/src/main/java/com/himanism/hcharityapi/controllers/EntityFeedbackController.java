@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.himanism.hcharityapi.dto.request.FeedbackRequestDto;
 import com.himanism.hcharityapi.dto.response.FeedbackResDto;
-import com.himanism.hcharityapi.entities.Feedback;
 import com.himanism.hcharityapi.security.services.UserDetailsImpl;
-import com.himanism.hcharityapi.services.FeedbackService;
+import com.himanism.hcharityapi.services.EntityFeedbackService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,40 +27,41 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/feedback")
+@RequestMapping("/api/v1/entity/feedback")
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
-public class FeedbackController {
+public class EntityFeedbackController {
 
-    private final FeedbackService feedbackService;
+    private final EntityFeedbackService feedbackService;
 
-    @GetMapping("")
-    public ResponseEntity<?> getFeedbacks(Authentication authentication) {
-        log.info("Feedback Controller: List feedbacks");
-        List<FeedbackResDto> feedbacks = feedbackService.getFeedbacks(authentication);
-        return ResponseEntity.ok().body(feedbacks);
-    }
+    // @GetMapping("/{entityId}")
+    // public ResponseEntity<?> getFeedbacks(Authentication authentication,
+    // @PathVariable Long entityId) {
+    // log.info("Feedback Controller: List feedbacks");
+    // List<FeedbackResDto> feedbacks = feedbackService.getFeedbacks(authentication,
+    // entityId);
+    // return ResponseEntity.ok().body(feedbacks);
+    // }
 
-    @GetMapping("/{feedbackId}")
-    public FeedbackResDto getFeedbackById(@PathVariable Long feedbackId) {
-        return feedbackService.getFeedbackById(feedbackId);
-    }
+    // @GetMapping("/{feedbackId}")
+    // public FeedbackResDto getFeedbackById(@PathVariable Long feedbackId) {
+    // return feedbackService.getFeedbackById(feedbackId);
+    // }
 
     @PostMapping("")
-    public Feedback addFeedback(Authentication authentication,
+    public ResponseEntity<?> addFeedback(Authentication authentication,
             @Valid @RequestBody FeedbackRequestDto feedbackRequestDto) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetailsImpl) principal).getUsername();
 
-        return feedbackService.addFeedback(feedbackRequestDto);
+        return ResponseEntity.ok().body(feedbackService.addFeedback(feedbackRequestDto, username));
     }
 
     @PutMapping("")
-    public Feedback updateFeedback(Authentication authentication,
+    public ResponseEntity<?> updateFeedback(Authentication authentication,
             @Valid @RequestBody FeedbackRequestDto feedbackRequestDto) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetailsImpl) principal).getUsername();
-
-        return feedbackService.updateFeedback(feedbackRequestDto);
+        return ResponseEntity.ok().body(feedbackService.updateFeedback(feedbackRequestDto));
     }
 
     @DeleteMapping("/{feedbackId}")

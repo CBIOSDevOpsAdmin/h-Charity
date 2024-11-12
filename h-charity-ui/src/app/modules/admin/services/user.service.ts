@@ -24,4 +24,8 @@ export class UserService {
   deleteUser(userId: number): Observable<any> {
     return this.http.delete(`${this.rootURL}/${userId}`);
   }
+
+  deleteUsers(userIds: number[]): Observable<any> {
+    return this.http.delete(`${this.rootURL}`, { body: userIds });
+  }
 }

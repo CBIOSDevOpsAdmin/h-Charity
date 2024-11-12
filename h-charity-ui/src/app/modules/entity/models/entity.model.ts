@@ -1,3 +1,5 @@
+import { IAppeal } from './appeal.model';
+
 export interface IEntity {
   id?: number;
   name?: string;
@@ -13,6 +15,8 @@ export interface IEntity {
   mobile?: string;
   office?: string;
   entityBankDetails?: IEntityBankDetails;
+  appeals?: IAppeal[];
+  feedbacks?: IEntityFeedbackRes[];
 }
 
 export interface IAddress {
@@ -42,4 +46,33 @@ export interface IEntityBankDetails {
   ifscCode?: string;
   upiId?: string;
   upiNumber?: string;
+}
+
+export interface IEntityFeedback {
+  id?: number;
+  advisedBy?: string;
+  advisedByContact?: string;
+  title?: string;
+  description?: string;
+  isAnonymous?: boolean;
+  status?: string;
+}
+
+export interface IEntityFeedbackRes {
+  id?: number;
+  advisedBy?: string;
+  advisedByContact?: string;
+  advisedDate?: Date;
+  title?: string;
+  description?: string;
+  isAnonymous?: boolean;
+  entityFeedbackStatusList?: IEntityFeedbackStatus;
+}
+
+export interface IEntityFeedbackStatus {
+  id?: number;
+  status?: string;
+  statusComment?: string;
+  statusCommentDate?: Date;
+  statusCommenter?: string;
 }

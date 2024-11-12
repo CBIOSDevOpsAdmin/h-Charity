@@ -15,7 +15,6 @@ import { StorageService } from 'src/app/modules/shared/services/storage.service'
 })
 export class AppealComponent implements OnInit {
   // loading: boolean = true;
-  storageService = inject(StorageService);
   appealDialog: boolean = false;
   viewDialog: boolean = false;
   submitted: boolean = false;
@@ -25,22 +24,18 @@ export class AppealComponent implements OnInit {
   minDate: Date;
   yesNoOptions = [
     { label: 'Yes', value: true },
-    { label: 'No', value: false }
+    { label: 'No', value: false },
   ];
 
-  constructor(
-    private appealsService: AppealService,
-    private messageService: MessageService,
-    private fb: FormBuilder,
-    private router: Router
-  ) {}
+  storageService = inject(StorageService);
+  appealsService = inject(AppealService);
+  messageService = inject(MessageService);
+  fb = inject(FormBuilder);
+  router = inject(Router);
+  confirmationService = inject(ConfirmationService);
 
   ngOnInit() {
-    this.appealsService.getAppeals().subscribe((data: any[]) => {
-      this.appeals = data;
-      const today = new Date();
-      this.minDate = today;
-    });
+    this.getAppeals();
 
     this.appealsForm = this.fb.group({
       id: [0],
@@ -97,39 +92,56 @@ export class AppealComponent implements OnInit {
     return isError;
   }
 
-  public showEditButton(appeal: IAppeal): boolean {
-    let roles = this.storageService.getUser().roles;
-
-    if (
-      appeal['user'] &&
-      appeal['user'].id === this.storageService.getUser().id
-    ) {
-      return true;
-    } else if (
+  public canEditOrDelete(appeal: IAppeal): boolean {
+    const user = this.storageService.getUser();
+    const roles = user.roles;
+    const isOwner = appeal['user'] && appeal['user'].id === user.id;
+    const isAdminOrVolunteer =
       roles &&
-      (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'))
-    ) {
-      return true;
-    }
+      (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'));
 
-    return false;
+    return isOwner || isAdminOrVolunteer;
   }
 
-  public showDeleteButton(appeal: IAppeal) {
-    let roles = this.storageService.getUser().roles;
+  public showEditButton(appeal: IAppeal): boolean {
+    return this.canEditOrDelete(appeal);
+  }
 
-    if (
-      appeal['user'] &&
-      appeal['user'].id === this.storageService.getUser().id
-    ) {
-      return true;
-    } else if (
-      roles &&
-      (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'))
-    ) {
-      return true;
-    }
+  public showDeleteButton(appeal: IAppeal): boolean {
+    return this.canEditOrDelete(appeal);
+  }
 
-    return false;
+  deleteAppeal(appeal: IAppeal) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this Appeal?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+
+      accept: () => {
+        this.appealsService.deleteAppeal(appeal.id).subscribe({
+          next: response => {
+            this.getAppeals();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Delete',
+              detail: 'Appeal deleted successfully',
+            });
+          },
+        });
+      },
+    });
+  }
+
+  private getAppeals() {
+    this.appealsService.getAppeals().subscribe((data: any[]) => {
+      this.appeals = data;
+      const today = new Date();
+      this.minDate = today;
+    });
   }
 }

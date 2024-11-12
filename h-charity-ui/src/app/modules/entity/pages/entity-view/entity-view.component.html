@@ -1,39 +1,81 @@
 <p-card>
   <div class="grid">
     <div class="col-12 md:col-6 lg:col-12">
-
-      <button pButton label="Give Feedback" icon="pi pi-comment" class="p-button-rounded p-button-help"
-        (click)="showFeedbackDialog()" style="position: fixed; bottom: 20px; right: 20px;"></button>
-      <p-dialog [(visible)]="feedbackDialog" header="Feedback" [modal]="true" [style]="{ width: '50vw' }">
+      <button
+        pButton
+        label="Give Feedback"
+        icon="pi pi-comment"
+        *ngIf="showFeedbackButton"
+        class="p-button-rounded p-button-help"
+        (click)="showFeedbackDialog()"
+        style="position: fixed; bottom: 20px; right: 20px"
+      ></button>
+      <p-dialog
+        [(visible)]="feedbackDialog"
+        header="Feedback"
+        [modal]="true"
+        [style]="{ width: '50vw' }"
+      >
         <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
           <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
             <div class="col-12 md:col-12 lg:col-12">
               <div class="grid">
                 <div class="col-12 md:col-12 lg:col-12">
-                  <input type="text" pInputText placeholder="Name" formControlName="name" />
+                  <input
+                    type="text"
+                    pInputText
+                    placeholder="Title"
+                    formControlName="title"
+                  />
                 </div>
                 <div class="col-12 md:col-12 lg:col-12">
-                  <input type="text" pInputText placeholder="Contact Number" formControlName="contactNumber" />
-                </div>
-                <div class="col-12 md:col-12 lg:col-12">
-                  <input type="text" pInputText placeholder="Title" formControlName="title" />
-                </div>
-                <div class="col-12 md:col-12 lg:col-12">
-                  <p-editor formControlName="description" [style]="{ height: '200px' }"
-                    placeholder="Enter the Description">
+                  <p-editor
+                    formControlName="description"
+                    [style]="{ height: '200px' }"
+                    placeholder="Enter the Description"
+                  >
                   </p-editor>
                 </div>
-                <div class="col-12 md:col-12 lg:col-12">
-                  <p-checkbox binary="true" label="Is Anonymous?" formControlName="isAnonymous"></p-checkbox>
+                <div class="col-12 md:col-6 lg:col-6">
+                  <input
+                    type="text"
+                    pInputText
+                    placeholder="Advised By"
+                    formControlName="advisedBy"
+                  />
                 </div>
-                <div class="col-12 md:col-12 lg:col-12">
-                  <p-dropdown [options]="statuses" placeholder="Select Status" formControlName="status"></p-dropdown>
+                <div class="col-12 md:col-6 lg:col-6">
+                  <input
+                    type="text"
+                    pInputText
+                    placeholder="Advised By Contact"
+                    formControlName="advisedByContact"
+                  />
+                </div>
+                <div class="col-12 md:col-6 lg:col-6">
+                  <p-checkbox
+                    binary="true"
+                    label="Is Anonymous?"
+                    formControlName="isAnonymous"
+                  ></p-checkbox>
+                </div>
+                <div class="col-12 md:col-6 lg:col-6">
+                  <p-dropdown
+                    [options]="statuses"
+                    placeholder="Select Status"
+                    formControlName="status"
+                  ></p-dropdown>
                 </div>
               </div>
             </div>
           </div>
           <div class="col-12 text-center">
-            <button pButton label="Submit" type="submit" [disabled]="!feedbackForm.valid"></button>
+            <button
+              pButton
+              label="Submit"
+              type="submit"
+              [disabled]="!feedbackForm.valid"
+            ></button>
           </div>
         </form>
       </p-dialog>
@@ -111,23 +153,24 @@
       </p-card>
     </div>
     <div class="col-12 md:col-6 lg:col-6">
-      <img *ngIf="entity && entity.entityPhotos.qrCode" src="{{ entity && entity.entityPhotos.qrCode }}" alt="qrcode"
-        height="273px" />
+      <img
+        *ngIf="entity && entity.entityPhotos.qrCode"
+        src="{{ entity && entity.entityPhotos.qrCode }}"
+        alt="qrcode"
+        height="273px"
+      />
     </div>
     <div class="col-12 md:col-12 lg:col-12">
-
       <p-tabView>
         <p-tabPanel header="Appeals">
-          <p-table [value]="appeals" [paginator]="true" [rows]="5" [tableStyle]="{ 'min-width': '50rem' }"
-            [rowsPerPageOptions]="[5, 10, 20]" [showCurrentPageReport]="true">
-            <ng-template pTemplate="caption">
-              <div class="flex align-items-center justify-content-between">
-                Appeals
-                <p-button label="Add Appeals" [rounded]="true" icon="pi pi-plus" severity="add"
-                  (onClick)="navigateToAddAppeal()" />
-              </div>
-            </ng-template>
-
+          <p-table
+            [value]="appeals"
+            [paginator]="true"
+            [rows]="5"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            [rowsPerPageOptions]="[5, 10, 20]"
+            [showCurrentPageReport]="true"
+          >
             <ng-template pTemplate="header">
               <tr>
                 <th style="min-width: 18rem"></th>
@@ -139,7 +182,10 @@
                   Requirement Date
                   <p-sortIcon field="requirementDate" />
                 </th>
-                <th pSortableColumn="totalFundsRequired" style="min-width: 15rem">
+                <th
+                  pSortableColumn="totalFundsRequired"
+                  style="min-width: 15rem"
+                >
                   Total Funds Required
                   <p-sortIcon field="totalFundsRequired" />
                 </th>
@@ -155,7 +201,10 @@
                   Zakat Eligible
                   <p-sortIcon field="isZakatEligible" />
                 </th>
-                <th pSortableColumn="isIntrestEligible" style="min-width: 12rem">
+                <th
+                  pSortableColumn="isIntrestEligible"
+                  style="min-width: 12rem"
+                >
                   Interest Eligible
                   <p-sortIcon field="isIntrestEligible" />
                 </th>
@@ -170,12 +219,29 @@
               <tr>
                 <td>
                   <div class="flex justify-content-center flex-wrap gap-3 mb-4">
-                    <p-button icon="pi pi-eye" class="mr-1" [rounded]="true" [outlined]="true"
-                      (onClick)="viewAppeal(appeal)" />
-                    <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" severity="success"
-                      (onClick)="editAppeal(appeal.id)" *ngIf="showEditButton(appeal)" />
-                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                      (onClick)="deleteAppeal(appeal)" *ngIf="showDeleteButton(appeal)" />
+                    <p-button
+                      icon="pi pi-pencil"
+                      [rounded]="true"
+                      [outlined]="true"
+                      severity="success"
+                      (onClick)="editAppeal(appeal.id)"
+                      *ngIf="showEditButton(appeal)"
+                    />
+                    <p-button
+                      icon="pi pi-trash"
+                      severity="danger"
+                      [rounded]="true"
+                      [outlined]="true"
+                      (onClick)="deleteAppeal(appeal)"
+                      *ngIf="showDeleteButton(appeal)"
+                    />
+                    <p-button
+                      icon="pi pi-eye"
+                      class="mr-1"
+                      [rounded]="true"
+                      [outlined]="true"
+                      (onClick)="viewAppeal(appeal)"
+                    />
                   </div>
                 </td>
                 <td>{{ appeal.title }}</td>
@@ -198,26 +264,24 @@
         </p-tabPanel>
 
         <p-tabPanel header="Feedback">
-          <p-table [value]="feedbacks" [paginator]="true" [rows]="5" [tableStyle]="{ 'min-width': '50rem' }"
-            [rowsPerPageOptions]="[5, 10, 20]" [showCurrentPageReport]="true">
-            <ng-template pTemplate="caption">
-              <div class="flex align-items-center justify-content-between">
-                Feedback
-                <p-button label="Add Feedback" [rounded]="true" icon="pi pi-plus" severity="add"
-                  (onClick)="showFeedbackDialog()" />
-              </div>
-            </ng-template>
-
+          <p-table
+            [value]="feedbacks"
+            [paginator]="true"
+            [rows]="5"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            [rowsPerPageOptions]="[5, 10, 20]"
+            [showCurrentPageReport]="true"
+          >
             <ng-template pTemplate="header">
               <tr>
                 <th style="min-width: 18rem"></th>
-                <th pSortableColumn="name" style="min-width: 15rem">
-                  Name
-                  <p-sortIcon field="name" />
+                <th pSortableColumn="advisedBy" style="min-width: 15rem">
+                  Advised By
+                  <p-sortIcon field="advisedBy" />
                 </th>
-                <th pSortableColumn="contactNumber" style="min-width: 15rem">
-                  Contact Number
-                  <p-sortIcon field="contactNumber" />
+                <th pSortableColumn="advisedByContact" style="min-width: 15rem">
+                  Advised By Contact
+                  <p-sortIcon field="advisedByContact" />
                 </th>
                 <th pSortableColumn="title" style="min-width: 25rem">
                   Title
@@ -242,31 +306,48 @@
               <tr>
                 <td>
                   <div class="flex justify-content-center flex-wrap gap-3 mb-4">
-                    <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" severity="success"
-                      (onClick)="editFeedback(feedback.id)" *ngIf="showEditButton(feedback)" />
-                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                      (onClick)="deleteFeedback(feedback)" *ngIf="showDeleteButton(feedback)" />
-                    <p-button icon="pi pi-eye" class="mr-1" [rounded]="true" [outlined]="true"
-                      (onClick)="viewFeedback(feedback)" />
+                    <p-button
+                      icon="pi pi-pencil"
+                      [rounded]="true"
+                      [outlined]="true"
+                      severity="success"
+                      (onClick)="editFeedback(feedback.id)"
+                      *ngIf="showFeedbackEditButton(feedback)"
+                    />
+                    <p-button
+                      icon="pi pi-trash"
+                      severity="danger"
+                      [rounded]="true"
+                      [outlined]="true"
+                      (onClick)="deleteFeedback(feedback)"
+                      *ngIf="showFeedbackDeleteButton(feedback)"
+                    />
+                    <p-button
+                      icon="pi pi-eye"
+                      class="mr-1"
+                      [rounded]="true"
+                      [outlined]="true"
+                      (onClick)="viewFeedback(feedback)"
+                    />
                   </div>
                 </td>
-                <td>{{ feedback.name }}</td>
-                <td>{{ feedback.contactNumber }}</td>
+                <td>{{ feedback.advisedBy }}</td>
+                <td>{{ feedback.advisedByContact }}</td>
                 <td>{{ feedback.title }}</td>
-                <td>{{ feedback.description }}</td>
-                <td>{{ feedback.status }}</td>
+                <td>{{ feedback.description | striphtml }}</td>
+                <td>{{ feedback.entityFeedbackStatusList[0].status }}</td>
                 <td>{{ feedback.anonymous ? 'Yes' : 'No' }}</td>
               </tr>
             </ng-template>
 
             <ng-template pTemplate="summary">
               <div class="flex align-items-center justify-content-between">
-                In total there are {{ feedbacks ? feedbacks.length : 0 }} feedback entries.
+                In total there are
+                {{ feedbacks ? feedbacks.length : 0 }} feedback entries.
               </div>
             </ng-template>
           </p-table>
         </p-tabPanel>
-
       </p-tabView>
     </div>
 
@@ -296,14 +377,28 @@
     </div>
 
     <div class="col-12 md:col-12 lg:col-12">
-      <p-galleria #galleria [(value)]="images" [(activeIndex)]="activeIndex" [numVisible]="5"
-        [showItemNavigators]="true" [showItemNavigatorsOnHover]="true" [circular]="true" [autoPlay]="true"
-        [transitionInterval]="3000" [containerStyle]="{ 'max-width': '640px' }" [containerClass]="galleriaClass()">
+      <p-galleria
+        #galleria
+        [(value)]="images"
+        [(activeIndex)]="activeIndex"
+        [numVisible]="5"
+        [showItemNavigators]="true"
+        [showItemNavigatorsOnHover]="true"
+        [circular]="true"
+        [autoPlay]="true"
+        [transitionInterval]="3000"
+        [containerStyle]="{ 'max-width': '640px' }"
+        [containerClass]="galleriaClass()"
+      >
         <ng-template pTemplate="item" let-item>
-          <img [src]="item" [ngStyle]="{
+          <img
+            [src]="item"
+            [ngStyle]="{
               width: !fullscreen ? '100%' : '',
               display: !fullscreen ? 'block' : '',
-            }" alt="" />
+            }"
+            alt=""
+          />
         </ng-template>
 
         <ng-template pTemplate="footer" let-item>
@@ -311,8 +406,13 @@
             <span *ngIf="images" class="title-container">
               <span>{{ activeIndex + 1 }}/{{ images.length }}</span>
             </span>
-            <button type="button" pButton [icon]="fullScreenIcon()" (click)="toggleFullScreen()"
-              class="fullscreen-button"></button>
+            <button
+              type="button"
+              pButton
+              [icon]="fullScreenIcon()"
+              (click)="toggleFullScreen()"
+              class="fullscreen-button"
+            ></button>
           </div>
         </ng-template>
       </p-galleria>
@@ -321,3 +421,4 @@
 </p-card>
 
 <p-scrollTop />
+<p-confirmDialog [style]="{ width: '450px' }" />

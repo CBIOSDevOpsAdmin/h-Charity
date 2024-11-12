@@ -39,10 +39,11 @@ public class AppealServiceImpl implements AppealService {
         Appeal appeal = AppealMapper.INSTANCE.appealRequestDTOtoAppeal(appealDto);
         appeal.setCreatedBy(username);
         appeal.setCreatedDate(new Date());
-        if (userRepository.findById(userId).isPresent()) {
-            appeal.setUser(userRepository.findById(userId).get());
+
+        if ("INSTITUTE_OWNER".equalsIgnoreCase(userGroup) || entityRepository.findByUserId(userId).isPresent()) {
+            appeal.setEntity(entityRepository.findByUserId(userId).get());
         } else {
-            appeal.setEntity(entityRepository.findById(userId).get());
+            appeal.setUser(userRepository.findById(userId).get());
         }
 
         return appealRepository.save(appeal);

@@ -137,7 +137,7 @@
     <p-dialog [(visible)]="deleteUserDialog" header="Confirm" [modal]="true" [style]="{ width: '450px' }">
       <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span *ngIf="user">Are you sure you want to delete <b>{{ user.name }}</b>?</span>
+        <span *ngIf="user">Are you sure you want to delete <b>{{ user.username }}</b>?</span>
       </div>
       <ng-template pTemplate="footer">
         <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"

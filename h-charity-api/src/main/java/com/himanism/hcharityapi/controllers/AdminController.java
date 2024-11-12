@@ -1,30 +1,28 @@
 package com.himanism.hcharityapi.controllers;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.himanism.hcharityapi.dto.request.EntityRequestDto;
 import com.himanism.hcharityapi.dto.request.UserReqDto;
-import com.himanism.hcharityapi.dto.response.EntityResponseDto;
 import com.himanism.hcharityapi.dto.response.MessageResponseDto;
 import com.himanism.hcharityapi.dto.response.UserResDto;
-import com.himanism.hcharityapi.entities.Entities;
 import com.himanism.hcharityapi.entities.Role;
 import com.himanism.hcharityapi.entities.User;
 import com.himanism.hcharityapi.models.Erole;
@@ -33,7 +31,6 @@ import com.himanism.hcharityapi.repo.UserRepository;
 import com.himanism.hcharityapi.security.services.UserDetailsImpl;
 import com.himanism.hcharityapi.security.services.UserDetailsServiceImpl;
 import com.himanism.hcharityapi.services.AdminService;
-import com.himanism.hcharityapi.services.FeedbackService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -45,18 +42,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1/admin/user")
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
 public class AdminController {
-        @Autowired
-        UserRepository userRepository;
-
-        @Autowired
-        RoleRepository roleRepository;
-
-        @Autowired
-        PasswordEncoder encoder;
-
-        @Autowired
-        UserDetailsServiceImpl userDetailsService;
-
+        private final UserRepository userRepository;
+        private final RoleRepository roleRepository;
+        private final PasswordEncoder encoder;
+        private final UserDetailsServiceImpl userDetailsService;
         private final AdminService adminService;
 
         @PostMapping("")
@@ -136,4 +125,18 @@ public class AdminController {
                                         .body(e);
                 }
         }
+
+        @DeleteMapping("/{userId}")
+        public void deleteUser(@PathVariable Long userId) {
+                adminService.deleteUser(userId);
+        }
+
+        @DeleteMapping("")
+        public ResponseEntity<?> deleteUsers(@RequestBody List<Long> userIds) {
+                // Code to delete users by IDs in the list
+                adminService.deleteUsersByIds(userIds);
+                return ResponseEntity.ok().body(Map.of("message", "Users deleted successfully"));
+
+        }
+
 }

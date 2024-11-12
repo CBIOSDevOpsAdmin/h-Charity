@@ -18,6 +18,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { InputMaskModule } from 'primeng/inputmask';
+import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
   imports: [
@@ -40,5 +41,6 @@ import { InputMaskModule } from 'primeng/inputmask';
     InputMaskModule,
   ],
   declarations: [UsersComponent],
+  providers: [ConfirmationService],
 })
 export class AdminModule {}
