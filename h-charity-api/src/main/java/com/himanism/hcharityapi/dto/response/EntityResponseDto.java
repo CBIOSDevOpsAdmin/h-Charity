@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.himanism.hcharityapi.entities.Address;
 import com.himanism.hcharityapi.entities.Appeal;
+import com.himanism.hcharityapi.entities.EntityFeedback;
 import com.himanism.hcharityapi.entities.User;
 
 import lombok.AllArgsConstructor;
@@ -38,4 +39,5 @@ public class EntityResponseDto {
     private EntityBankDetailsResDto entityBankDetails;
     private User entityOwner;
     private List<Appeal> appeals;
+    private List<EntityFeedback> feedbacks;
 }

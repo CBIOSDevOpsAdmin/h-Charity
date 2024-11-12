@@ -60,4 +60,8 @@ public class Entities {
     @JsonManagedReference
     private List<Appeal> appeals = new ArrayList<>();
 
+    @OneToMany(mappedBy = "entity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<EntityFeedback> feedbacks;
+
 }

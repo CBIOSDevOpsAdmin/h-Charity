@@ -14,14 +14,16 @@ import {
   IAddress,
   IEntity,
   IEntityBankDetails,
+  IEntityFeedbackRes,
 } from '../../models/entity.model';
 import { Galleria } from 'primeng/galleria';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IAppeal } from '../../models/appeal.model';
-import { AppealService } from 'src/app/modules/appeals/services/appeal.service';
 import { FeedbackService } from '../../services/feedback.service';
 import { StorageService } from 'src/app/modules/shared/services/storage.service';
-import { AppealsService } from '../../services/appeals.service';
+import { convertArrStringToArrDDObject } from 'src/app/modules/shared/utilities/common.utils';
+import { IDropdown } from 'src/app/modules/shared/models/dropdown.model';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-entity-view',
@@ -43,6 +45,8 @@ export class EntityViewComponent implements OnInit {
   route = inject(ActivatedRoute);
   entityService = inject(EntityService);
   storageService = inject(StorageService);
+  messageService = inject(MessageService);
+  confirmationService = inject(ConfirmationService);
 
   arrImages: any[] | undefined;
 
@@ -60,23 +64,6 @@ export class EntityViewComponent implements OnInit {
 
   @ViewChild('galleria') galleria: Galleria | undefined;
 
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: any,
-    private cd: ChangeDetectorRef,
-    private fb: FormBuilder,
-    private feedbackService: FeedbackService,
-    private appealsService: AppealsService
-  ) {
-    this.feedbackForm = this.fb.group({
-      name: ['', Validators.required],
-      contactNumber: ['', Validators.required],
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      isAnonymous: [false],
-      status: ['', Validators.required],
-    });
-  }
-
   responsiveOptions: any[] = [
     {
       breakpoint: '1024px',
@@ -91,13 +78,33 @@ export class EntityViewComponent implements OnInit {
       numVisible: 1,
     },
   ];
+
+  showFeedbackButton: boolean = false;
+  statusOptions: IDropdown[] = [];
   //#endregion
+
+  constructor(
+    @Inject(PLATFORM_ID) private readonly platformId: any,
+    private readonly cd: ChangeDetectorRef,
+    private readonly fb: FormBuilder,
+    private readonly feedbackService: FeedbackService
+  ) {
+    this.statusOptions = convertArrStringToArrDDObject([
+      'Open',
+      'In Progress',
+      'Completed',
+      'ReOpen',
+      'Closed Successful',
+      'Closed Rejected',
+    ]);
+
+    this.initFeedbackForm();
+  }
 
   ngOnInit() {
     this.getEntity();
     this.bindDocumentListeners();
-    this.loadFeedbacks();
-    this.loadAppeals();
+    this.showFeedbackButton = !!this.storageService.getUser()?.id;
   }
 
   //#region Private Methods
@@ -111,6 +118,16 @@ export class EntityViewComponent implements OnInit {
           this.prepareAddress(entity.address);
           this.bankDetails = entity.entityBankDetails;
           this.appeals = entity.appeals;
+          this.feedbacks = entity.feedbacks;
+
+          this.feedbacks.forEach(feedback => {
+            feedback.entityFeedbackStatusList.sort((a, b) => {
+              return (
+                new Date(b.statusCommentDate).getTime() -
+                new Date(a.statusCommentDate).getTime()
+              );
+            });
+          });
         },
       });
   }
@@ -149,6 +166,64 @@ export class EntityViewComponent implements OnInit {
 
   public showDeleteButton(appeal: IAppeal): boolean {
     return this.canEditOrDelete(appeal);
+  }
+
+  public showFeedbackEditButton(feedback: IEntityFeedbackRes): boolean {
+    return this.canEditFeedback(feedback);
+  }
+
+  public showFeedbackDeleteButton(feedback: IEntityFeedbackRes): boolean {
+    return this.canDeleteFeedback(feedback);
+  }
+
+  public canEditFeedback(feedback: IEntityFeedbackRes): boolean {
+    const user = this.storageService.getUser();
+    const roles = user.roles;
+    const isInstituteOwner =
+      this.entity && this.entity.entityOwner['id'] === user.id;
+    const isAdminOrVolunteer =
+      roles &&
+      (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'));
+
+    return isInstituteOwner || isAdminOrVolunteer;
+  }
+
+  public canDeleteFeedback(feedback: IEntityFeedbackRes): boolean {
+    const user = this.storageService.getUser();
+    const roles = user.roles;
+    const isFeedbackOwner = feedback && feedback.advisedBy === user.username;
+    const isAdminOrVolunteer =
+      roles &&
+      (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'));
+
+    return isFeedbackOwner || isAdminOrVolunteer;
+  }
+
+  deleteFeedback(feedback: IEntityFeedbackRes) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this Feedback?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+
+      accept: () => {
+        this.feedbackService.deleteFeedback(feedback.id).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Deleted',
+              detail: 'Feedback deleted successfully',
+              life: 3000,
+            });
+            this.getEntity();
+          },
+        });
+      },
+    });
   }
   //#endregion
 
@@ -248,24 +323,54 @@ export class EntityViewComponent implements OnInit {
 
   submitFeedback() {
     if (this.feedbackForm.valid) {
-      // Handle form submission logic here
-      this.feedbackDialog = false;
+      let payload = this.feedbackForm.getRawValue();
+      payload.entityId = this.entity.id;
+      this.feedbackService.saveFeedback(payload).subscribe({
+        next: response => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'Feedback submitted successfully',
+            life: 3000,
+          });
+          this.feedbackForm.reset();
+          this.feedbackDialog = false;
+          this.getEntity();
+        },
+      });
     }
   }
 
   loadFeedbacks(): void {
-    this.feedbackService.getFeedbacks().subscribe(data => {
-      this.feedbacks = data;
-    });
+    // this.feedbackService.getFeedbacks().subscribe(data => {
+    //   this.feedbacks = data;
+    // });
   }
 
   loadAppeals(): void {
-    this.appealsService.getAppeals().subscribe(data => {
-      this.appeals = data;
-    });
+    // this.appealsService.getAppeals().subscribe(data => {
+    //   this.appeals = data;
+    // });
   }
   navigateToAddAppeal() {
     this.router.navigate(['appeals/add']);
+  }
+
+  private initFeedbackForm() {
+    this.feedbackForm = this.fb.group({
+      advisedBy: [
+        { value: this.storageService.getUser().username, disabled: true },
+        Validators.required,
+      ],
+      advisedByContact: [
+        { value: this.storageService.getUser().mobile, disabled: true },
+        Validators.required,
+      ],
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      isAnonymous: [false],
+      status: [{ value: 'Open', disabled: true }],
+    });
   }
   //#endregion
 

@@ -5,6 +5,7 @@
         pButton
         label="Give Feedback"
         icon="pi pi-comment"
+        *ngIf="showFeedbackButton"
         class="p-button-rounded p-button-help"
         (click)="showFeedbackDialog()"
         style="position: fixed; bottom: 20px; right: 20px"
@@ -23,22 +24,6 @@
                   <input
                     type="text"
                     pInputText
-                    placeholder="Name"
-                    formControlName="name"
-                  />
-                </div>
-                <div class="col-12 md:col-12 lg:col-12">
-                  <input
-                    type="text"
-                    pInputText
-                    placeholder="Contact Number"
-                    formControlName="contactNumber"
-                  />
-                </div>
-                <div class="col-12 md:col-12 lg:col-12">
-                  <input
-                    type="text"
-                    pInputText
                     placeholder="Title"
                     formControlName="title"
                   />
@@ -51,14 +36,30 @@
                   >
                   </p-editor>
                 </div>
-                <div class="col-12 md:col-12 lg:col-12">
+                <div class="col-12 md:col-6 lg:col-6">
+                  <input
+                    type="text"
+                    pInputText
+                    placeholder="Advised By"
+                    formControlName="advisedBy"
+                  />
+                </div>
+                <div class="col-12 md:col-6 lg:col-6">
+                  <input
+                    type="text"
+                    pInputText
+                    placeholder="Advised By Contact"
+                    formControlName="advisedByContact"
+                  />
+                </div>
+                <div class="col-12 md:col-6 lg:col-6">
                   <p-checkbox
                     binary="true"
                     label="Is Anonymous?"
                     formControlName="isAnonymous"
                   ></p-checkbox>
                 </div>
-                <div class="col-12 md:col-12 lg:col-12">
+                <div class="col-12 md:col-6 lg:col-6">
                   <p-dropdown
                     [options]="statuses"
                     placeholder="Select Status"
@@ -170,17 +171,6 @@
             [rowsPerPageOptions]="[5, 10, 20]"
             [showCurrentPageReport]="true"
           >
-            <ng-template pTemplate="caption">
-              <div class="flex align-items-center justify-content-between">
-                Appeals
-                <!-- <p-button
-                  label="Add Appeal"
-                  icon="pi pi-file-plus"
-                  iconPos="right"
-                /> -->
-              </div>
-            </ng-template>
-
             <ng-template pTemplate="header">
               <tr>
                 <th style="min-width: 18rem"></th>
@@ -282,27 +272,16 @@
             [rowsPerPageOptions]="[5, 10, 20]"
             [showCurrentPageReport]="true"
           >
-            <ng-template pTemplate="caption">
-              <div class="flex align-items-center justify-content-between">
-                Feedback
-                <!-- <p-button
-                  label="Add Feedback"
-                  icon="pi pi-file-plus"
-                  iconPos="right"
-                /> -->
-              </div>
-            </ng-template>
-
             <ng-template pTemplate="header">
               <tr>
                 <th style="min-width: 18rem"></th>
-                <th pSortableColumn="name" style="min-width: 15rem">
-                  Name
-                  <p-sortIcon field="name" />
+                <th pSortableColumn="advisedBy" style="min-width: 15rem">
+                  Advised By
+                  <p-sortIcon field="advisedBy" />
                 </th>
-                <th pSortableColumn="contactNumber" style="min-width: 15rem">
-                  Contact Number
-                  <p-sortIcon field="contactNumber" />
+                <th pSortableColumn="advisedByContact" style="min-width: 15rem">
+                  Advised By Contact
+                  <p-sortIcon field="advisedByContact" />
                 </th>
                 <th pSortableColumn="title" style="min-width: 25rem">
                   Title
@@ -333,7 +312,7 @@
                       [outlined]="true"
                       severity="success"
                       (onClick)="editFeedback(feedback.id)"
-                      *ngIf="showEditButton(feedback)"
+                      *ngIf="showFeedbackEditButton(feedback)"
                     />
                     <p-button
                       icon="pi pi-trash"
@@ -341,7 +320,7 @@
                       [rounded]="true"
                       [outlined]="true"
                       (onClick)="deleteFeedback(feedback)"
-                      *ngIf="showDeleteButton(feedback)"
+                      *ngIf="showFeedbackDeleteButton(feedback)"
                     />
                     <p-button
                       icon="pi pi-eye"
@@ -352,11 +331,11 @@
                     />
                   </div>
                 </td>
-                <td>{{ feedback.name }}</td>
-                <td>{{ feedback.contactNumber }}</td>
+                <td>{{ feedback.advisedBy }}</td>
+                <td>{{ feedback.advisedByContact }}</td>
                 <td>{{ feedback.title }}</td>
-                <td>{{ feedback.description }}</td>
-                <td>{{ feedback.status }}</td>
+                <td>{{ feedback.description | striphtml }}</td>
+                <td>{{ feedback.entityFeedbackStatusList[0].status }}</td>
                 <td>{{ feedback.anonymous ? 'Yes' : 'No' }}</td>
               </tr>
             </ng-template>
@@ -442,3 +421,4 @@
 </p-card>
 
 <p-scrollTop />
+<p-confirmDialog [style]="{ width: '450px' }" />
