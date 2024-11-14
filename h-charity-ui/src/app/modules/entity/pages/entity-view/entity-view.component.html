@@ -4,34 +4,70 @@
       <button pButton label="Give Feedback" icon="pi pi-comment" *ngIf="showFeedbackButton"
         class="p-button-rounded p-button-help" (click)="showFeedbackDialog()"
         style="position: fixed; bottom: 20px; right: 20px"></button>
-      <p-dialog [(visible)]="feedbackDialog" header="Feedback" [modal]="true" [style]="{ width: '50vw' }">
+      <p-dialog [(visible)]="feedbackDialog" header="Give Feedback" [modal]="true" [style]="{ width: '50vw' }">
         <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
           <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
             <div class="col-12 md:col-12 lg:col-12">
               <div class="grid">
+                <h6>Feedback</h6>
+                <hr>
+                <br><br>
                 <div class="col-12 md:col-12 lg:col-12">
-                  <input type="text" pInputText placeholder="Title" formControlName="title" />
+                  <span class="p-float-label">
+                    <input type="text" pInputText id="title" formControlName="title"
+                      [ngClass]="{'ng-invalid ng-dirty' : feedbackForm.controls['title'].touched && feedbackForm.controls['title'].errors?.['required']}" />
+                    <label for="title">Title</label>
+                  </span>
+                  <small class="ng-dirty ng-invalid" style="color: red"
+                    *ngIf="feedbackForm.controls['title'].touched && feedbackForm.controls['title'].errors?.['required']">
+                    Title is required.
+                  </small>
+                  <small class="ng-dirty ng-invalid" style="color: red"
+                    *ngIf="feedbackForm.controls['title'].touched && feedbackForm.controls['title'].errors?.['minlength']">
+                    Title must be at least 10 characters long.
+                  </small>
                 </div>
+
                 <div class="col-12 md:col-12 lg:col-12">
-                  <p-editor formControlName="description" [style]="{ height: '200px' }"
-                    placeholder="Enter the Description">
-                  </p-editor>
+                  <span class="p-float-label">
+                    <p-editor formControlName="description" id="description" [style]="{ height: '200px' }"></p-editor>
+                    <label for="description">Enter the Description</label>
+                  </span>
+                  <small class="ng-dirty ng-invalid" style="color: red"
+                    *ngIf="feedbackForm.controls['description'].touched && feedbackForm.controls['description'].errors?.['required']">
+                    Description is required.
+                  </small>
                 </div>
+
                 <div class="col-12 md:col-6 lg:col-6">
-                  <input type="text" pInputText placeholder="Advised By" formControlName="advisedBy" />
+                  <span class="p-float-label">
+                    <input type="text" pInputText id="advisedBy" formControlName="advisedBy" />
+                    <label for="advisedBy">Advised By</label>
+                  </span>
                 </div>
+
                 <div class="col-12 md:col-6 lg:col-6">
-                  <input type="text" pInputText placeholder="Advised By Contact" formControlName="advisedByContact" />
+                  <span class="p-float-label">
+                    <input type="text" pInputText id="advisedByContact" formControlName="advisedByContact" />
+                    <label for="advisedByContact">Advised By Contact</label>
+                  </span>
                 </div>
+
                 <div class="col-12 md:col-6 lg:col-6">
                   <p-checkbox binary="true" label="Is Anonymous?" formControlName="isAnonymous"></p-checkbox>
                 </div>
+
                 <div class="col-12 md:col-6 lg:col-6">
-                  <p-dropdown [options]="statuses" placeholder="Select Status" formControlName="status"></p-dropdown>
+                  <span class="p-float-label">
+                    <p-dropdown [options]="statuses" id="status" placeholder=" " formControlName="status"></p-dropdown>
+                    <label for="status">Select Status</label>
+                  </span>
                 </div>
+
               </div>
             </div>
           </div>
+
           <div class="col-12 text-center">
             <button pButton label="Submit" type="submit" [disabled]="!feedbackForm.valid"></button>
           </div>

@@ -310,9 +310,8 @@ export class EntityViewComponent implements OnInit {
   }
 
   fullScreenIcon() {
-    return `pi ${
-      this.fullscreen ? 'pi-window-minimize' : 'pi-window-maximize'
-    }`;
+    return `pi ${this.fullscreen ? 'pi-window-minimize' : 'pi-window-maximize'
+      }`;
   }
   //#endregion
 
@@ -366,7 +365,7 @@ export class EntityViewComponent implements OnInit {
         { value: this.storageService.getUser().mobile, disabled: true },
         Validators.required,
       ],
-      title: ['', Validators.required],
+      title: ['', [Validators.required, Validators.minLength(10)]],
       description: ['', Validators.required],
       isAnonymous: [false],
       status: [{ value: 'Open', disabled: true }],
