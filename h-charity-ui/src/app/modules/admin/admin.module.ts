@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AdminRoutingModule } from './admin-routing.routing';
 import { UsersComponent } from './pages/users/users.component';
 import { FormsModule } from '@angular/forms';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
@@ -39,8 +39,9 @@ import { ConfirmationService } from 'primeng/api';
     InputNumberModule,
     DialogModule,
     InputMaskModule,
+    ReactiveFormsModule,
   ],
   declarations: [UsersComponent],
   providers: [ConfirmationService],
 })
-export class AdminModule {}
+export class AdminModule { }

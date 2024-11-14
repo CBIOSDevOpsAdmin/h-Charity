@@ -1,0 +1,14 @@
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.p-field {
+    margin-bottom: 16px;
+}
+
+small {
+    display: block;
+    margin-top: 4px;
+}

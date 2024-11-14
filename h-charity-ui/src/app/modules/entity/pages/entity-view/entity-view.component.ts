@@ -365,7 +365,7 @@ export class EntityViewComponent implements OnInit {
         { value: this.storageService.getUser().mobile, disabled: true },
         Validators.required,
       ],
-      title: ['', [Validators.required, Validators.minLength(10)]],
+      title: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
       description: ['', Validators.required],
       isAnonymous: [false],
       status: [{ value: 'Open', disabled: true }],

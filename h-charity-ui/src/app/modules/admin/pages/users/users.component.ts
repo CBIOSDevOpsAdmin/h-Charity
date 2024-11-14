@@ -4,6 +4,7 @@ import { Table } from 'primeng/table';
 import { IUser } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { IDropdown } from 'src/app/modules/shared/models/dropdown.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
@@ -12,6 +13,7 @@ import { IDropdown } from 'src/app/modules/shared/models/dropdown.model';
 })
 export class UsersComponent implements OnInit {
   //#region Variables
+  userForm: FormGroup;
   userDialog: boolean = false;
   deleteUserDialog: boolean = false;
   deleteUsersDialog: boolean = false;
@@ -25,10 +27,12 @@ export class UsersComponent implements OnInit {
   private readonly userService = inject(UserService);
   private readonly messageService = inject(MessageService);
   private readonly confirmationService = inject(ConfirmationService);
+  private readonly fb: FormBuilder = inject(FormBuilder);
   //#endregion
 
   ngOnInit() {
     this.getUsers();
+    this.initUserForm();
 
     this.roles = [
       { name: 'Normal User', value: 'NORMAL_USER' },
@@ -102,6 +106,7 @@ export class UsersComponent implements OnInit {
   }
 
   saveUser() {
+    this.user = this.userForm.value;
     this.submitted = true;
     if (this.user.fullname?.trim()) {
       if (this.user.id) {
@@ -169,6 +174,26 @@ export class UsersComponent implements OnInit {
         this.users = res;
       },
     });
+  }
+  //#endregion
+
+  //#region userForm
+  private initUserForm() {
+    this.userForm = this.fb.group({
+      fullname: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
+      username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+$'), Validators.minLength(6), Validators.maxLength(30)]],
+      email: ['', [Validators.required, Validators.email]],
+      mobile: [null, [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      role: ['', [Validators.required]],
+    });
+  }
+
+  transformUsername(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const transformed = input.value.toLowerCase();
+    this.userForm
+      .get('username')
+      ?.setValue(transformed, { emitEvent: false });
   }
   //#endregion
 }
