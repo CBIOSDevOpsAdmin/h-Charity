@@ -46,16 +46,18 @@ export class UsersComponent implements OnInit {
   openNew() {
     this.user = {};
     this.submitted = false;
+    this.userForm.reset();
+    this.userDialog = true;
+  }
+
+  editUser(user: IUser) {
+    this.user = { ...user };
+    this.initFormEdit(this.user); // Call the new initFormEdit method
     this.userDialog = true;
   }
 
   deleteSelectedUsers() {
     this.deleteUsersDialog = true;
-  }
-
-  editUser(user: IUser) {
-    this.user = { ...user };
-    this.userDialog = true;
   }
 
   deleteUser(user: IUser) {
@@ -152,20 +154,16 @@ export class UsersComponent implements OnInit {
   //#endregion
 
   //#region Private Methods
-  findIndexById(id: string): number {
-    let index = -1;
-    for (let i = 0; i < this.users.length; i++) {
-      // if (this.users[i].id === id) {
-      //   index = i;
-      //   break;
-      // }
-    }
 
-    return index;
-  }
-
-  onGlobalFilter(table: Table, event: Event) {
-    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  private initFormEdit(user: IUser) {
+    // Patch the values of the user object into the form fields
+    this.userForm.patchValue({
+      fullname: user.fullname,
+      username: user.username,
+      email: user.email,
+      mobile: user.mobile,
+      role: user.role,
+    });
   }
 
   private getUsers() {
@@ -175,9 +173,7 @@ export class UsersComponent implements OnInit {
       },
     });
   }
-  //#endregion
 
-  //#region userForm
   private initUserForm() {
     this.userForm = this.fb.group({
       fullname: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
