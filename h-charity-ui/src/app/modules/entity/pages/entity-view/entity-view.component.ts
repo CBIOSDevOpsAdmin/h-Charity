@@ -408,14 +408,13 @@ export class EntityViewComponent implements OnInit {
 
 
   private initFormEdit(feedback: any) {
-    debugger
     this.feedbackForm.patchValue({
       id: feedback.id,
       advisedBy: feedback.advisedBy || this.storageService.getUser().username,
       advisedByContact: feedback.advisedByContact || this.storageService.getUser().mobile,
       title: feedback.title,
       description: (!feedback.description) ? console.log(feedback) : feedback.description,
-      isAnonymous: feedback.isAnonymous !== undefined ? feedback.isAnonymous : false,
+      isAnonymous: feedback.isAnonymous,
       status: feedback.status || 'Open',
     });
 
