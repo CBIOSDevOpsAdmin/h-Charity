@@ -38,8 +38,31 @@ export class UsersComponent implements OnInit {
       { name: 'Normal User', value: 'NORMAL_USER' },
       { name: 'Institute Owner', value: 'INSTITUTE_OWNER' },
       { name: 'Organisation Volunteer', value: 'ORGANISATION_VOLUNTEER' },
+      { name: 'Admin', value: 'ADMIN' },
+
     ];
   }
+
+  // ngOnInit() {
+  //   this.getUsers();
+  //   this.userId = this.route.snapshot.params['id'];
+  //   if (this.userId && this.userId > 0) {
+  //     this.initUserForm()();
+  //     this.initFormEdit();
+  //   } else {
+  //     this.initUserForm()();
+  //   }
+
+  //   this.userService.refreshER$.subscribe(() => {
+  //     this.initFormEdit();
+  //   });
+
+  //   this.roles = [
+  //     { name: 'Normal User', value: 'NORMAL_USER' },
+  //     { name: 'Institute Owner', value: 'INSTITUTE_OWNER' },
+  //     { name: 'Organisation Volunteer', value: 'ORGANISATION_VOLUNTEER' },
+  //   ];
+  // }
 
   //#region Public Methods
 
@@ -52,7 +75,7 @@ export class UsersComponent implements OnInit {
 
   editUser(user: IUser) {
     this.user = { ...user };
-    this.initFormEdit(this.user); // Call the new initFormEdit method
+    this.initFormEdit(this.user);
     this.userDialog = true;
   }
 
@@ -155,16 +178,6 @@ export class UsersComponent implements OnInit {
 
   //#region Private Methods
 
-  private initFormEdit(user: IUser) {
-    // Patch the values of the user object into the form fields
-    this.userForm.patchValue({
-      fullname: user.fullname,
-      username: user.username,
-      email: user.email,
-      mobile: user.mobile,
-      role: user.role,
-    });
-  }
 
   private getUsers() {
     this.userService.getUsers().subscribe({
@@ -176,6 +189,7 @@ export class UsersComponent implements OnInit {
 
   private initUserForm() {
     this.userForm = this.fb.group({
+      id: [0],
       fullname: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
       username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+$'), Validators.minLength(6), Validators.maxLength(30)]],
       email: ['', [Validators.required, Validators.email]],
@@ -191,5 +205,17 @@ export class UsersComponent implements OnInit {
       .get('username')
       ?.setValue(transformed, { emitEvent: false });
   }
+
+  private initFormEdit(user: IUser) {
+    this.userForm.patchValue({
+      id: user.id,
+      fullname: user.fullname,
+      username: user.username,
+      email: user.email,
+      mobile: user.mobile,
+      role: user.role,
+    });
+  }
+
   //#endregion
 }

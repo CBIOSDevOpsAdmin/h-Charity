@@ -1,3 +1,82 @@
+.dialog-container {
+  width: 60vw;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.dialog-header {
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: linear-gradient(90deg, rgba(0, 86, 179, 0.1), rgba(0, 86, 179, 0.05));
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
+}
+
+
+
+.feedback-section {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.feedback-section:hover {
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(90deg, rgba(0, 86, 179, 0.1), rgba(0, 86, 179, 0.05));
+
+}
+
+.section-header {
+  font-size: 20px;
+  font-weight: bold;
+  color: #0056b3;
+  border-bottom: 2px solid #0056b3;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+}
+
+.feedback-details p {
+  line-height: 1.6;
+  color: #555;
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.status-button {
+  display: block;
+  margin: 20px auto 0;
+  width: 120px;
+  height: 40px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.status-history {
+  margin-top: 20px;
+}
+
+.close-button {
+  display: block;
+  margin: 20px auto;
+  color: #007bff;
+  cursor: pointer;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+
+
+
+
 ul {
   list-style: inside;
   list-style-type: square;
@@ -33,7 +112,7 @@ ul li {
         background-color: rgba(0, 0, 0, 0.9);
         color: #ffffff;
 
-        > button {
+        >button {
           background-color: transparent;
           color: #ffffff;
           border: 0 none;
@@ -51,7 +130,7 @@ ul li {
       }
 
       .title-container {
-        > span {
+        >span {
           font-size: 0.9rem;
           padding-left: 0.829rem;
 

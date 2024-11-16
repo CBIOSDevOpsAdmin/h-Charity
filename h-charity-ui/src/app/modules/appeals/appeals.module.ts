@@ -29,12 +29,14 @@ import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
 import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
+
 @NgModule({
   declarations: [
     AddUpdateAppealComponent,
     AppealComponent,
     AppealViewComponent,
     AddUpdateAppealComponent,
+
   ],
   imports: [
     CommonModule,

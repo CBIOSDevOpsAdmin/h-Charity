@@ -14,6 +14,7 @@ import {
   IAddress,
   IEntity,
   IEntityBankDetails,
+  IEntityFeedback,
   IEntityFeedbackRes,
 } from '../../models/entity.model';
 import { Galleria } from 'primeng/galleria';
@@ -61,6 +62,9 @@ export class EntityViewComponent implements OnInit {
   ];
   appeals: IAppeal[] = [];
   feedbacks: any[] = [];
+  isDialogVisible = false;
+  feedback: any;
+  showStatusChangeTable: boolean = false;
 
   @ViewChild('galleria') galleria: Galleria | undefined;
 
@@ -315,7 +319,7 @@ export class EntityViewComponent implements OnInit {
   }
   //#endregion
 
-  //#region Feedback Form
+  //#region Feedbacks
   showFeedbackDialog() {
     this.feedbackDialog = true;
   }
@@ -357,6 +361,7 @@ export class EntityViewComponent implements OnInit {
 
   private initFeedbackForm() {
     this.feedbackForm = this.fb.group({
+      id: [0],
       advisedBy: [
         { value: this.storageService.getUser().username, disabled: true },
         Validators.required,
@@ -371,6 +376,54 @@ export class EntityViewComponent implements OnInit {
       status: [{ value: 'Open', disabled: true }],
     });
   }
+
+  viewFeedback(feedback) {
+    this.feedback = feedback;
+    this.isDialogVisible = true;
+  }
+
+  canViewStatusChangeTable(): boolean {
+    const user = this.storageService.getUser();
+    const roles = user.roles;
+
+    const isFeedbackOwner = this.feedback && this.feedback.advisedBy === user.username;
+    const isInstituteOwner = this.entity && this.entity.entityOwner['id'] === user.id;
+    const isAdminOrVolunteer =
+      roles &&
+      (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'));
+
+    return isFeedbackOwner || isInstituteOwner || isAdminOrVolunteer;
+  }
+
+  // This method toggles the visibility of the status change table
+  toggleStatusChangeTable(): void {
+    if (this.canViewStatusChangeTable()) {
+      this.showStatusChangeTable = !this.showStatusChangeTable;
+    }
+  }
+
+  editFeedback(feedback: any) {
+    this.feedback = { ...feedback };
+    this.initFormEdit(this.feedback);
+    this.feedbackDialog = true;
+  }
+
+  private initFormEdit(feedback: any) {
+    this.feedbackForm.patchValue({
+      id: feedback.id,
+      advisedBy: feedback.advisedBy || this.storageService.getUser().username,
+      advisedByContact: feedback.advisedByContact || this.storageService.getUser().mobile,
+      title: feedback.title || '',
+      description: feedback.description || '',
+      isAnonymous: feedback.isAnonymous !== undefined ? feedback.isAnonymous : false,
+      status: feedback.status || 'Open',
+    });
+
+    this.feedbackForm.get('status')?.enable();
+
+  }
+
+
   //#endregion
 
   //#region Buttons
