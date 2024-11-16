@@ -133,11 +133,13 @@ export class UsersComponent implements OnInit {
   saveUser() {
     this.user = this.userForm.value;
     this.submitted = true;
+
     if (this.user.fullname?.trim()) {
       if (this.user.id) {
+        // Update mode
         this.userService.saveUser(this.user).subscribe({
           next: res => {
-            this.getUsers();
+            this.getUsers(); // Refresh grid
             this.messageService.add({
               severity: 'success',
               summary: 'User updated successfully',
@@ -155,10 +157,10 @@ export class UsersComponent implements OnInit {
           },
         });
       } else {
-        // Add mode
         this.user.id = 0;
         this.userService.saveUser(this.user).subscribe({
           next: (res: any) => {
+            this.getUsers(); // Refresh grid
             this.messageService.add({
               severity: 'success',
               summary: 'User Created',
@@ -166,14 +168,22 @@ export class UsersComponent implements OnInit {
               life: 3000,
             });
           },
+          error: err => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'User creation error',
+              detail: err,
+              life: 3000,
+            });
+          },
         });
       }
 
-      this.users = [...this.users];
       this.userDialog = false;
       this.user = {};
     }
   }
+
   //#endregion
 
   //#region Private Methods
