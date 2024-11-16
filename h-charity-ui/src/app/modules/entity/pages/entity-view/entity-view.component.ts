@@ -58,7 +58,11 @@ export class EntityViewComponent implements OnInit {
   feedbackForm: FormGroup;
   statuses: any[] = [
     { label: 'Open', value: 'Open' },
-    { label: 'Closed', value: 'Closed' },
+    { label: 'Closed Rejected', value: 'Closedrejected' },
+    { label: 'In Progress', value: 'Inprogress' },
+    { label: 'Closed successful', value: 'Closedsuccessful' },
+
+
   ];
   appeals: IAppeal[] = [];
   feedbacks: any[] = [];
@@ -324,26 +328,6 @@ export class EntityViewComponent implements OnInit {
     this.feedbackDialog = true;
   }
 
-  submitFeedback() {
-    if (this.feedbackForm.valid) {
-      let payload = this.feedbackForm.getRawValue();
-      payload.entityId = this.entity.id;
-      this.feedbackService.saveFeedback(payload).subscribe({
-        next: response => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'Feedback submitted successfully',
-            life: 3000,
-          });
-          this.feedbackForm.reset();
-          this.feedbackDialog = false;
-          this.getEntity();
-        },
-      });
-    }
-  }
-
   loadFeedbacks(): void {
     // this.feedbackService.getFeedbacks().subscribe(data => {
     //   this.feedbacks = data;
@@ -377,6 +361,26 @@ export class EntityViewComponent implements OnInit {
     });
   }
 
+  submitFeedback() {
+    if (this.feedbackForm.valid) {
+      let payload = this.feedbackForm.getRawValue();
+      payload.entityId = this.entity.id;
+      this.feedbackService.saveFeedback(payload).subscribe({
+        next: response => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'Feedback submitted successfully',
+            life: 3000,
+          });
+          this.feedbackForm.reset();
+          this.feedbackDialog = false;
+          this.getEntity();
+        },
+      });
+    }
+  }
+
   viewFeedback(feedback) {
     this.feedback = feedback;
     this.isDialogVisible = true;
@@ -402,19 +406,15 @@ export class EntityViewComponent implements OnInit {
     }
   }
 
-  editFeedback(feedback: any) {
-    this.feedback = { ...feedback };
-    this.initFormEdit(this.feedback);
-    this.feedbackDialog = true;
-  }
 
   private initFormEdit(feedback: any) {
+    debugger
     this.feedbackForm.patchValue({
       id: feedback.id,
       advisedBy: feedback.advisedBy || this.storageService.getUser().username,
       advisedByContact: feedback.advisedByContact || this.storageService.getUser().mobile,
-      title: feedback.title || '',
-      description: feedback.description || '',
+      title: feedback.title,
+      description: (!feedback.description) ? console.log(feedback) : feedback.description,
       isAnonymous: feedback.isAnonymous !== undefined ? feedback.isAnonymous : false,
       status: feedback.status || 'Open',
     });
@@ -422,6 +422,13 @@ export class EntityViewComponent implements OnInit {
     this.feedbackForm.get('status')?.enable();
 
   }
+
+  editFeedback(feedback: any) {
+    this.feedback = { ...feedback };
+    this.initFormEdit(this.feedback);
+    this.feedbackDialog = true;
+  }
+
 
 
   //#endregion

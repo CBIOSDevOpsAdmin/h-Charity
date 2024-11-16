@@ -33,11 +33,9 @@
                 </div>
 
                 <div class="col-12 md:col-12 lg:col-12">
-                  <span class="p-float-label">
-                    <p-editor formControlName="description" placeholder="Enter the Description" id="description"
-                      [style]="{ height: '200px' }"></p-editor>
-                    <label for="description"></label>
-                  </span>
+                  <p-editor formControlName="description" placeholder="Enter the Description" id="description"
+                    [style]="{ height: '200px' }"></p-editor>
+                  <label for="description"></label>
                   <small class="ng-dirty ng-invalid" style="color: red"
                     *ngIf="feedbackForm.controls['description'].touched && feedbackForm.controls['description'].errors?.['required']">
                     Description is required.
@@ -302,13 +300,12 @@
         <div class="dialog-header">{{ feedback?.title || 'Feedback Details' }}</div>
 
         <div class="feedback-section">
-          <div class="section-header">Feedback Information</div>
+          <div class="section-header"></div>
           <div class="feedback-details">
             <p><strong>Advised By:</strong> {{ feedback?.advisedBy }}</p>
             <p><strong>Contact:</strong> {{ feedback?.advisedByContact }}</p>
             <p><strong>Description:</strong> {{ feedback?.description }}</p>
             <p><strong>Status:</strong> {{ feedback?.entityFeedbackStatusList[0].status }}</p>
-            <p><strong>Anonymous:</strong> {{ feedback?.anonymous ? 'Yes' : 'No' }}</p>
           </div>
 
           <p-button label="" class="status-button" [raised]="true" severity="info" *ngIf="canViewStatusChangeTable()"
