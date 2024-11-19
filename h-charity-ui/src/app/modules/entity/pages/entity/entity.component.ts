@@ -48,12 +48,12 @@ export class EntityComponent implements OnInit {
       { label: 'Show Schools', value: 'Show Schools' },
       { label: 'Show Orphanages', value: 'Show Orphanages' },
     ];
-    this.commonService.resetAccessRights$.subscribe(() => {
-      this.accessRights();
-      this.isEditButtonDisabled(0);
-    });
+    // this.commonService.resetAccessRights$.subscribe(() => {
+    //   this.accessRights();
+    //   this.isEditButtonDisabled(0);
+    // });
 
-    this.accessRights();
+    // this.accessRights();
   }
 
   //#region Public methods
@@ -132,6 +132,26 @@ export class EntityComponent implements OnInit {
       },
     });
   }
+
+  public canEditOrDelete(entity: IEntity): boolean {
+    const user = this.storageService.getUser();
+    const roles = user.roles;
+    const isOwner = entity['user'] && entity['user'].id === user.id;
+    const isAdminOrVolunteer =
+      roles &&
+      (roles.includes('ADMIN') || roles.includes('ORGANISATION_VOLUNTEER'));
+
+    return isOwner || isAdminOrVolunteer;
+  }
+
+  public showEditButton(entity: IEntity): boolean {
+    return this.canEditOrDelete(entity);
+  }
+
+  public showDeleteButton(entity: IEntity): boolean {
+    return this.canEditOrDelete(entity);
+  }
+
   //#endregion
 
   //#region Private methods
@@ -144,33 +164,34 @@ export class EntityComponent implements OnInit {
     });
   }
 
-  private accessRights() {
-    const user = this.storageService.getUser();
-    this.roles = user?.roles || [];
-    this.userId = user?.id || 0;
-  }
+  // private accessRights() {
+  //   const user = this.storageService.getUser();
+  //   this.roles = user?.roles || [];
+  //   this.userId = user?.id || 0;
+  // }
 
-  public isEditButtonDisabled(entityOwnerId: number): boolean {
-    // Check if roles or userId are not available (indicating the user is not logged in)
-    if (!this.roles || !this.userId) {
-      return true; // Disable button if user is not logged in
-    }
+  // public isEditButtonDisabled(entityOwnerId: number): boolean {
+  //   // Check if roles or userId are not available (indicating the user is not logged in)
+  //   if (!this.roles || !this.userId) {
+  //     return true; // Disable button if user is not logged in
+  //   }
 
-    // Allow if role is ADMIN or ORGANISATION_VOLUNTEER
-    if (
-      this.roles.includes('ADMIN') ||
-      this.roles.includes('ORGANISATION_VOLUNTEER')
-    ) {
-      return false; // Don't disable button
-    }
 
-    // Allow if role is INSTITUTE_OWNER or NORMAL_USER and user ID matches entityOwnerId
-    if (this.userId === entityOwnerId) {
-      return false; // Don't disable button
-    }
+  //   // Allow if role is ADMIN or ORGANISATION_VOLUNTEER
+  //   if (
+  //     this.roles.includes('ADMIN') ||
+  //     this.roles.includes('ORGANISATION_VOLUNTEER')
+  //   ) {
+  //     return false; // Don't disable button
+  //   }
 
-    // Disable button for all other cases
-    return true;
-  }
+  //   // Allow if role is INSTITUTE_OWNER or NORMAL_USER and user ID matches entityOwnerId
+  //   if (this.userId === entityOwnerId) {
+  //     return false; // Don't disable button
+  //   }
+
+  //   // Disable button for all other cases
+  //   return true;
+  // }
   //#endregion
 }
