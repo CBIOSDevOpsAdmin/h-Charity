@@ -18,7 +18,6 @@
 }
 
 
-
 .feedback-section {
   background-color: #ffffff;
   border-radius: 10px;
@@ -72,8 +71,65 @@
   font-size: 16px;
 }
 
+.text-center {
+  text-align: center;
+  background: linear-gradient(90deg, rgba(0, 86, 179, 0.1), rgba(0, 86, 179, 0.05));
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(133, 125, 125, 0.1);
+  margin-bottom: 20px;
+  padding-top: 0;
+  height: 10rem;
+  width: 80rem;
+}
 
 
+h1 {
+  font-size: 2rem;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+h4 {
+  font-size: 1.25rem;
+  color: #3b3ba7;
+  font-weight: 600;
+  margin-top: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.container .col-12 {
+  padding: 30px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.container .col-12:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(90deg, rgba(0, 86, 179, 0.1), rgba(0, 86, 179, 0.05));
+}
+
+.container div[innerHTML] {
+  font-size: 1.125rem;
+  background-color: #555;
+  line-height: 1.8;
+  text-align: justify;
+  text-indent: 1.5em;
+  margin-bottom: 25px;
+  font-family: 'Roboto', sans-serif;
+}
 
 
 ul {

@@ -4,119 +4,126 @@
       <button pButton label="Give Feedback" icon="pi pi-comment" *ngIf="showFeedbackButton"
         class="p-button-rounded p-button-help" (click)="showFeedbackDialog()"
         style="position: fixed; bottom: 20px; right: 20px"></button>
-      <p-dialog [(visible)]="feedbackDialog" header="Give Feedback" [modal]="true" [style]="{ width: '50vw' }">
-        <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
-          <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
-            <div class="col-12 md:col-12 lg:col-12">
-              <div class="grid">
-                <h6>Feedback</h6>
-                <hr>
-                <br><br>
-                <div class="col-12 md:col-12 lg:col-12">
-                  <span class="p-float-label">
-                    <input type="text" pInputText id="title" formControlName="title"
-                      [ngClass]="{'ng-invalid ng-dirty' : feedbackForm.controls['title'].touched && feedbackForm.controls['title'].errors?.['required']}" />
-                    <label for="title">Title</label>
-                  </span>
-                  <small class="ng-dirty ng-invalid" style="color: red"
-                    *ngIf="feedbackForm.controls['title'].touched && feedbackForm.controls['title'].errors?.['required']">
-                    Title is required.
-                  </small>
-                  <small class="ng-dirty ng-invalid" style="color: red"
-                    *ngIf="feedbackForm.controls['title'].touched && feedbackForm.controls['title'].errors?.['minlength']">
-                    Title must be at least 6 characters long.
-                  </small>
-                  <small class="ng-dirty ng-invalid" style="color: red"
-                    *ngIf="feedbackForm.controls['title'].touched && feedbackForm.controls['title'].errors?.['mazlength']">
-                    Title cannot exceed 30 characters.
-                  </small>
-                </div>
-
-                <div class="col-12 md:col-12 lg:col-12">
-                  <p-editor formControlName="description" placeholder="Enter the Description" id="description"
-                    [style]="{ height: '200px' }"></p-editor>
-                  <label for="description"></label>
-                  <small class="ng-dirty ng-invalid" style="color: red"
-                    *ngIf="feedbackForm.controls['description'].touched && feedbackForm.controls['description'].errors?.['required']">
-                    Description is required.
-                  </small>
-                </div>
-
-                <div class="col-12 md:col-6 lg:col-6">
-                  <span class="p-float-label">
-                    <input type="text" pInputText id="advisedBy" formControlName="advisedBy" />
-                    <label for="advisedBy">Advised By</label>
-                  </span>
-                </div>
-
-                <div class="col-12 md:col-6 lg:col-6">
-                  <span class="p-float-label">
-                    <input type="text" pInputText id="advisedByContact" formControlName="advisedByContact" />
-                    <label for="advisedByContact">Advised By Contact</label>
-                  </span>
-                </div>
-
-                <div class="col-12 md:col-6 lg:col-6">
-                  <p-checkbox binary="true" label="Is Anonymous?" formControlName="isAnonymous"></p-checkbox>
-                </div>
-
-                <div class="col-12 md:col-6 lg:col-6">
-                  <span class="p-float-label">
-                    <p-dropdown [options]="statuses" id="status" placeholder=" " formControlName="status"></p-dropdown>
-                    <label for="status">Select Status</label>
-                  </span>
-                </div>
-
+    </div>
+    <p-dialog [(visible)]="feedbackDialog" header="Give Feedback" [modal]="true" [style]="{ width: '50vw' }">
+      <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
+        <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
+          <div class="col-12 md:col-12 lg:col-12">
+            <div class="grid">
+              <h6>Feedback</h6>
+              <hr>
+              <br><br>
+              <div class="col-12 md:col-12 lg:col-12">
+                <span class="p-float-label">
+                  <input type="text" pInputText id="title" formControlName="title"
+                    [ngClass]="{'ng-invalid ng-dirty' : feedbackForm.controls['title'].touched && feedbackForm.controls['title'].errors?.['required']}" />
+                  <label for="title">Title</label>
+                </span>
+                <small class="ng-dirty ng-invalid" style="color: red"
+                  *ngIf="feedbackForm.controls['title'].touched && feedbackForm.controls['title'].errors?.['required']">
+                  Title is required.
+                </small>
+                <small class="ng-dirty ng-invalid" style="color: red"
+                  *ngIf="feedbackForm.controls['title'].touched && feedbackForm.controls['title'].errors?.['minlength']">
+                  Title must be at least 6 characters long.
+                </small>
+                <small class="ng-dirty ng-invalid" style="color: red"
+                  *ngIf="feedbackForm.controls['title'].touched && feedbackForm.controls['title'].errors?.['mazlength']">
+                  Title cannot exceed 30 characters.
+                </small>
               </div>
+
+              <div class="col-12 md:col-12 lg:col-12">
+                <p-editor formControlName="description" placeholder="Enter the Description" id="description"
+                  [style]="{ height: '200px' }"></p-editor>
+                <label for="description"></label>
+                <small class="ng-dirty ng-invalid" style="color: red"
+                  *ngIf="feedbackForm.controls['description'].touched && feedbackForm.controls['description'].errors?.['required']">
+                  Description is required.
+                </small>
+              </div>
+
+              <div class="col-12 md:col-6 lg:col-6">
+                <span class="p-float-label">
+                  <input type="text" pInputText id="advisedBy" formControlName="advisedBy" />
+                  <label for="advisedBy">Advised By</label>
+                </span>
+              </div>
+
+              <div class="col-12 md:col-6 lg:col-6">
+                <span class="p-float-label">
+                  <input type="text" pInputText id="advisedByContact" formControlName="advisedByContact" />
+                  <label for="advisedByContact">Advised By Contact</label>
+                </span>
+              </div>
+
+              <div class="col-12 md:col-6 lg:col-6">
+                <p-checkbox binary="true" label="Is Anonymous?" formControlName="isAnonymous"></p-checkbox>
+              </div>
+
+              <div class="col-12 md:col-6 lg:col-6">
+                <span class="p-float-label">
+                  <p-dropdown [options]="statuses" id="status" placeholder=" " formControlName="status"></p-dropdown>
+                  <label for="status">Select Status</label>
+                </span>
+              </div>
+
             </div>
           </div>
+        </div>
 
-          <div class="col-12 text-center">
-            <button pButton label="Submit" type="submit" [disabled]="!feedbackForm.valid"></button>
-          </div>
-        </form>
-      </p-dialog>
+        <div class="col-12 text-center">
+          <button pButton label="Submit" type="submit" [disabled]="!feedbackForm.valid"></button>
+        </div>
+      </form>
+    </p-dialog>
 
+    <div class="heading">
       <div class="text-center p-3 border-round-sm font-bold">
-        <h1>{{ entity && entity.name }}</h1>
+        <h1>{{ entity && entity.name }}</h1><br>
         <h4>{{ address }}</h4>
       </div>
     </div>
-    <div class="col-12 md:col-6 lg:col-12">
-      <h1>About {{ entity && entity.name }}</h1>
-      <div [innerHTML]="entity && entity.description | safeHtml"></div>
+
+    <div class="container">
+      <div class="col-12 md:col-6 lg:col-12">
+        <h1 style="text-align: center;">About {{ entity && entity.name }}</h1><br>
+        <div [innerHTML]="entity && entity.description | safeHtml"></div>
+      </div>
     </div>
-    <p-divider />
-    <div class="col-12 md:col-6 lg:col-12">
-      <h1>Donations</h1>
-      <h4>WHO IS INCHARGE OF THE FUNDS?</h4>
-      <p>
-        The Masjid committee that comprises of well qualified and dedicated
-        people working selflessly for the development of the Masjid, having pure
-        intentions for the Masjid. The committee will take care of money
-        collected for Masjid.
-      </p>
-      <p-divider />
-      <h4>HOW TO MAKE THE PAYMENTS?</h4>
-      <p>
-        You can make payments with different and most convenient way that you
-        may choose viz.
-      </p>
-      <p>
-        1. Direct transfer of funds to the Masjid’s Account by RTGS/NEFT or
-        digital payment
-      </p>
-      <p>
-        2. Send cheques/ DD/ Pay order in favor of {{ entity && entity.name }}
-      </p>
-      <p>3. Google pay/ Phone pay/ Paytm Scanner</p>
-      <p>4. Personally handover cash to the Treasurer and obtain receipt.</p>
-      <p-divider />
-      <h4>PAYMENTS DETAILS</h4>
+
+
+
+    <div class="container">
+      <div class="col-12 md:col-6 lg:col-12">
+        <h1 style="text-align: center;">Donations</h1><br><br><br>
+        <h4>WHO IS INCHARGE OF THE FUNDS?</h4>
+        <p>
+          The Masjid committee that comprises of well qualified and dedicated
+          people working selflessly for the development of the Masjid, having pure
+          intentions for the Masjid. The committee will take care of money
+          collected for Masjid.
+        </p><br>
+        <p-divider /><br><br>
+        <h4>HOW TO MAKE THE PAYMENTS?</h4>
+        <p>
+          You can make payments with different and most convenient way that you
+          may choose viz.
+        </p>
+        <p>
+          1. Direct transfer of funds to the Masjid’s Account by RTGS/NEFT or
+          digital payment
+        </p>
+        <p>
+          2. Send cheques/ DD/ Pay order in favor of {{ entity && entity.name }}
+        </p>
+        <p>3. Google pay/ Phone pay/ Paytm Scanner</p>
+        <p>4. Personally handover cash to the Treasurer and obtain receipt.</p>
+      </div>
     </div>
 
     <div class="col-12 md:col-6 lg:col-6">
-      <p-card header="Bank Account Details">
+      <p-card class="payment-details" header="Bank Account Details">
         <ul>
           <li>
             <strong>Account Holder Name: </strong>
@@ -149,149 +156,153 @@
         </ul>
       </p-card>
     </div>
+
     <div class="col-12 md:col-6 lg:col-6">
       <img *ngIf="entity && entity.entityPhotos.qrCode" src="{{ entity && entity.entityPhotos.qrCode }}" alt="qrcode"
         height="273px" />
     </div>
-    <div class="col-12 md:col-12 lg:col-12">
-      <p-tabView>
-        <p-tabPanel header="Appeals">
-          <p-table #dt [value]="appeals" [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }"
-            [rowsPerPageOptions]="[10, 20]" [showCurrentPageReport]="true" [styleClass]="
+
+    <div class="container">
+      <div class="col-12 md:col-12 lg:col-12">
+        <p-tabView>
+          <p-tabPanel header="Appeals">
+            <p-table #dt [value]="appeals" [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }"
+              [rowsPerPageOptions]="[10, 20]" [showCurrentPageReport]="true" [styleClass]="
             'p-datatable-sm p-datatable-gridlines p-datatable-striped'">
-            <ng-template pTemplate="header">
-              <tr>
-                <th style="min-width: 18rem"></th>
-                <th pSortableColumn="title" style="min-width: 25rem">
-                  Title
-                  <p-sortIcon field="title" />
-                </th>
-                <th pSortableColumn="requirementDate" style="min-width: 15rem">
-                  Requirement Date
-                  <p-sortIcon field="requirementDate" />
-                </th>
-                <th pSortableColumn="totalFundsRequired" style="min-width: 15rem">
-                  Total Funds Required
-                  <p-sortIcon field="totalFundsRequired" />
-                </th>
-                <th pSortableColumn="fundsReceived" style="min-width: 12rem">
-                  Funds Received
-                  <p-sortIcon field="fundsReceived" />
-                </th>
-                <th pSortableColumn="fundsNeeded" style="min-width: 12rem">
-                  Funds Needed
-                  <p-sortIcon field="fundsNeeded" />
-                </th>
-                <th pSortableColumn="isZakatEligible" style="min-width: 12rem">
-                  Zakat Eligible
-                  <p-sortIcon field="isZakatEligible" />
-                </th>
-                <th pSortableColumn="isIntrestEligible" style="min-width: 12rem">
-                  Interest Eligible
-                  <p-sortIcon field="isIntrestEligible" />
-                </th>
-                <th pSortableColumn="isAnonymous" style="min-width: 12rem">
-                  Is Anonymous
-                  <p-sortIcon field="isAnonymous" />
-                </th>
-              </tr>
-            </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="min-width: 18rem"></th>
+                  <th pSortableColumn="title" style="min-width: 25rem">
+                    Title
+                    <p-sortIcon field="title" />
+                  </th>
+                  <th pSortableColumn="requirementDate" style="min-width: 15rem">
+                    Requirement Date
+                    <p-sortIcon field="requirementDate" />
+                  </th>
+                  <th pSortableColumn="totalFundsRequired" style="min-width: 15rem">
+                    Total Funds Required
+                    <p-sortIcon field="totalFundsRequired" />
+                  </th>
+                  <th pSortableColumn="fundsReceived" style="min-width: 12rem">
+                    Funds Received
+                    <p-sortIcon field="fundsReceived" />
+                  </th>
+                  <th pSortableColumn="fundsNeeded" style="min-width: 12rem">
+                    Funds Needed
+                    <p-sortIcon field="fundsNeeded" />
+                  </th>
+                  <th pSortableColumn="isZakatEligible" style="min-width: 12rem">
+                    Zakat Eligible
+                    <p-sortIcon field="isZakatEligible" />
+                  </th>
+                  <th pSortableColumn="isIntrestEligible" style="min-width: 12rem">
+                    Interest Eligible
+                    <p-sortIcon field="isIntrestEligible" />
+                  </th>
+                  <th pSortableColumn="isAnonymous" style="min-width: 12rem">
+                    Is Anonymous
+                    <p-sortIcon field="isAnonymous" />
+                  </th>
+                </tr>
+              </ng-template>
 
-            <ng-template pTemplate="body" let-appeal>
-              <tr>
-                <td>
-                  <div class="flex justify-content-center flex-wrap gap-3 mb-4">
-                    <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" severity="success"
-                      (onClick)="editAppeal(appeal.id)" *ngIf="showEditButton(appeal)" />
-                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                      (onClick)="deleteAppeal(appeal)" *ngIf="showDeleteButton(appeal)" />
-                    <p-button icon="pi pi-eye" class="mr-1" [rounded]="true" [outlined]="true"
-                      (onClick)="viewAppeal(appeal)" />
-                  </div>
-                </td>
-                <td>{{ appeal.title }}</td>
-                <td>{{ appeal.requirementDate | date : 'dd-MM-yyyy' }}</td>
-                <td>{{ appeal.totalFundsRequired }}</td>
-                <td>{{ appeal.fundsReceived }}</td>
-                <td>{{ appeal.fundsNeeded }}</td>
-                <td>{{ appeal.isZakatEligible ? 'Yes' : 'No' }}</td>
-                <td>{{ appeal.isIntrestEligible ? 'Yes' : 'No' }}</td>
-                <td>{{ appeal.isAnonymous ? 'Yes' : 'No' }}</td>
-              </tr>
-            </ng-template>
+              <ng-template pTemplate="body" let-appeal>
+                <tr>
+                  <td>
+                    <div class="flex justify-content-center flex-wrap gap-3 mb-4">
+                      <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" severity="success"
+                        (onClick)="editAppeal(appeal.id)" *ngIf="showEditButton(appeal)" />
+                      <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                        (onClick)="deleteAppeal(appeal)" *ngIf="showDeleteButton(appeal)" />
+                      <p-button icon="pi pi-eye" class="mr-1" [rounded]="true" [outlined]="true"
+                        (onClick)="viewAppeal(appeal)" />
+                    </div>
+                  </td>
+                  <td>{{ appeal.title }}</td>
+                  <td>{{ appeal.requirementDate | date : 'dd-MM-yyyy' }}</td>
+                  <td>{{ appeal.totalFundsRequired }}</td>
+                  <td>{{ appeal.fundsReceived }}</td>
+                  <td>{{ appeal.fundsNeeded }}</td>
+                  <td>{{ appeal.isZakatEligible ? 'Yes' : 'No' }}</td>
+                  <td>{{ appeal.isIntrestEligible ? 'Yes' : 'No' }}</td>
+                  <td>{{ appeal.isAnonymous ? 'Yes' : 'No' }}</td>
+                </tr>
+              </ng-template>
 
-            <ng-template pTemplate="summary">
-              <div class="flex align-items-center justify-content-between">
-                In total there are {{ appeals ? appeals.length : 0 }} appeals.
-              </div>
-            </ng-template>
-          </p-table>
-        </p-tabPanel>
+              <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">
+                  In total there are {{ appeals ? appeals.length : 0 }} appeals.
+                </div>
+              </ng-template>
+            </p-table>
+          </p-tabPanel>
 
-        <p-tabPanel header="Feedback">
-          <p-table #dt [value]="feedbacks" [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }"
-            [rowsPerPageOptions]="[10, 20]" [showCurrentPageReport]="true" [styleClass]="
+          <p-tabPanel header="Feedback">
+            <p-table #dt [value]="feedbacks" [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }"
+              [rowsPerPageOptions]="[10, 20]" [showCurrentPageReport]="true" [styleClass]="
             'p-datatable-sm p-datatable-gridlines p-datatable-striped'">
-            <ng-template pTemplate="header">
-              <tr>
-                <th style="min-width: 18rem"></th>
-                <th pSortableColumn="advisedBy" style="min-width: 15rem">
-                  Advised By
-                  <p-sortIcon field="advisedBy" />
-                </th>
-                <th pSortableColumn="advisedByContact" style="min-width: 15rem">
-                  Advised By Contact
-                  <p-sortIcon field="advisedByContact" />
-                </th>
-                <th pSortableColumn="title" style="min-width: 25rem">
-                  Title
-                  <p-sortIcon field="title" />
-                </th>
-                <th pSortableColumn="description" style="min-width: 25rem">
-                  Description
-                  <p-sortIcon field="description" />
-                </th>
-                <th pSortableColumn="status" style="min-width: 12rem">
-                  Status
-                  <p-sortIcon field="status" />
-                </th>
-                <th pSortableColumn="anonymous" style="min-width: 12rem">
-                  Anonymous
-                  <p-sortIcon field="anonymous" />
-                </th>
-              </tr>
-            </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="min-width: 18rem"></th>
+                  <th pSortableColumn="advisedBy" style="min-width: 15rem">
+                    Advised By
+                    <p-sortIcon field="advisedBy" />
+                  </th>
+                  <th pSortableColumn="advisedByContact" style="min-width: 15rem">
+                    Advised By Contact
+                    <p-sortIcon field="advisedByContact" />
+                  </th>
+                  <th pSortableColumn="title" style="min-width: 25rem">
+                    Title
+                    <p-sortIcon field="title" />
+                  </th>
+                  <th pSortableColumn="description" style="min-width: 25rem">
+                    Description
+                    <p-sortIcon field="description" />
+                  </th>
+                  <th pSortableColumn="status" style="min-width: 12rem">
+                    Status
+                    <p-sortIcon field="status" />
+                  </th>
+                  <th pSortableColumn="anonymous" style="min-width: 12rem">
+                    Anonymous
+                    <p-sortIcon field="anonymous" />
+                  </th>
+                </tr>
+              </ng-template>
 
-            <ng-template pTemplate="body" let-feedback>
-              <tr>
-                <td>
-                  <div class="flex justify-content-center flex-wrap gap-3 mb-4">
-                    <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" severity="success"
-                      (onClick)="editFeedback(feedback)" *ngIf="showFeedbackEditButton(feedback)" />
-                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                      (onClick)="deleteFeedback(feedback)" *ngIf="showFeedbackDeleteButton(feedback)" />
-                    <p-button icon="pi pi-eye" class="mr-1" [rounded]="true" [outlined]="true"
-                      (onClick)="viewFeedback(feedback)" />
-                  </div>
-                </td>
-                <td>{{ feedback.advisedBy }}</td>
-                <td>{{ feedback.advisedByContact }}</td>
-                <td>{{ feedback.title }}</td>
-                <td>{{ feedback.description}}</td>
-                <td>{{ feedback.entityFeedbackStatusList[0].status }}</td>
-                <td>{{ feedback.isAnonymous ? 'Yes' : 'No' }}</td>
-              </tr>
-            </ng-template>
+              <ng-template pTemplate="body" let-feedback>
+                <tr>
+                  <td>
+                    <div class="flex justify-content-center flex-wrap gap-3 mb-4">
+                      <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" severity="success"
+                        (onClick)="editFeedback(feedback)" *ngIf="showFeedbackEditButton(feedback)" />
+                      <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                        (onClick)="deleteFeedback(feedback)" *ngIf="showFeedbackDeleteButton(feedback)" />
+                      <p-button icon="pi pi-eye" class="mr-1" [rounded]="true" [outlined]="true"
+                        (onClick)="viewFeedback(feedback)" />
+                    </div>
+                  </td>
+                  <td>{{ feedback.advisedBy }}</td>
+                  <td>{{ feedback.advisedByContact }}</td>
+                  <td>{{ feedback.title }}</td>
+                  <td>{{ feedback.description}}</td>
+                  <td>{{ feedback.entityFeedbackStatusList[0].status }}</td>
+                  <td>{{ feedback.isAnonymous ? 'Yes' : 'No' }}</td>
+                </tr>
+              </ng-template>
 
-            <ng-template pTemplate="summary">
-              <div class="flex align-items-center justify-content-between">
-                In total there are
-                {{ feedbacks ? feedbacks.length : 0 }} feedback entries.
-              </div>
-            </ng-template>
-          </p-table>
-        </p-tabPanel>
-      </p-tabView>
+              <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">
+                  In total there are
+                  {{ feedbacks ? feedbacks.length : 0 }} feedback entries.
+                </div>
+              </ng-template>
+            </p-table>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
     </div>
 
     <p-dialog [(visible)]="isDialogVisible" [style]="{ 'width': '62vw' }" modal="true">

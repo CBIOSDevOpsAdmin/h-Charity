@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import {
+  CommonModule,
   HashLocationStrategy,
   LocationStrategy,
   PathLocationStrategy,
@@ -22,15 +23,20 @@ import { MyProfileComponent } from './modules/shared/components/my-profile/my-pr
 import { DialogService } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { LoaderComponent } from './modules/shared/components/loader/loader.component';
 
 @NgModule({
-  declarations: [AppComponent, NotfoundComponent, MyProfileComponent],
+  declarations: [AppComponent, NotfoundComponent, MyProfileComponent, LoaderComponent,],
   imports: [
     FormsModule,
     AppRoutingModule,
     AppLayoutModule,
     ToastModule,
     InputTextModule,
+    ProgressSpinnerModule,
+    CommonModule,
+    ProgressSpinnerModule,
   ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },
@@ -47,4 +53,4 @@ import { FormsModule } from '@angular/forms';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
