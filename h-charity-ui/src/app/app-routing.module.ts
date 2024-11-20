@@ -2,6 +2,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AppLayoutComponent } from './layout/app.layout.component';
 import { NotfoundComponent } from './modules/shared/components/notfound/notfound.component';
+import { AuthGuard } from './modules/shared/guards/auth.guard';
 
 @NgModule({
   imports: [
@@ -15,10 +16,6 @@ import { NotfoundComponent } from './modules/shared/components/notfound/notfound
               path: '',
               redirectTo: 'institutions',
               pathMatch: 'full',
-              // loadChildren: () =>
-              //   import('./demo/components/dashboard/dashboard.module').then(
-              //     m => m.DashboardModule
-              //   ),
             },
             {
               path: 'institutions',
@@ -26,6 +23,8 @@ import { NotfoundComponent } from './modules/shared/components/notfound/notfound
                 import('./modules/entity/entity.module').then(
                   m => m.EntityModule
                 ),
+              canActivate: [AuthGuard],
+              data: { roles: ['NORMAL_USER', 'INSTITUTE_OWNER', 'ORGANISATION_VOLUNTEER', 'ADMIN'] },
             },
             {
               path: 'appeals',
@@ -33,6 +32,8 @@ import { NotfoundComponent } from './modules/shared/components/notfound/notfound
                 import('./modules/appeals/appeals.module').then(
                   m => m.AppealsModule
                 ),
+              canActivate: [AuthGuard],
+              data: { roles: ['NORMAL_USER', 'INSTITUTE_OWNER', 'ORGANISATION_VOLUNTEER', 'ADMIN'] },
             },
             {
               path: 'auth',
@@ -57,6 +58,8 @@ import { NotfoundComponent } from './modules/shared/components/notfound/notfound
               path: 'admin',
               loadChildren: () =>
                 import('./modules/admin/admin.module').then(m => m.AdminModule),
+              canActivate: [AuthGuard],
+              data: { roles: ['ADMIN'] },
             },
           ],
         },
@@ -72,4 +75,4 @@ import { NotfoundComponent } from './modules/shared/components/notfound/notfound
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
