@@ -2,7 +2,6 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AppLayoutComponent } from './layout/app.layout.component';
 import { NotfoundComponent } from './modules/shared/components/notfound/notfound.component';
-import { AuthGuard } from './modules/shared/guards/auth.guard';
 
 @NgModule({
   imports: [
@@ -23,7 +22,7 @@ import { AuthGuard } from './modules/shared/guards/auth.guard';
                 import('./modules/entity/entity.module').then(
                   m => m.EntityModule
                 ),
-              canActivate: [AuthGuard],
+
               data: { roles: ['NORMAL_USER', 'INSTITUTE_OWNER', 'ORGANISATION_VOLUNTEER', 'ADMIN'] },
             },
             {
@@ -32,8 +31,7 @@ import { AuthGuard } from './modules/shared/guards/auth.guard';
                 import('./modules/appeals/appeals.module').then(
                   m => m.AppealsModule
                 ),
-              canActivate: [AuthGuard],
-              data: { roles: ['NORMAL_USER', 'INSTITUTE_OWNER', 'ORGANISATION_VOLUNTEER', 'ADMIN'] },
+
             },
             {
               path: 'auth',
@@ -58,8 +56,7 @@ import { AuthGuard } from './modules/shared/guards/auth.guard';
               path: 'admin',
               loadChildren: () =>
                 import('./modules/admin/admin.module').then(m => m.AdminModule),
-              canActivate: [AuthGuard],
-              data: { roles: ['ADMIN'] },
+
             },
           ],
         },

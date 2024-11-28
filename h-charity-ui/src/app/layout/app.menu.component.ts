@@ -4,7 +4,6 @@ import { LayoutService } from './service/app.layout.service';
 import { StorageService } from '../modules/shared/services/storage.service';
 import { Subscription } from 'rxjs';
 import { EntityService } from '../modules/entity/services/entity.service';
-import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-menu',
@@ -138,70 +137,70 @@ export class AppMenuComponent implements OnInit {
     });
   }
 
-  // private checkIfInstituteOwnerExists() {
-  //   if (this.storageService.getUser().id) {
-  //     this.entityService
-  //       .checkIfInstituteOwnerExists(this.storageService.getUser().id)
-  //       .subscribe({
-  //         next: (response: any) => {
-  //           if (response) {
-  //             this.model.find(x => {
-  //               if (x.label === 'Institutions') {
-  //                 x.items = x.items.filter(
-  //                   (item: { label: string }) => item.label !== 'Add Institute'
-  //                 );
-  //               }
-  //             });
-  //           } else {
-  //             this.model.find(x => {
-  //               if (x.label === 'Institutions') {
-  //                 x.items.push({
-  //                   label: 'Add Institute',
-  //                   icon: 'pi pi-fw pi-file-edit',
-  //                   routerLink: ['/institutions/add'],
-  //                 });
-  //               }
-  //             });
-  //           }
-  //         },
-  //       });
-  //   }
-  // }
-
   private checkIfInstituteOwnerExists() {
-    const userId = this.storageService.getUser()?.id;
-
-    if (!userId) return;
-
-    this.entityService.checkIfInstituteOwnerExists(userId).subscribe({
-      next: (response: boolean) => {
-        const institutionMenu = this.model.find(x => x.label === 'Institutions');
-
-        if (!institutionMenu || !institutionMenu.items) return;
-
-        if (response) {
-          institutionMenu.items = institutionMenu.items.filter(
-            (item: MenuItem) => item.label !== 'Add Institute'
-          );
-        } else {
-          const addInstituteExists = institutionMenu.items.some(
-            (item: MenuItem) => item.label === 'Add Institute'
-          );
-
-          if (!addInstituteExists) {
-            institutionMenu.items.push({
-              label: 'Add Institute',
-              icon: 'pi pi-fw pi-file-edit',
-              routerLink: ['/institutions/add'],
-            });
-          }
-        }
-      },
-      error: (err) => {
-        console.error('Error checking institute owner:', err);
-      }
-    });
+    if (this.storageService.getUser().id) {
+      this.entityService
+        .checkIfInstituteOwnerExists(this.storageService.getUser().id)
+        .subscribe({
+          next: (response: any) => {
+            if (response) {
+              this.model.find(x => {
+                if (x.label === 'Institutions') {
+                  x.items = x.items.filter(
+                    (item: { label: string }) => item.label !== 'Add Institute'
+                  );
+                }
+              });
+            } else {
+              this.model.find(x => {
+                if (x.label === 'Institutions') {
+                  x.items.push({
+                    label: 'Add Institute',
+                    icon: 'pi pi-fw pi-file-edit',
+                    routerLink: ['/institutions/add'],
+                  });
+                }
+              });
+            }
+          },
+        });
+    }
   }
+
+  // private checkIfInstituteOwnerExists() {
+  //   const userId = this.storageService.getUser()?.id;
+
+  //   if (!userId) return;
+
+  //   this.entityService.checkIfInstituteOwnerExists(userId).subscribe({
+  //     next: (response: boolean) => {
+  //       const institutionMenu = this.model.find(x => x.label === 'Institutions');
+
+  //       if (!institutionMenu || !institutionMenu.items) return;
+
+  //       if (response) {
+  //         institutionMenu.items = institutionMenu.items.filter(
+  //           (item: MenuItem) => item.label !== 'Add Institute'
+  //         );
+  //       } else {
+  //         const addInstituteExists = institutionMenu.items.some(
+  //           (item: MenuItem) => item.label === 'Add Institute'
+  //         );
+
+  //         if (!addInstituteExists) {
+  //           institutionMenu.items.push({
+  //             label: 'Add Institute',
+  //             icon: 'pi pi-fw pi-file-edit',
+  //             routerLink: ['/institutions/add'],
+  //           });
+  //         }
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error('Error checking institute owner:', err);
+  //     }
+  //   });
+  // }
 
 
   //#endregion
