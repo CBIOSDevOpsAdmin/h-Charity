@@ -2,6 +2,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AppLayoutComponent } from './layout/app.layout.component';
 import { NotfoundComponent } from './modules/shared/components/notfound/notfound.component';
+import { AuthGuard } from './modules/shared/guards/auth.guard';
 
 @NgModule({
   imports: [
@@ -20,43 +21,61 @@ import { NotfoundComponent } from './modules/shared/components/notfound/notfound
               path: 'institutions',
               loadChildren: () =>
                 import('./modules/entity/entity.module').then(
-                  m => m.EntityModule
+                  (m) => m.EntityModule
                 ),
-
-              data: { roles: ['NORMAL_USER', 'INSTITUTE_OWNER', 'ORGANISATION_VOLUNTEER', 'ADMIN'] },
+              canActivate: [AuthGuard],
+              data: {
+                roles: [
+                  'NORMAL_USER',
+                  'INSTITUTE_OWNER',
+                  'ORGANISATION_VOLUNTEER',
+                  'ADMIN',
+                ],
+              },
             },
             {
               path: 'appeals',
               loadChildren: () =>
                 import('./modules/appeals/appeals.module').then(
-                  m => m.AppealsModule
+                  (m) => m.AppealsModule
                 ),
-
+              canActivate: [AuthGuard],
+              data: {
+                roles: [
+                  'NORMAL_USER',
+                  'INSTITUTE_OWNER',
+                  'ORGANISATION_VOLUNTEER',
+                  'ADMIN',
+                ],
+              },
             },
             {
               path: 'auth',
               loadChildren: () =>
-                import('./modules/auth/auth.module').then(m => m.AuthModule),
+                import('./modules/auth/auth.module').then((m) => m.AuthModule),
             },
             {
               path: 'pages',
               loadChildren: () =>
                 import('./demo/components/pages/pages.module').then(
-                  m => m.PagesModule
+                  (m) => m.PagesModule
                 ),
             },
             {
               path: 'himanism',
               loadChildren: () =>
                 import('./modules/himanism/himanism.module').then(
-                  m => m.HimanismModule
+                  (m) => m.HimanismModule
                 ),
             },
             {
               path: 'admin',
               loadChildren: () =>
-                import('./modules/admin/admin.module').then(m => m.AdminModule),
-
+                import('./modules/admin/admin.module').then(
+                  (m) => m.AdminModule
+                ),
+              canActivate: [AuthGuard],
+              data: { roles: ['ADMIN'] },
             },
           ],
         },
