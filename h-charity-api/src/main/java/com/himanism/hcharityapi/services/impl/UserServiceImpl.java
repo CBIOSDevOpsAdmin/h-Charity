@@ -16,7 +16,9 @@ import com.himanism.hcharityapi.services.UserService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -26,16 +28,45 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResDto getUserById(Long userId) {
-        Optional<User> optUser = userRepository.findById(userId);
-        return UserMapper.INSTANCE.userToUserResponseDTO(optUser.get());
+        try {
+            log.info("User Service: Fetching user with ID", userId);
+
+            Optional<User> optUser = userRepository.findById(userId);
+
+            if (optUser.isPresent()) {
+                UserResDto userResDto = UserMapper.INSTANCE.userToUserResponseDTO(optUser.get());
+                log.info("Successfully fetched user with ID", userId);
+                return userResDto;
+            } else {
+                log.warn("User with ID not found", userId);
+                throw new RuntimeException("User not found");
+            }
+        } catch (Exception e) {
+            log.error("Error occurred while fetching user with ID", userId, e);
+            throw new RuntimeException("Error fetching user with ID " + userId, e);
+        }
     }
 
     @Override
     public List<UserResDto> getUserByRole(Erole role) {
-        List<User> users = userRepository.findAllByRoleName(role);
+        try {
+            log.info("User Service: Fetching users with role", role);
 
-        return users.stream()
-                .map(user -> UserMapper.INSTANCE.userToUserResponseDTO(user))
-                .collect(Collectors.toList());
+            List<User> users = userRepository.findAllByRoleName(role);
+
+            if (users.isEmpty()) {
+                log.warn("No users found with role", role);
+            } else {
+                log.info("Successfully fetched users with role:", users.size(), role);
+            }
+
+            return users.stream()
+                    .map(user -> UserMapper.INSTANCE.userToUserResponseDTO(user))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Error occurred while fetching users with role:", role, e);
+            throw new RuntimeException("Error fetching users with role: " + role, e);
+        }
     }
+
 }

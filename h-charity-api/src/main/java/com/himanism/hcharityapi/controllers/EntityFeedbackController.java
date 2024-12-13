@@ -2,6 +2,7 @@ package com.himanism.hcharityapi.controllers;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,22 +51,57 @@ public class EntityFeedbackController {
     @PostMapping("")
     public ResponseEntity<?> addFeedback(Authentication authentication,
             @Valid @RequestBody FeedbackRequestDto feedbackRequestDto) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetailsImpl) principal).getUsername();
+        String username = null;
+        try {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            username = ((UserDetailsImpl) principal).getUsername();
 
-        return ResponseEntity.ok().body(feedbackService.addFeedback(feedbackRequestDto, username));
+            log.info("Entity Feedback Controller: Adding feedback", username);
+
+            Object feedbackResponse = feedbackService.addFeedback(feedbackRequestDto, username);
+
+            log.info("Feedback added successfully", username);
+            return ResponseEntity.ok().body(feedbackResponse);
+
+        } catch (Exception e) {
+            log.error("Error occurred while adding feedback", username, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while adding feedback. Please try again later.");
+        }
     }
 
     @PutMapping("")
     public ResponseEntity<?> updateFeedback(Authentication authentication,
             @Valid @RequestBody FeedbackRequestDto feedbackRequestDto) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetailsImpl) principal).getUsername();
-        return ResponseEntity.ok().body(feedbackService.updateFeedback(feedbackRequestDto));
+        String username = null;
+        try {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            username = ((UserDetailsImpl) principal).getUsername();
+
+            log.info("Entity Feedback Controller: Updating feedback", username);
+
+            Object feedbackResponse = feedbackService.updateFeedback(feedbackRequestDto);
+
+            log.info("Feedback updated successfully", username);
+
+            return ResponseEntity.ok().body(feedbackResponse);
+
+        } catch (Exception e) {
+            log.error("Error occurred while updating feedback", username, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while updating feedback. Please try again later.");
+        }
     }
 
     @DeleteMapping("/{feedbackId}")
     public void deleteFeedback(@PathVariable Long feedbackId) {
-        feedbackService.deleteFeedback(feedbackId);
+        try {
+            feedbackService.deleteFeedback(feedbackId);
+            log.info("Entity Feedback Controller: Feedback with ID: deleted successfully", feedbackId);
+        } catch (Exception e) {
+            log.error("Error occurred while deleting feedback with ID:", feedbackId, e);
+            throw e;
+        }
     }
+
 }

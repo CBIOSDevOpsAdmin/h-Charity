@@ -3,6 +3,7 @@ package com.himanism.hcharityapi.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,60 +39,81 @@ public class AppealController {
     @GetMapping("")
     public ResponseEntity<?> getAppeals(Authentication authentication) {
         log.info("Appeals Controller: List appeals");
-        List<AppealResDto> appeals = appealService.getAppeals(authentication);
-        return ResponseEntity.ok().body(appeals);
+        try {
+            List<AppealResDto> appeals = appealService.getAppeals(authentication);
+            return ResponseEntity.ok().body(appeals);
+        } catch (Exception e) {
+            log.error("An error occurred while fetching appeals", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching appeals");
+        }
     }
 
     @GetMapping("/{appealId}")
-    public AppealResDto getAppealById(@PathVariable Long appealId) {
-        // if (user.getEmail() == null || user.getEmail().isEmpty() ||
-        // user.getPassword() == null || user.getPassword().isEmpty()) {
-        // throw new AppException("All fields are required.", HttpStatus.BAD_REQUEST);
-        // }
-        AppealResDto appealResDto = appealService.getAppealById(appealId);
-        return appealResDto;
+    public ResponseEntity<?> getAppealById(@PathVariable Long appealId) {
+        log.info("Appeals Controller: Fetching appeal with ID", appealId);
+        try {
+            AppealResDto appealResDto = appealService.getAppealById(appealId);
+            return ResponseEntity.ok().body(appealResDto);
+        } catch (Exception e) {
+            log.error("An error occurred while fetching appeal with ID", appealId, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching appeal");
+        }
     }
 
     @PostMapping("")
-    public Appeal addAppeal(Authentication authentication, @Valid @RequestBody AppealRequestDto appealRequestDto) {
-        // if (user.getEmail() == null || user.getEmail().isEmpty() ||
-        // user.getPassword() == null || user.getPassword().isEmpty()) {
-        // throw new AppException("All fields are required.", HttpStatus.BAD_REQUEST);
-        // }
+    public ResponseEntity<?> addAppeal(Authentication authentication,
+            @Valid @RequestBody AppealRequestDto appealRequestDto) {
+        log.info("Appeals Controller: Adding new appeal for user");
+        try {
+            UserDetailsImpl principle = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                    .getPrincipal();
 
-        // Make proper use of Lombok validators
+            String username = principle.getUsername();
+            Long userId = principle.getId();
+            List<String> roles = principle.getAuthorities().stream()
+                    .map(item -> item.getAuthority())
+                    .collect(Collectors.toList());
 
-        UserDetailsImpl principle = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-
-        String username = principle.getUsername();
-        Long userId = principle.getId();
-        List<String> roles = principle.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-
-        return appealService.addAppeal(appealRequestDto, username, userId, roles.get(0));
+            Appeal appeal = appealService.addAppeal(appealRequestDto, username, userId, roles.get(0));
+            log.info("Appeals Controller: Appeal successfully added by user", username);
+            return ResponseEntity.ok().body(appeal);
+        } catch (Exception e) {
+            log.error("An error occurred while adding an appeal", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding appeal");
+        }
     }
 
     @PutMapping("")
-    public Appeal updateEntity(Authentication authentication, @Valid @RequestBody AppealRequestDto appealRequestDto) {
-        Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity<?> updateEntity(Authentication authentication,
+            @Valid @RequestBody AppealRequestDto appealRequestDto) {
+        log.info("Appeals Controller: Updating appeal");
+        try {
+            Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        String username = ((UserDetailsImpl) principle).getUsername();
-        // appealRequestDto.setUpdatedBy(username);
-        // appealRequestDto.setUpdatedDate(new Date());
+            String username = ((UserDetailsImpl) principle).getUsername();
+            // appealRequestDto.setUpdatedBy(username);
+            // appealRequestDto.setUpdatedDate(new Date());
 
-        return appealService.updateAppeal(appealRequestDto);
+            Appeal updatedAppeal = appealService.updateAppeal(appealRequestDto);
+            log.info("Appeal successfully updated by user", username);
+            return ResponseEntity.ok().body(updatedAppeal);
+        } catch (Exception e) {
+            log.error("An error occurred while updating the appeal", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating appeal");
+        }
     }
 
     @DeleteMapping("/{appealId}")
-    public void deleteAppeal(@PathVariable Long appealId) {
-        // if (user.getEmail() == null || user.getEmail().isEmpty() ||
-        // user.getPassword() == null || user.getPassword().isEmpty()) {
-        // throw new AppException("All fields are required.", HttpStatus.BAD_REQUEST);
-        // }
-
-        appealService.deleteAppeal(appealId);
+    public ResponseEntity<?> deleteAppeal(@PathVariable Long appealId) {
+        log.info("Appeals Controller: Deleting appeal with ID", appealId);
+        try {
+            appealService.deleteAppeal(appealId);
+            log.info("Appeal with ID successfully deleted", appealId);
+            return ResponseEntity.ok().body("Appeal deleted successfully");
+        } catch (Exception e) {
+            log.error("An error occurred while deleting the appeal with ID {}: {}", appealId, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting appeal");
+        }
     }
 
 }

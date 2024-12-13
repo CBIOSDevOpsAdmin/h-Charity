@@ -49,67 +49,92 @@ public class EntityController {
 
     @GetMapping("")
     public ResponseEntity<?> getEntities(Authentication authentication) {
-        log.info("Entity Controller: List Entities");
-        List<EntityResponseDto> entities = entityService.getEntities(authentication);
-        return ResponseEntity.ok().body(entities);
+        try {
+            log.info("Entity Controller: List Entities");
+            List<EntityResponseDto> entities = entityService.getEntities(authentication);
+            return ResponseEntity.ok().body(entities);
+        } catch (Exception e) {
+            log.error("Error occurred while retrieving entities", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to retrieve entities");
+        }
     }
 
     @GetMapping("/{entityId}")
     public EntityResponseDto getEntityById(@PathVariable Long entityId) {
-        return entityService.getEntityById(entityId);
+        try {
+            log.info("Entity Controller: Get Entity by ID");
+            return entityService.getEntityById(entityId);
+        } catch (Exception e) {
+            log.error("Error occurred while retrieving entity with ID: " + entityId, e);
+            throw new RuntimeException("Failed to retrieve entity");
+        }
     }
 
     @PostMapping("")
     public ResponseEntity<?> addEntity(Authentication authentication, @Valid @RequestBody EntityRequestDto entityDto) {
-        // if (user.getEmail() == null || user.getEmail().isEmpty() ||
-        // user.getPassword() == null || user.getPassword().isEmpty()) {
-        // throw new AppException("All fields are required.", HttpStatus.BAD_REQUEST);
-        // }
-
-        // Make proper use of Lombok validators
-
-        UserDetailsImpl principle = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-        return ResponseEntity.ok().body(entityService.addEntity(entityDto, principle));
+        try {
+            log.info("Entity Controller: Add Entity");
+            UserDetailsImpl principle = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                    .getPrincipal();
+            return ResponseEntity.ok().body(entityService.addEntity(entityDto, principle));
+        } catch (Exception e) {
+            log.error("Error occurred while adding entity", e);
+            throw new RuntimeException("Failed to add entity");
+        }
     }
 
     @PutMapping("")
     public ResponseEntity<?> updateEntity(Authentication authentication,
             @Valid @RequestBody EntityRequestDto entityDto) {
-        Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        String username = ((UserDetailsImpl) principle).getUsername();
-        entityDto.setUpdatedBy(username);
-        entityDto.setUpdatedDate(new Date());
-
-        return ResponseEntity.ok().body(entityService.updateEntity(entityDto));
+        try {
+            log.info("Entity Controller: Update Entity");
+            Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username = ((UserDetailsImpl) principle).getUsername();
+            entityDto.setUpdatedBy(username);
+            entityDto.setUpdatedDate(new Date());
+            return ResponseEntity.ok().body(entityService.updateEntity(entityDto));
+        } catch (Exception e) {
+            log.error("Error occurred while updating entity", e);
+            throw new RuntimeException("Failed to update entity");
+        }
     }
 
     @DeleteMapping("/{entityId}")
     public void deleteEntity(Authentication authentication, @PathVariable Long entityId) {
-        List<String> rolesFromToken = new ArrayList<>();
+        try {
+            log.info("Entity Controller: Delete Entity");
+            List<String> rolesFromToken = new ArrayList<>();
 
-        Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Collection<? extends GrantedAuthority> roles = ((UserDetailsImpl) principle).getAuthorities();
-        for (GrantedAuthority role : roles) {
-            rolesFromToken.add(role.getAuthority());
-        }
+            Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Collection<? extends GrantedAuthority> roles = ((UserDetailsImpl) principle).getAuthorities();
+            for (GrantedAuthority role : roles) {
+                rolesFromToken.add(role.getAuthority());
+            }
 
-        if (rolesFromToken.stream().anyMatch(Constants.ROLES_CAN_DELETE_INSTITUTE::contains)) {
-            entityService.deleteEntity(entityId);
-        } else {
-            throw new AppException("You do not have permission to delete this institute.", HttpStatus.FORBIDDEN);
+            if (rolesFromToken.stream().anyMatch(Constants.ROLES_CAN_DELETE_INSTITUTE::contains)) {
+                entityService.deleteEntity(entityId);
+            } else {
+                throw new AppException("You do not have permission to delete this institute.", HttpStatus.FORBIDDEN);
+            }
+        } catch (Exception e) {
+            log.error("Error occurred while deleting entity with ID", entityId, e);
+            throw new RuntimeException("Failed to delete entity");
         }
     }
 
     @PostMapping("/bankDetails")
     public EntityBankDetailsResDto addEntityBankDetails(Authentication authentication,
             @Valid @RequestBody EntityBankDetailsReqDto bankDetailsReqDto) {
-        Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        try {
+            log.info("Entity Controller: Add Entity Bank Details");
+            Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username = ((UserDetailsImpl) principle).getUsername();
 
-        String username = ((UserDetailsImpl) principle).getUsername();
-
-        return entityService.addEntityBankDetails(bankDetailsReqDto, username);
+            return entityService.addEntityBankDetails(bankDetailsReqDto, username);
+        } catch (Exception e) {
+            log.error("Error occurred while adding entity bank details for user: {}", authentication.getName(), e);
+            throw new RuntimeException("Failed to add entity bank details");
+        }
     }
 
     @PutMapping("/bankDetails")
@@ -119,41 +144,79 @@ public class EntityController {
 
         String username = ((UserDetailsImpl) principle).getUsername();
 
-        return entityService.updateEntityBankDetails(bankDetailsReqDto, username);
+        log.info("Entity Controller: Updating entity bank details", username);
+
+        try {
+            return entityService.updateEntityBankDetails(bankDetailsReqDto, username);
+        } catch (Exception e) {
+            log.error("Error updating entity bank details", username, e);
+            throw e;
+        }
     }
 
     @GetMapping("/bankDetails/{entityId}")
     public Optional<EntityBankDetails> getBankDetailsByEntityId(@PathVariable Long entityId) {
-        // if (user.getEmail() == null || user.getEmail().isEmpty() ||
-        // user.getPassword() == null || user.getPassword().isEmpty()) {
-        // throw new AppException("All fields are required.", HttpStatus.BAD_REQUEST);
-        // }
+        log.info("Entity Controller: Fetching bank details for entity ID", entityId);
 
-        return entityService.getBankDetailsByEntityId(entityId);
+        try {
+            return entityService.getBankDetailsByEntityId(entityId);
+        } catch (Exception e) {
+            log.error("Error fetching bank details for entity ID", entityId, e);
+            throw e;
+        }
     }
 
     @GetMapping("/photos/{entityId}")
     public Optional<List<EntityPhotos>> getPhotosByEntityId(@PathVariable Long entityId) {
-        return entityService.getPhotosByEntityId(entityId);
+        log.info("Entity Controller: Fetching photos for entity ID: {}", entityId);
+
+        try {
+            return entityService.getPhotosByEntityId(entityId);
+        } catch (Exception e) {
+            log.error("Error fetching photos for entity ID: {}", entityId, e);
+            throw e;
+        }
     }
 
     @GetMapping("/entityOwner/{entityOwnerId}")
     public ResponseEntity<?> checkIfInstituteOwnerExists(@PathVariable Long entityOwnerId) {
-        Boolean response = entityService.checkIfInstituteOwnerExists(entityOwnerId);
-        return ResponseEntity.ok().body(response);
+        log.info("Entity Controller: Checking if institute owner exists for entity owner ID", entityOwnerId);
+
+        try {
+            Boolean response = entityService.checkIfInstituteOwnerExists(entityOwnerId);
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            log.error("Error checking if institute owner exists for entity owner ID", entityOwnerId, e);
+            throw e; // Re-throwing the exception after logging
+        }
     }
 
     @PostMapping("/entityReview")
     public ResponseEntity<?> saveEntityReview(@Valid @RequestBody EntityReviewReqDto entityReviewReqDto) {
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         String username = ((UserDetailsImpl) principle).getUsername();
-        return ResponseEntity.ok().body(entityService.saveEntityReview(entityReviewReqDto, username));
+
+        log.info("Entity Controller: Saving entity review for user", username);
+
+        try {
+            return ResponseEntity.ok().body(entityService.saveEntityReview(entityReviewReqDto, username));
+        } catch (Exception e) {
+            log.error("Error saving entity review for user", username, e);
+            throw e;
+        }
     }
 
     @GetMapping("/entityReview/{entityId}")
     public ResponseEntity<?> getEntityReviews(@PathVariable Long entityId) {
-        List<EntityReviewResDto> reviews = entityService.getEntityReviews(entityId);
-        return ResponseEntity.ok().body(reviews);
+        log.info("Entity Controller: Fetching entity reviews for entity ID", entityId);
+
+        try {
+            List<EntityReviewResDto> reviews = entityService.getEntityReviews(entityId);
+            return ResponseEntity.ok().body(reviews);
+        } catch (Exception e) {
+            log.error("Error fetching entity reviews for entity ID", entityId, e);
+            throw e;
+        }
     }
+
 }

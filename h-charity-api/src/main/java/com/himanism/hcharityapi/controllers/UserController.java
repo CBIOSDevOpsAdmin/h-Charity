@@ -3,6 +3,7 @@ package com.himanism.hcharityapi.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,16 +31,45 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity<?> getUser() {
-        UserDetailsImpl principle = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-        UserResDto userResDto = userService.getUserById(principle.getId());
-        return ResponseEntity.ok().body(userResDto);
+        try {
+            UserDetailsImpl principle = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                    .getPrincipal();
+            log.info("User Controller: Fetching user details", principle.getId());
+
+            UserResDto userResDto = userService.getUserById(principle.getId());
+
+            if (userResDto != null) {
+                log.info("Successfully fetched user details", principle.getId());
+                return ResponseEntity.ok().body(userResDto);
+            } else {
+                log.error("User not found for user ID", principle.getId());
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+        } catch (Exception e) {
+            log.error("Error occurred while fetching user details", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching user details");
+        }
     }
 
     @GetMapping("/byRole")
     public ResponseEntity<?> getUserByRole(Erole role) {
-        List<UserResDto> userResDtos = userService.getUserByRole(role);
-        return ResponseEntity.ok().body(userResDtos);
+        try {
+            log.info("User Controller: Fetching users with role", role);
+
+            List<UserResDto> userResDtos = userService.getUserByRole(role);
+
+            if (userResDtos != null && !userResDtos.isEmpty()) {
+                log.info("Successfully fetched users with role", userResDtos.size(), role);
+                return ResponseEntity.ok().body(userResDtos);
+            } else {
+                log.warn("No users found with role", role);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No users found with the specified role.");
+            }
+        } catch (Exception e) {
+            log.error("Error occurred while fetching users with role", role, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error fetching users with the specified role.");
+        }
     }
 
 }
