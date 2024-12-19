@@ -1,6 +1,5 @@
 package com.himanism.hcharityapi.mappers;
 
-import java.util.Collections;
 import java.util.Set;
 
 import org.mapstruct.Mapper;
@@ -12,7 +11,6 @@ import com.himanism.hcharityapi.dto.response.UserResDto;
 import com.himanism.hcharityapi.dto.request.UserReqDto;
 import com.himanism.hcharityapi.entities.Role;
 import com.himanism.hcharityapi.entities.User;
-import com.himanism.hcharityapi.models.Erole;
 
 @Mapper
 public interface UserMapper {

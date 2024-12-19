@@ -36,7 +36,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<UserResDto> getUsers(Authentication authentication) {
-        Logger log = LoggerFactory.getLogger(getClass());
+        // Logger log = LoggerFactory.getLogger(getClass());
 
         try {
             log.info("Admin Service: Fetching Usrs");

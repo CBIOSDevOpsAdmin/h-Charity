@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -29,13 +30,25 @@ public class Entities {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String type;
+
+    @NotBlank
     private String president;
     private String poc;
+
+    @NotBlank
     private String description;
+
     private Boolean isVerified;
+
     private Boolean hasInternet;
+
+    @NotBlank
     private String mobile;
     private String office;
     private String createdBy;

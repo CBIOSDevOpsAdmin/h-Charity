@@ -12,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,13 +26,29 @@ public class Appeal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @NotBlank
+    @Size(min = 10)
+    @Size(max = 40)
     private String title;
+
+    @NotBlank
     private String description;
+
     private Boolean selfOrBehalf;
+
+    @NotBlank
     private String onBehalfName;
+
+    @NotBlank
     private Integer totalFundsRequired;
+
+    @NotBlank
     private Integer fundsReceived;
+
+    @NotBlank
     private Integer fundsNeeded;
+
     private Boolean isZakatEligible;
     private Boolean isInterestEligible;
     private Boolean isAnonymous;

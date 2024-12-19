@@ -87,7 +87,7 @@ export class AddUpdateAppealComponent implements OnInit {
     this.appealForm = this.formBuilder.group(
       {
         id: [0],
-        title: ['', [Validators.required, Validators.minLength(10)]],
+        title: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(40)]],
         description: ['', Validators.required],
         selfOrBehalf: [false],
         onBehalfName: [{ value: '', disabled: true }, Validators.required],

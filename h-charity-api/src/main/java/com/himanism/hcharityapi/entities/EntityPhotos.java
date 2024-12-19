@@ -20,9 +20,9 @@ public class EntityPhotos {
     @Column(name = "id")
     private Long id;
     private String photoUrl;
-    @Column(columnDefinition="tinyint(1) default 0")
+    @Column(columnDefinition = "tinyint(1) default 0")
     private Boolean isQRCode;
-    @Column(columnDefinition="tinyint(1) default 0")
+    @Column(columnDefinition = "tinyint(1) default 0")
     private Boolean isCoverPhoto;
     private Long entityId;
 }
