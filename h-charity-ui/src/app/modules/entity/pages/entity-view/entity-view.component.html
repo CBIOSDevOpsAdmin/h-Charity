@@ -3,7 +3,7 @@
     <div class="col-12 md:col-6 lg:col-12">
       <button pButton label="Give Feedback" icon="pi pi-comment" *ngIf="showFeedbackButton"
         class="p-button-rounded p-button-help" (click)="showFeedbackDialog()"
-        style="position: fixed; bottom: 20px; right: 20px"></button>
+        style="position: fixed; bottom: 70px; right: 20px; z-index: 1500000;"></button>
     </div>
     <p-dialog [(visible)]="feedbackDialog" header="Give Feedback" [modal]="true" [style]="{ width: '50vw' }">
       <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
