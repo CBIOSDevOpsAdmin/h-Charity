@@ -27,26 +27,25 @@ public class Appeal {
     @Column(name = "id")
     private Long id;
 
-    @NotBlank
-    @Size(min = 10)
-    @Size(max = 40)
+    @NotBlank(message = "Appeal tilte is required")
+    @Size(min = 10, max = 40, message = "title should be minimum 10 and maximum 40 characters")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "Description is required")
     private String description;
 
     private Boolean selfOrBehalf;
 
-    @NotBlank
+    @NotBlank(message = "On Behalf Name is required")
     private String onBehalfName;
 
-    @NotBlank
+    @NotBlank(message = "total Funds Required is required")
     private Integer totalFundsRequired;
 
-    @NotBlank
+    @NotBlank(message = "funds Received is required")
     private Integer fundsReceived;
 
-    @NotBlank
+    @NotBlank(message = "fundsNeeded is required")
     private Integer fundsNeeded;
 
     private Boolean isZakatEligible;

@@ -6,6 +6,7 @@ import java.util.Set;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -18,24 +19,25 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotBlank
-  @Size(max = 20)
+  @NotBlank(message = "Username is required")
+  @Size(max = 20, min = 3, message = "Username must be between 3 and 20 characters")
+  @Pattern(regexp = "^[a-zA-Z0-9_]{3,20}$", message = "Username must be 3-20 characters and can only contain letters, digits, and underscores")
   private String username;
 
-  @NotBlank
+  @NotBlank(message = "Fullname is required")
   @Size(max = 30)
   private String fullname;
 
-  @NotBlank
+  @NotBlank(message = "Email is required")
   @Size(max = 50)
-  @Email
+  @Email(message = "Invalid email format")
   private String email;
 
-  @NotBlank
-  @Size(max = 120)
+  @NotBlank(message = "Password is required")
+  @Size(max = 120, min = 8, message = "Password must be at least 8 characters")
   private String password;
 
-  @NotBlank
+  @NotBlank(message = "Mobile Number is required")
   @Size(max = 10)
   private String mobile;
 

@@ -31,24 +31,24 @@ public class Entities {
     @Column(name = "id")
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Entity Name is required")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "type is required")
     private String type;
 
-    @NotBlank
+    @NotBlank(message = "president is required")
     private String president;
     private String poc;
 
-    @NotBlank
+    @NotBlank(message = "description is required")
     private String description;
 
     private Boolean isVerified;
 
     private Boolean hasInternet;
 
-    @NotBlank
+    @NotBlank(message = "Mobile Number is required")
     private String mobile;
     private String office;
     private String createdBy;
