@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  angular-app:
+    build:
+      context: ./h-charity-ui
+    container_name: donations-angular
+    ports:
+      - '9091:80'
+    networks:
+      - charity-net
+
+  java-api:
+    build:
+      context: ./h-charity-api
+    container_name: donations-api
+    ports:
+      - '9092:8080'
+    depends_on:
+      - donations-db
+    networks:
+      - charity-net
+
+  donations-db:
+    image: mariadb
+    container_name: donations-db
+    environment:
+      MYSQL_ROOT_PASSWORD: yourpassword
+      MYSQL_DATABASE: donationsdb
+    ports:
+      - '3306:3306'
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - charity-net
+
+networks:
+  charity-net:
+
+volumes:
+  db_data:
