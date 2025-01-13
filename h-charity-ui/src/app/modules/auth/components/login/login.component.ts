@@ -10,7 +10,7 @@ import { StorageService } from 'src/app/modules/shared/services/storage.service'
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  checked: boolean = false;
+  checked: boolean = false; // Represents "Remember Me" checkbox state
   password!: string;
   username!: string;
 
@@ -29,7 +29,23 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    const savedUsername = localStorage.getItem('username');
+    const savedPassword = localStorage.getItem('password');
+
+    if (savedUsername && savedPassword) {
+      this.username = savedUsername;
+      this.password = savedPassword;
+      this.checked = true;
+    }
+  }
+
+  toggleRememberMe() {
+    if (!this.checked) {
+      localStorage.removeItem('username');
+      localStorage.removeItem('password');
+    }
+  }
 
   login() {
     let loginPayload = {
@@ -40,6 +56,14 @@ export class LoginComponent implements OnInit {
     this.authService.login(loginPayload).subscribe({
       next: (data: any) => {
         this.storageService.saveUser(data);
+
+        if (this.checked) {
+          localStorage.setItem('username', this.username);
+          localStorage.setItem('password', this.password);
+        } else {
+          localStorage.removeItem('username');
+          localStorage.removeItem('password');
+        }
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
