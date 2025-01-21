@@ -4,24 +4,13 @@
       <p-splitter [style]="{ height: '300px' }" [panelSizes]="[40, 60]">
         <ng-template pTemplate>
           <div class="col flex align-items-center justify-content-center">
-            <p-fileUpload
-              mode="basic"
-              chooseLabel="Upload QR Code"
-              chooseIcon="pi pi-upload"
-              name="upiQRCode"
-              [customUpload]="true"
-              (uploadHandler)="onUpload($event)"
-              mode="advanced"
-              [multiple]="false"
-              accept="image/*"
-              maxFileSize="1000000"
-            />
+            <p-fileUpload mode="basic" chooseLabel="Upload QR Code" chooseIcon="pi pi-upload" name="upiQRCode"
+              [customUpload]="true" (uploadHandler)="onUpload($event)" [multiple]="false" accept="image/*"
+              maxFileSize="1000000" [disabled]="isFileUploaded"></p-fileUpload>
           </div>
         </ng-template>
         <ng-template pTemplate>
-          <app-entity-bank-details
-            [entityId]="entity"
-          ></app-entity-bank-details>
+          <app-entity-bank-details [entityId]="entity"></app-entity-bank-details>
         </ng-template>
       </p-splitter>
     </div>

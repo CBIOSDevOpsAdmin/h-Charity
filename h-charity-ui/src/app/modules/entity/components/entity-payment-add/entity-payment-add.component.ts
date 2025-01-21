@@ -14,26 +14,42 @@ export class EntityPaymentAddComponent implements OnInit {
   fileService = inject(FileService);
   messageService = inject(MessageService);
 
-  ngOnInit() {}
+  isFileUploaded = false;
 
-  onUpload(event: UploadEvent) {
-    this.fileService.uploadQRCode(this.entity, event['files'][0]).subscribe({
-      next: res => {
+  ngOnInit() { }
+
+  onUpload(event: { files: File[] }) {
+    const file = event.files[0];
+
+    if (!file) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No file selected for upload.',
+      });
+      return;
+    }
+
+    this.fileService.uploadQRCode(this.entity, file).subscribe({
+      next: (res) => {
         if (res && res['status'] === 200) {
           this.messageService.add({
             severity: 'success',
-            summary: 'Save',
-            detail: 'QR code updated successfully',
+            summary: 'Success',
+            detail: 'QR code uploaded successfully.',
           });
+
+          this.isFileUploaded = true;
         }
       },
-      error: error => {
+      error: (error) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: error['error'].message,
+          detail: error?.error?.message || 'File upload failed.',
         });
       },
     });
   }
+
 }

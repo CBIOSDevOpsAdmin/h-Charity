@@ -16,13 +16,17 @@ import { ICountry } from 'src/app/modules/shared/models/country.model';
 import { ICity } from 'src/app/modules/shared/models/city.model';
 import { IEntity } from '../../models/entity.model';
 import { MessageService } from 'primeng/api';
-import { UploadEvent } from 'primeng/fileupload';
 import { FileService } from '../../services/file.service';
 import { HttpResponse } from '@angular/common/http';
 import { Observable, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StorageService } from 'src/app/modules/shared/services/storage.service';
 import { UserService } from 'src/app/modules/shared/services/user.service';
+
+interface UploadEvent {
+  originalEvent: Event;
+  files: File[];
+}
 
 @Component({
   selector: 'app-add-update-entity',
@@ -56,6 +60,7 @@ export class AddUpdateEntityComponent implements OnInit {
   router = inject(Router);
   storageService = inject(StorageService);
   userService = inject(UserService);
+  isFileSelected: boolean = false;
   //#endregion
 
   ngOnInit() {
@@ -109,7 +114,7 @@ export class AddUpdateEntityComponent implements OnInit {
     });
   }
 
-  onUpload(event: UploadEvent) {
+  onUpload(event: UploadEvent): void {
     this.uploadedFiles = event['files'];
     this.uploadedFiles.forEach((file: any) => {
       this.uploadFileApiCall(file);
@@ -128,6 +133,8 @@ export class AddUpdateEntityComponent implements OnInit {
               detail: 'Cover photo updated successfully',
             });
           }
+          this.isFileSelected = true;
+
         },
         error: error => {
           this.messageService.add({
@@ -313,7 +320,11 @@ export class AddUpdateEntityComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Save',
-          detail: 'File upload successfully',
+          detail: 'File uploaded successfully',
+        });
+
+        this.router.navigate([this.router.url]).then(() => {
+          window.location.reload();
         });
       },
       error: (err: any) => {
