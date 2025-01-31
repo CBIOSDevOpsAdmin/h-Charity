@@ -413,7 +413,7 @@ export class EntityViewComponent implements OnInit {
       advisedBy: feedback.advisedBy || this.storageService.getUser().username,
       advisedByContact: feedback.advisedByContact || this.storageService.getUser().mobile,
       title: feedback.title,
-      description: (!feedback.description) ? console.log(feedback) : feedback.description,
+      description: feedback.description,
       isAnonymous: feedback.isAnonymous,
       status: feedback.status || 'Open',
     });

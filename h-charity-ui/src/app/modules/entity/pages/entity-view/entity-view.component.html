@@ -259,7 +259,7 @@
                   </th>
                   <th pSortableColumn="description" style="min-width: 25rem">
                     Description
-                    <p-sortIcon field="description" />
+                    <p-sortIcon field="description"></p-sortIcon>
                   </th>
                   <th pSortableColumn="status" style="min-width: 12rem">
                     Status
@@ -287,7 +287,7 @@
                   <td>{{ feedback.advisedBy }}</td>
                   <td>{{ feedback.advisedByContact }}</td>
                   <td>{{ feedback.title }}</td>
-                  <td>{{ feedback.description}}</td>
+                  <td [innerHTML]="feedback.description"></td>
                   <td>{{ feedback.entityFeedbackStatusList[0].status }}</td>
                   <td>{{ feedback.isAnonymous ? 'Yes' : 'No' }}</td>
                 </tr>
@@ -315,7 +315,7 @@
           <div class="feedback-details">
             <p><strong>Advised By:</strong> {{ feedback?.advisedBy }}</p>
             <p><strong>Contact:</strong> {{ feedback?.advisedByContact }}</p>
-            <p><strong>Description:</strong> {{ feedback?.description }}</p>
+            <p><strong>Description:</strong> <span [innerHTML]="feedback?.description"></span></p>
             <p><strong>Status:</strong> {{ feedback?.entityFeedbackStatusList[0].status }}</p>
           </div>
 
@@ -340,8 +340,7 @@
               <tr>
                 <td>{{ status.statusCommentDate | date: 'short' }}</td>
                 <td>{{ status.status }}</td>
-                <td>{{ status.statusCommenter
-                  }}</td>
+                <td>{{ status.statusCommenter}}</td>
               </tr>
             </ng-template>
           </p-table>
